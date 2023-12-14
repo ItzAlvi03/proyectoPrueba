@@ -5,9 +5,13 @@
     <div class="d-flex flex-column justify-content-center align-items-center" id="card">
         <div *ngIf="pokemon" class="position-relative w-100 h-100 d-flex flex-row justify-content-center align-items-center">
             <div id="fondoImg" class="h-100 d-flex flex-column justify-content-center align-items-center">
-                <div id="datosImg" class="position-relative d-flex flex-column align-items-start justify-content-start">
-                    <label id="nombre">{{pokemon.name}}</label>
-                    <label id="lvl">Lv.99</label>
+                <div id="datosImg" class="position-relative d-flex flex-column align-items-start justify-content-start text-center">
+                    <div class="d-flex flex-column align-items-center justify-content-center" id="nombre">
+                        <label>{{pokemon.name}}</label>
+                    </div>
+                    <div class="d-flex flex-column align-items-center justify-content-center" id="lvl">
+                        <label>Lv.99</label>
+                    </div>
                 </div>
                 <div id="cartaImg" class="position-relative">
                     <div id="fondoCarta">
@@ -19,20 +23,23 @@
             </div>
             <div id="fondoInfo" class="h-100 d-flex flex-column justify-content-center align-items-center">
                 <div class="w-100 d-flex flex-row justify-content-between align-items-center mb-2">
-                    <label>Nombre</label>
-                    <label>{{pokemon.name}}</label>
+                    <label class="p-1">Nombre</label>
+                    <label class="p-1">{{pokemon.name}}</label>
                 </div>
                 <div id="clarito" class="w-100 d-flex flex-row justify-content-between align-items-center mb-2">
-                    <label>Height</label>
-                    <label>{{pokemon.height}}</label>
+                    <label class="p-1">Height</label>
+                    <label class="p-1">{{pokemon.height}}</label>
                 </div>
                 <div class="w-100 d-flex flex-row justify-content-between align-items-center mb-2">
-                    <label>Weight</label>
-                    <label>{{pokemon.weight}}</label>
+                    <label class="p-1">Weight</label>
+                    <label class="p-1">{{pokemon.weight}}</label>
                 </div>
                 <div id="clarito" class="w-100 d-flex flex-row justify-content-between align-items-center">
-                    <div id="type" *ngFor="let type of pokemon.types" class="d-flex justify-content-center align-items-center">
-                        <label class="w-100">{{type}}</label>
+                    <label class="p-1">Type</label>
+                    <div class="d-fex flex-column">
+                        <div class="m-1 p-1 text-center" id="type" *ngFor="let type of pokemon.types">
+                            <label>{{type}}</label>
+                        </div>
                     </div>
                 </div>
             </div>
