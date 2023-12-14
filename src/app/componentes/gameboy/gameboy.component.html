@@ -1,0 +1,24 @@
+<div class="w-100" id="banner">
+    <div class="d-flex justify-content-center align-items-center">
+        <h2 class="mt-4">Gameboy</h2>
+    </div>
+</div>
+<div id="content" class="w-100 h-100 d-flex flex-column justify-content-center align-items-center position-relative">
+    <button (click)="encenderApagar()" class="w-100 btn btn-danger m-4">ENCENDER/APAGAR</button>
+    <div id="imagen" class="w-100 h-100 mb-2">
+        <div id="pantalla">
+            <div class="w-100 h-100" id="elementosPantalla">
+                <app-menu-principal *ngIf="menuPrincipal"></app-menu-principal>
+            </div>
+        </div>
+        <div (click)="activarAnimacion('ClickArrowUp')" id="arriba">
+        </div>
+        <div (click)="activarAnimacion('ClickArrowDown')" id="abajo">
+        </div>
+        <div (click)="activarAnimacion('ClickEnter')" id="adelante">
+        </div>
+        <div (click)="activarAnimacion('ClickBackspace')" id="atras">
+        </div>
+        <img class="w-100 h-100 img-fluid" src="../../../assets/images/gameboy.png" alt="">
+    </div>
+</div>

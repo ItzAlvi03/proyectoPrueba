@@ -1,0 +1,41 @@
+<div id="content" class="w-100 h-100 position-absolute d-flex flex-column justify-content-center align-items-center">
+    <div class="position-absolute d-flex flex-column justify-content-center align-items-start" id="banner">
+        <label>INFO.POKEMON</label>
+    </div>
+    <div class="d-flex flex-column justify-content-center align-items-center" id="card">
+        <div *ngIf="pokemon" class="position-relative w-100 h-100 d-flex flex-row justify-content-center align-items-center">
+            <div id="fondoImg" class="h-100 d-flex flex-column justify-content-center align-items-center">
+                <div id="datosImg" class="position-relative d-flex flex-column align-items-start justify-content-start">
+                    <label id="nombre">{{pokemon.name}}</label>
+                    <label id="lvl">Lv.99</label>
+                </div>
+                <div id="cartaImg" class="position-relative">
+                    <div id="fondoCarta">
+                        <div id="fondoCartaAzul">
+                            <img (load)="onImageLoad()" class="mb-1" src="{{pokemon.image}}" alt="">
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div id="fondoInfo" class="h-100 d-flex flex-column justify-content-center align-items-center">
+                <div class="w-100 d-flex flex-row justify-content-between align-items-center mb-2">
+                    <label>Nombre</label>
+                    <label>{{pokemon.name}}</label>
+                </div>
+                <div id="clarito" class="w-100 d-flex flex-row justify-content-between align-items-center mb-2">
+                    <label>Height</label>
+                    <label>{{pokemon.height}}</label>
+                </div>
+                <div class="w-100 d-flex flex-row justify-content-between align-items-center mb-2">
+                    <label>Weight</label>
+                    <label>{{pokemon.weight}}</label>
+                </div>
+                <div id="clarito" class="w-100 d-flex flex-row justify-content-between align-items-center">
+                    <div id="type" *ngFor="let type of pokemon.types" class="d-flex justify-content-center align-items-center">
+                        <label class="w-100">{{type}}</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

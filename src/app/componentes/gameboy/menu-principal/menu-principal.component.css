@@ -1,0 +1,15 @@
+.seleccionado{
+    border: 2px dashed white;
+}
+.no-seleccionado{
+    border: 2px dashed black;
+}
+.seleccionado,.no-seleccionado{
+    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    max-width: 90%;
+    min-width: 90%;
+    margin: 0% 5%;
+    padding-left: 5%;
+    margin-top: 2.5%;
+    transition: border-color 0.2s linear;
+}

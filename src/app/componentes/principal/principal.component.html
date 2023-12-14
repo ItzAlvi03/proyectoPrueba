@@ -1,0 +1,24 @@
+<div class="w-100" id="banner">
+    <div class="d-flex justify-content-center align-items-center">
+        <h2 class="mt-4">Prueba de Api</h2>
+    </div>
+</div>
+<div id="contenido">
+    <div class="w-100 d-flex justify-content-center align-items-center flex-column">
+        <label class="p-2">Width:</label>
+        <input class="p-2" type="number" name="width" [(ngModel)]="width">
+        <label class="p-2">Height:</label>
+        <input class="p-2" type="number" name="height" [(ngModel)]="height">
+        <button (click)="generarArea()" class="btn btn-primary m-2">Calcular</button>
+    </div>
+    <div class="w-100 d-flex justify-content-center align-items-center mt-4 mb-4" *ngIf="area">
+        <label *ngIf="area">{{ area }}</label>
+    </div>
+    <div class="mt-4 w-100 d-flex justify-content-center align-items-center flex-column">
+        <input type="file" id="inputImg" (change)="cambiarImg()" accept="image/jpeg, image/jpg, image/png" name="archivo">
+        <img id="img" *ngIf="imagen" src="{{ imagen }}" routerLink="/rickMorty/1">
+    </div>
+</div>
+<div class="" id="mensaje">
+    <label>{{mensaje}}</label>
+</div>

@@ -1,0 +1,10 @@
+<div id="secciones" class="w-100 d-flex flex-column justify-content-center align-items-start">
+    <div class="seleccionado" id="seccion1">
+        <label><strong>1.</strong> Abrir Pokedex</label>
+    </div>
+    <div class="no-seleccionado" id="seccion2">
+        <label><strong>2.</strong> Buscar Pokemon</label>
+    </div>
+</div>
+<app-pokedex *ngIf="pokedex"></app-pokedex>
+<app-pokemon-card *ngIf="pokemonCard"></app-pokemon-card>

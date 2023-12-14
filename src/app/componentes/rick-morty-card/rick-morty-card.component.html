@@ -1,0 +1,28 @@
+<div class="w-100" id="banner">
+    <div class="d-flex justify-content-center align-items-center">
+        <h2 class="mt-4">Rick And Morty</h2>
+    </div>
+</div>
+<div class="d-flex align-items-start w-100">
+    <button id="volver" routerLink="/rickMorty/{{page}}" class="btn btn-primary"><i class="bi bi-arrow-left-circle"></i> Volver</button>
+</div>
+<div id="content">
+    <div class="d-flex flex-column justify-content-center align-items-center p-2 mt-4" id="card">
+        <div id="imagen" class="mb-2 position-relative">
+            <i id="agrandar" class="bi bi-arrows-fullscreen bg-light position-absolute top-0 end-0 m-2 p-2 pt-1 pb-1"></i>
+            <img class="img-fluid" src="{{character.image}}" alt="{{character.name}}">
+        </div>
+        <strong><label class="mb-2">{{character.name}}</label></strong>
+        <strong><label class="mb-2">{{character.gender}}</label></strong>
+    </div>
+    <div class="d-flex flex-column justify-content-center align-items-center p-1" id="card">
+        <h2 class="mb-2">Details</h2>
+        <div class="d-flex flex-column justify-content-center align-items-start mt-4">
+            <label class="mb-2"><strong>-Status: </strong>{{character.status}}</label>
+            <label class="mb-2"><strong>-Species: </strong>{{character.species}}</label>
+            <label class="mb-2"><strong>-Origin: </strong>{{character.origin?.name}}</label>
+            <label class="mb-2"><strong>-Location: </strong>{{character.location?.name}}</label>
+            <label class="mb-2"><strong>-Created: </strong>{{character.created}}</label>
+        </div>
+    </div>
+</div>
