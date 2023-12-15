@@ -36,6 +36,14 @@ html{
     margin: 119% 14.8%;
     border-radius: 1px 1px 7px 7px;
 }
+#derecha{
+    margin: 110.6% 23.4%;
+    border-radius: 1px 7px 7px 1px;
+}
+#izquierda{
+    margin: 110.6% 6.2%;
+    border-radius: 7px 1px 1px 7px;
+}
 #adelante{
     margin: 103.7% 81.5%;
 }
@@ -53,7 +61,7 @@ html{
     opacity: 0;
     transition: opacity 0.15s ease-out;
 }
-#arriba,#abajo{
+#arriba,#abajo,#izquierda,#derecha{
     background-color: white;
     position: absolute;
     padding: 4.7%;

@@ -35,9 +35,12 @@ export class MenuPrincipalComponent implements OnInit{
           if(event === 'Backspace'){
             this.habilitarMenu();
           }
+          else if(event === 'apagado'){
+            this.pokedex = false;
+          }
         }
       }
-    },100)
+    },50);
   }
 
   private keydownListener = (event: KeyboardEvent) => {

@@ -52,14 +52,16 @@
     border-radius: 0px 0px 0px 10px;
 }
 #fondoInfo{
+    height: 100%;
     width: 60%;
     border: 1.5px solid black;
     background-color: rgba(112, 184, 112, 0.939);
     border-radius: 0px 0px 10px 0px;
-    font-size: 10.5px;
+    font-size: 9.5px;
 }
 #fondoInfo label{
     margin-right: 1%;
+    font-weight: 900;
     text-wrap: wrap;
 }
 #clarito{
@@ -146,11 +148,96 @@ img{
     min-width: 90%;
     margin: 0% 5%;
 }
-@media (max-width: 350px){
+#flecha{
+    background-color: white;
+    width: 88%;
+    border-top: 1.5px solid rgb(197, 203, 214);
+    border-bottom: 1.5px solid rgb(197, 203, 214);
+    border-radius: 10px;
+}
+#flecha label{
+    text-align: center;
+    color: black;
+    font-size: 9px;
+}
+#flecha i{
+    font-size: 13px;
+    font-weight: 700;
+    padding: 0% 3%;
+    border: 1.5px solid rgb(32, 104, 224);
+}
+#divTipo{
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.bi-arrow-left{
+    margin-left: -6%;
+    border-radius: 10px 0 0 10px;
+}
+.bi-arrow-right{
+    margin-right: -5.5%;
+    border-radius: 0 10px 10px 0;
+}
+@media (max-width: 460px){
+    #flecha{
+        margin-top: -10%;
+    }
+}
+@media (max-width: 380px){
+    #banner{
+        font-size: 11px;
+    }
+    img{
+        width: 185%;
+        margin-top: -38%;
+        margin-left: -40%;
+    }
     #datosImg label{
         font-size: 7.5px;
     }
     #datosImg{
-        margin-top: 5%;
+        margin-top: -1.5%;
+        margin-bottom: -22%;
+    }
+    #fondoCarta{
+        margin-top: 20%;
+        margin-bottom: 1%;
+    }
+    #flecha{
+        margin-top: -5%;
+    }
+    #fondoInfo{
+        font-size: 7.5px;
+    }
+}
+@media (max-width: 325px){
+    #banner{
+        font-size: 9.5px;
+    }
+    img{
+        width: 170%;
+        margin-left: -32%;
+        margin-top: -30%;
+        margin-bottom: 2%;
+    }
+    #datosImg{
+        margin-top: 8%;
+        margin-bottom: -5%;
+    }
+    #fondoInfo div{
+        font-size: 6px;
+    }
+    #divTipo{
+        flex-direction: row;
+    }
+    #flecha{
+        margin-top: -12%;
+        margin-bottom: 8%;
+    }
+    #fondoCarta{
+        height: 80%;
+        margin-top: 0%;
+        margin-bottom: 5%;
     }
 }

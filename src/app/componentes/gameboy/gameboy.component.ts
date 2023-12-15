@@ -15,6 +15,8 @@ export class GameboyComponent implements OnInit{
   elementosPantalla: any;
   btnArriba: any;
   btnAbajo: any;
+  btnDerecha: any;
+  btnIzquierda: any;
   btnAdelante: any;
   btnAtras: any;
   //Estas variables booleanas indicarán qué componente se ve
@@ -33,6 +35,8 @@ export class GameboyComponent implements OnInit{
     this.elementosPantalla = document.getElementById('elementosPantalla');
     this.btnArriba = document.getElementById('arriba');
     this.btnAbajo = document.getElementById('abajo');
+    this.btnDerecha = document.getElementById('derecha');
+    this.btnIzquierda = document.getElementById('izquierda');
     this.btnAdelante = document.getElementById('adelante');
     this.btnAtras = document.getElementById('atras');
   }
@@ -43,7 +47,7 @@ export class GameboyComponent implements OnInit{
     if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
       event.preventDefault();
     }
-    if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'Enter' || event.key === 'Backspace') {
+    if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowRight' || event.key === 'ArrowLeft' || event.key === 'Enter' || event.key === 'Backspace') {
       this.activarAnimacion(event.key);
     }
   }
@@ -59,6 +63,16 @@ export class GameboyComponent implements OnInit{
       this.btnAbajo.style.opacity = "0.6";
       setTimeout(() =>{
         this.btnAbajo.style.opacity = "0";
+      }, 150)
+    }else if (key === 'ArrowRight' || key === 'ClickArrowRight') {
+      this.btnDerecha.style.opacity = "0.6";
+      setTimeout(() =>{
+        this.btnDerecha.style.opacity = "0";
+      }, 150)
+    }else if (key === 'ArrowLeft' || key === 'ClickArrowLeft') {
+      this.btnIzquierda.style.opacity = "0.6";
+      setTimeout(() =>{
+        this.btnIzquierda.style.opacity = "0";
       }, 150)
     }else if (key === 'Enter' || key === 'ClickEnter') {
       this.btnAdelante.style.opacity = "0.6";
@@ -77,7 +91,11 @@ export class GameboyComponent implements OnInit{
         this.comunicationService.accion.next('ArrowUp');
       } else if (key === 'ClickArrowDown') {
         this.comunicationService.accion.next('ArrowDown');
-      } else if (key === 'ClickEnter') {
+      } else if (key === 'ClickArrowLeft') {
+        this.comunicationService.accion.next('ArrowLeft');
+      }  else if (key === 'ClickArrowRight') {
+        this.comunicationService.accion.next('ArrowRight');
+      }  else if (key === 'ClickEnter') {
         this.comunicationService.accion.next('Enter');
       } else if (key === 'ClickBackspace') {
         this.comunicationService.accion.next('Backspace');
@@ -87,23 +105,21 @@ export class GameboyComponent implements OnInit{
   
   encenderApagar() {
     if(this.encendido){
-      setTimeout(() => {
-        this.menuPrincipal = false;
-      }, 400);
-      this.elementosPantalla.style.opacity = '0';
-      this.pantalla.style.backgroundColor = 'black';
-      setTimeout(() => {
-        this.menuPrincipal = false;
-      }, 400);
       this.comunicationService.encendido.next(false);
+      this.comunicationService.accion.next('apagado');
+      setTimeout(() => {
+        this.menuPrincipal = false;
+        this.elementosPantalla.style.opacity = '0';
+        this.pantalla.style.backgroundColor = 'black';
+      }, 100);
       this.encendido = false;
     }else{
+      this.comunicationService.encendido.next(true);
       this.pantalla.style.backgroundColor = 'rgb(132, 153, 86)';
       setTimeout(() => {
         this.menuPrincipal = true;
         this.elementosPantalla.style.opacity = '1';
       }, 400);
-      this.comunicationService.encendido.next(true);
       this.encendido = true;
     }
   }

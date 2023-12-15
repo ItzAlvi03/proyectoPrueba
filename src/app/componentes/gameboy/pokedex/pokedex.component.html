@@ -4,7 +4,7 @@
     </div>
     <div class="d-flex flex-column justify-content-center align-items-center" id="card">
         <div *ngIf="pokemon" class="position-relative w-100 h-100 d-flex flex-row justify-content-center align-items-center">
-            <div id="fondoImg" class="h-100 d-flex flex-column justify-content-center align-items-center">
+            <div id="fondoImg" class="h-100 position-relative d-flex flex-column justify-content-center align-items-center">
                 <div id="datosImg" class="position-relative d-flex flex-column align-items-start justify-content-start text-center">
                     <div class="d-flex flex-column align-items-center justify-content-center" id="nombre">
                         <label>{{pokemon.name}}</label>
@@ -13,15 +13,24 @@
                         <label>Lv.99</label>
                     </div>
                 </div>
-                <div id="cartaImg" class="position-relative">
+                <div id="cartaImg" class="d-flex flex-column position-relative">
                     <div id="fondoCarta">
                         <div id="fondoCartaAzul">
-                            <img (load)="onImageLoad()" class="mb-1" src="{{pokemon.image}}" alt="">
+                            <img (load)="onImageLoad()" [src]="imagen" alt="">
                         </div>
                     </div>
                 </div>
+                <div id="flecha" class="d-flex flex-row justify-content-between align-items-center">
+                    <i class="bi bi-arrow-left bg-primary"></i>
+                    <label>Rotar</label>
+                    <i class="bi bi-arrow-right bg-primary"></i>
+                </div>
             </div>
-            <div id="fondoInfo" class="h-100 d-flex flex-column justify-content-center align-items-center">
+            <div id="fondoInfo" class="d-flex flex-column justify-content-center align-items-center">
+                <div id="clarito" class="w-100 d-flex flex-row justify-content-between align-items-center mb-2">
+                    <label class="p-1">NºPokedex</label>
+                    <label class="p-1">{{pokemon.id}}</label>
+                </div>
                 <div class="w-100 d-flex flex-row justify-content-between align-items-center mb-2">
                     <label class="p-1">Nombre</label>
                     <label class="p-1">{{pokemon.name}}</label>
@@ -36,7 +45,7 @@
                 </div>
                 <div id="clarito" class="w-100 d-flex flex-row justify-content-between align-items-center">
                     <label class="p-1">Type</label>
-                    <div class="d-fex flex-column">
+                    <div id="divTipo">
                         <div class="m-1 p-1 text-center" id="type" *ngFor="let type of pokemon.types">
                             <label>{{type}}</label>
                         </div>

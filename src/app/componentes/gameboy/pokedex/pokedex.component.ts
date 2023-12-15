@@ -9,19 +9,25 @@ import { Pokemon } from 'src/app/interfaces/pokemon';
   styleUrls: ['./pokedex.component.css']
 })
 export class PokedexComponent implements OnInit{
-  pokemon: any;
+  pokemon: any = {};
   numero: number = 1;
   types: any;
+  img: any;
+  imagen: any;
+  frontImage: boolean = false;
   constructor(private service: PokedexService, private comunication: ComunicationServiceService){}
   
   ngOnInit(){
     if(this.comunication.encendido)
       this.getCharacters();
-  document.addEventListener('keydown', this.keydownListener);
-  this.comunication.accion.subscribe((event: string) => {
-    this.accionTeclaClick(event);
-  });
-}
+    document.addEventListener('keydown', this.keydownListener);
+    this.comunication.accion.subscribe((event: string) => {
+      this.accionTeclaClick(event);
+    });
+  }
+  ngAfterViewInit(){
+    this.img = document.querySelector('img') as HTMLImageElement;
+  }
 
   private keydownListener = (event: KeyboardEvent) => {
     this.accionTecla(event);
@@ -31,8 +37,9 @@ export class PokedexComponent implements OnInit{
       if(this.comunication.encendido){
           if (event === 'ArrowUp' || event === 'ArrowDown') {
             this.cambiarPokemon(event);
-          }else if(event === 'Enter'){
-            //Implementar ver pokemon con más detalles
+          }else if(event === 'ArrowRight' || event === 'ArrowLeft'){
+            if(this.img && this.pokemon.image)
+              this.cambiarImg();
           }
       }
     },100)
@@ -40,15 +47,31 @@ export class PokedexComponent implements OnInit{
   accionTecla(event: KeyboardEvent) {
     setTimeout(() => {
       if(this.comunication.encendido){
-          if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-            this.cambiarPokemon(event.key);
-          }else if(event.key === 'Enter'){
-            //Implementar ver pokemon con más detalles
-          }
+        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+          this.cambiarPokemon(event.key);
+        }else if(event.key === 'ArrowRight' || event.key === 'ArrowLeft'){
+          this.cambiarImg();
+        }
       }
     },100)
   }
+
+  cambiarImg() {
+    if (this.pokemon && this.pokemon.image) {
+      if (this.frontImage) {
+        if(this.pokemon.image?.back_default){
+          this.imagen = this.pokemon.image?.back_default;
+          this.frontImage = false;
+        }
+      } else {
+        this.imagen = this.pokemon.image?.front_default;
+        this.frontImage = true;
+      }
+    }
+  }
+
   cambiarPokemon(event: string) {
+    this.frontImage = false;
     if(event === "ArrowUp"){
       this.numero++;
       this.getCharacters();
@@ -121,14 +144,16 @@ export class PokedexComponent implements OnInit{
 
   getCharacters() {
     this.service.getPokemon(this.numero).subscribe((res: any) => {
-      if (res && res.name && res.height && res.weight && res.types && res.sprites && res.sprites.front_default) {
+      if (res && res.name && res.height && res.weight && res.types && res.sprites) {
         this.pokemon = {
+          id: res.id,
           name: res.name.toUpperCase(),
           height: res.height,
           weight: res.weight,
           types: res.types.map((type: any) => type.type.name.toUpperCase()),
-          image: res.sprites.front_default,
+          image: res.sprites,
         };
+        this.cambiarImg();
       }
     });
   }

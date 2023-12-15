@@ -6,7 +6,7 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class ComunicationServiceService {
   public accion = new BehaviorSubject<string>('');
-  public encendido: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
+  public encendido = new BehaviorSubject<boolean>(false);
 
   constructor() {}
 }
