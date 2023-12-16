@@ -35,6 +35,8 @@ export class MenuPrincipalComponent implements OnInit{
           this.encendido = true;
           this.habilitarMenu();
         }
+      }else{
+        this.encendido = true;
       }
     });
     this.primeraVez = false;
@@ -72,9 +74,6 @@ export class MenuPrincipalComponent implements OnInit{
   //Acciones flechas
   accionTecla(event: KeyboardEvent) {
     if(this.encendido){
-      this.pokedex = false;
-      this.infoUso = false;
-      this.animacionApagar = false;
     setTimeout(() => {
       if(this.comunicationService.encendido){
         if(!this.dentroSeccion){
