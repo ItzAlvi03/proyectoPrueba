@@ -1,3 +1,6 @@
+*{
+    font-family: 'pokemonPixel2';
+}
 .seleccionado{
     border: 2px dashed white;
 }
@@ -5,11 +8,20 @@
     border: 2px dashed black;
 }
 .seleccionado,.no-seleccionado{
-    font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     max-width: 90%;
     min-width: 90%;
     margin: 0% 5%;
     padding-left: 5%;
     margin-top: 2.5%;
     transition: border-color 0.2s linear;
+}
+@media (max-width: 500px){
+    *{
+        font-size: 14px;
+    }
+}
+@media (max-width: 380px){
+    *{
+        font-size: 12px;
+    }
 }

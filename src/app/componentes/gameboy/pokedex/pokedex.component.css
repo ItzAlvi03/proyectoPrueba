@@ -1,6 +1,12 @@
 *{
     font-family: 'pokemonPixel2';
 }
+.pantalla-completa{
+    height: 120%;
+}
+.no-pantalla-completa{
+    height: 100%;
+}
 #banner{
     top: 0;
     max-width: 100%;

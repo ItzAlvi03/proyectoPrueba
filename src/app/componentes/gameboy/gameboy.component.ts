@@ -10,6 +10,7 @@ import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunicatio
 })
 export class GameboyComponent implements OnInit{
   //Variables que se utilizan
+  pantallaCompleta: boolean = false;
   encendido: boolean = false;
   pantalla: any;
   elementosPantalla: any;
@@ -19,6 +20,7 @@ export class GameboyComponent implements OnInit{
   btnIzquierda: any;
   btnAdelante: any;
   btnAtras: any;
+  usando: any = false;
   //Estas variables booleanas indicarán qué componente se ve
   //dentro de la pantalla de la gameboy
   menuPrincipal: boolean = false;
@@ -29,6 +31,22 @@ export class GameboyComponent implements OnInit{
     document.addEventListener('keydown', (event) => {
       this.accionTecla(event);
     });
+    this.comunicationService.pantallaCompleta.subscribe((event: boolean) => {
+      this.reposicionarPantalla(event);
+    });
+  }
+  reposicionarPantalla(event: boolean) {
+    if(this.pantalla) {
+      if(event){
+        this.pantallaCompleta = true;
+        this.pantalla.classList.remove('no-pantalla-completa');
+        this.pantalla.classList.add('pantalla-completa');
+      } else{
+        this.pantallaCompleta = false;
+        this.pantalla.classList.remove('pantalla-completa');
+        this.pantalla.classList.add('no-pantalla-completa');
+      }
+    }
   }
   ngAfterViewInit(){
     this.pantalla = document.getElementById('pantalla');
@@ -54,73 +72,80 @@ export class GameboyComponent implements OnInit{
 
   activarAnimacion(key: string) {
     //Animaciones de los botones de la gameboy
-    if (key === 'ArrowUp' || key === 'ClickArrowUp') {
-      this.btnArriba.style.opacity = "0.6";
-      setTimeout(() =>{
-        this.btnArriba.style.opacity = "0";
-      }, 150)
-    } else if (key === 'ArrowDown' || key === 'ClickArrowDown') {
-      this.btnAbajo.style.opacity = "0.6";
-      setTimeout(() =>{
-        this.btnAbajo.style.opacity = "0";
-      }, 150)
-    }else if (key === 'ArrowRight' || key === 'ClickArrowRight') {
-      this.btnDerecha.style.opacity = "0.6";
-      setTimeout(() =>{
-        this.btnDerecha.style.opacity = "0";
-      }, 150)
-    }else if (key === 'ArrowLeft' || key === 'ClickArrowLeft') {
-      this.btnIzquierda.style.opacity = "0.6";
-      setTimeout(() =>{
-        this.btnIzquierda.style.opacity = "0";
-      }, 150)
-    }else if (key === 'Enter' || key === 'ClickEnter') {
-      this.btnAdelante.style.opacity = "0.6";
-      setTimeout(() =>{
-        this.btnAdelante.style.opacity = "0";
-      }, 150)
-    }else if (key === 'Backspace' || key === 'ClickBackspace') {
-      this.btnAtras.style.opacity = "0.6";
-      setTimeout(() =>{
-        this.btnAtras.style.opacity = "0";
-      }, 150)
-    }
-    //Acciones en caso de que se haga click en los
-    if(this.encendido){
-      if (key === 'ClickArrowUp') {
-        this.comunicationService.accion.next('ArrowUp');
-      } else if (key === 'ClickArrowDown') {
-        this.comunicationService.accion.next('ArrowDown');
-      } else if (key === 'ClickArrowLeft') {
-        this.comunicationService.accion.next('ArrowLeft');
-      }  else if (key === 'ClickArrowRight') {
-        this.comunicationService.accion.next('ArrowRight');
-      }  else if (key === 'ClickEnter') {
-        this.comunicationService.accion.next('Enter');
-      } else if (key === 'ClickBackspace') {
-        this.comunicationService.accion.next('Backspace');
+    if(!this.pantallaCompleta){
+      if (key === 'ArrowUp' || key === 'ClickArrowUp') {
+        this.btnArriba.style.opacity = "0.6";
+        setTimeout(() =>{
+          this.btnArriba.style.opacity = "0";
+        }, 150)
+      } else if (key === 'ArrowDown' || key === 'ClickArrowDown') {
+        this.btnAbajo.style.opacity = "0.6";
+        setTimeout(() =>{
+          this.btnAbajo.style.opacity = "0";
+        }, 150)
+      }else if (key === 'ArrowRight' || key === 'ClickArrowRight') {
+        this.btnDerecha.style.opacity = "0.6";
+        setTimeout(() =>{
+          this.btnDerecha.style.opacity = "0";
+        }, 150)
+      }else if (key === 'ArrowLeft' || key === 'ClickArrowLeft') {
+        this.btnIzquierda.style.opacity = "0.6";
+        setTimeout(() =>{
+          this.btnIzquierda.style.opacity = "0";
+        }, 150)
+      }else if (key === 'Enter' || key === 'ClickEnter') {
+        this.btnAdelante.style.opacity = "0.6";
+        setTimeout(() =>{
+          this.btnAdelante.style.opacity = "0";
+        }, 150)
+      }else if (key === 'Backspace' || key === 'ClickBackspace') {
+        this.btnAtras.style.opacity = "0.6";
+        setTimeout(() =>{
+          this.btnAtras.style.opacity = "0";
+        }, 150)
+      }
+      //Acciones en caso de que se haga click en los
+      if(this.encendido){
+        if (key === 'ClickArrowUp') {
+          this.comunicationService.accion.next('ArrowUp');
+        } else if (key === 'ClickArrowDown') {
+          this.comunicationService.accion.next('ArrowDown');
+        } else if (key === 'ClickArrowLeft') {
+          this.comunicationService.accion.next('ArrowLeft');
+        }  else if (key === 'ClickArrowRight') {
+          this.comunicationService.accion.next('ArrowRight');
+        }  else if (key === 'ClickEnter') {
+          this.comunicationService.accion.next('Enter');
+        } else if (key === 'ClickBackspace') {
+          this.comunicationService.accion.next('Backspace');
+        }
       }
     }
   }
   
   encenderApagar() {
-    if(this.encendido){
-      this.comunicationService.encendido.next(false);
-      this.comunicationService.accion.next('apagado');
+    if(!this.usando){
+      this.usando = true;
       setTimeout(() => {
-        this.menuPrincipal = false;
-        this.elementosPantalla.style.opacity = '0';
-        this.pantalla.style.backgroundColor = 'black';
-      }, 100);
-      this.encendido = false;
-    }else{
-      this.comunicationService.encendido.next(true);
-      this.pantalla.style.backgroundColor = 'rgb(132, 153, 86)';
-      setTimeout(() => {
-        this.menuPrincipal = true;
-        this.elementosPantalla.style.opacity = '1';
-      }, 400);
-      this.encendido = true;
+        if(this.encendido){
+          this.comunicationService.encendido.next(false);
+          this.comunicationService.accion.next('apagado');
+          setTimeout(() => {
+            this.elementosPantalla.style.opacity = '0';
+            this.pantalla.style.backgroundColor = 'black';
+          }, 100);
+          this.encendido = false;
+        }else{
+          this.comunicationService.encendido.next(true);
+          this.pantalla.style.backgroundColor = 'rgb(132, 153, 86)';
+          setTimeout(() => {
+            this.menuPrincipal = true;
+            this.elementosPantalla.style.opacity = '1';
+          }, 400);
+          this.encendido = true;
+        }
+        this.usando = false;
+      }, 50);
     }
   }
 }

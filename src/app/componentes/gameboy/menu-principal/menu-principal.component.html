@@ -3,8 +3,15 @@
         <label><strong>1.</strong> Abrir Pokedex</label>
     </div>
     <div class="no-seleccionado" id="seccion2">
-        <label><strong>2.</strong> Buscar Pokemon</label>
+        <label><strong>2.</strong> Combate vs CPU</label>
+    </div>
+    <div class="no-seleccionado" id="seccion3">
+        <label><strong>3.</strong> Pantalla Completa</label>
+    </div>
+    <div class="no-seleccionado" id="seccion4">
+        <label><strong>4.</strong> Info. Uso</label>
     </div>
 </div>
 <app-pokedex id="pokedex" *ngIf="pokedex"></app-pokedex>
-<app-pokemon-card *ngIf="pokemonCard"></app-pokemon-card>
+<app-animacion-apagar id="animacionApagar" *ngIf="animacionApagar"></app-animacion-apagar>
+<app-info-uso id="infoUso" *ngIf="infoUso"></app-info-uso>

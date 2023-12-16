@@ -7,9 +7,13 @@ import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunicatio
   styleUrls: ['./menu-principal.component.css']
 })
 export class MenuPrincipalComponent implements OnInit{
+  encendido: boolean = false;
+  primeraVez: boolean = true;
   pokedex: boolean = false;
-  pokemonCard: boolean = false;
-  MAX_OPCIONES: number = 2;
+  animacionApagar: boolean = false;
+  pantallaCompleta: boolean = false;
+  infoUso: boolean = false;
+  MAX_OPCIONES: number = 4;
   opcion: number = 1;
   dentroSeccion: boolean = false;
   secciones: any;
@@ -19,28 +23,44 @@ export class MenuPrincipalComponent implements OnInit{
   ngOnInit() {
     document.addEventListener('keydown', this.keydownListener);
     this.comunicationService.accion.subscribe((event: string) => {
-      this.accionTeclaClick(event);
+      if(this.comunicationService.encendido)
+        this.accionTeclaClick(event);
     });
-  }
-  accionTeclaClick(event: string) {
-    setTimeout(() => {
-      if(this.comunicationService.encendido){
-        if(!this.dentroSeccion){
-          if (event === 'ArrowUp' || event === 'ArrowDown') {
-            this.activarAnimacion(event);
-          }else if(event === 'Enter'){
-            this.entrarEnSeccion();
-          }
-        } else{
-          if(event === 'Backspace'){
-            this.habilitarMenu();
-          }
-          else if(event === 'apagado'){
-            this.pokedex = false;
-          }
+    this.comunicationService.encendido.subscribe((event: boolean) => {
+      if(!this.primeraVez){
+        if(!event){
+          this.encendido = false;
+          this.deshabilitarMenu();
+        }else{
+          this.encendido = true;
+          this.habilitarMenu();
         }
       }
-    },50);
+    });
+    this.primeraVez = false;
+  }
+  accionTeclaClick(event: string) {
+    if(event === 'apagado'){
+      this.pokedex = false;
+      this.infoUso = false;
+      this.animacionApagar = false;
+    }else{
+      setTimeout(() => {
+        if(this.comunicationService.encendido){
+          if(!this.dentroSeccion){
+            if (event === 'ArrowUp' || event === 'ArrowDown') {
+              this.activarAnimacion(event);
+            }else if(event === 'Enter'){
+              this.entrarEnSeccion();
+            }
+          } else{
+            if(event === 'Backspace'){
+              this.habilitarMenu();
+            }
+          }
+        }
+      },50);
+    }
   }
 
   private keydownListener = (event: KeyboardEvent) => {
@@ -51,34 +71,56 @@ export class MenuPrincipalComponent implements OnInit{
   }
   //Acciones flechas
   accionTecla(event: KeyboardEvent) {
-    if(!this.dentroSeccion){
-      if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
-        event.preventDefault();
+    if(this.encendido){
+      this.pokedex = false;
+      this.infoUso = false;
+      this.animacionApagar = false;
+    setTimeout(() => {
+      if(this.comunicationService.encendido){
+        if(!this.dentroSeccion){
+          if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
+            event.preventDefault();
+          }
+          if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
+            this.activarAnimacion(event.key);
+          }else if(event.key === 'Enter'){
+            this.entrarEnSeccion();
+          }
+        } else{
+          if(event.key === 'Backspace'){
+            this.habilitarMenu();
+          }
+        }
       }
-      if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-        this.activarAnimacion(event.key);
-      }else if(event.key === 'Enter'){
-        this.entrarEnSeccion();
-      }
-    } else{
-      if(event.key === 'Backspace'){
-        this.habilitarMenu();
-      }
+    },50);
     }
   }
   entrarEnSeccion() {
     if(this.comunicationService.encendido){
-      this.deshabilitarMenu();
+      if(this.opcion != 3)
+        this.deshabilitarMenu();
       if(this.opcion == 1){
         this.pokedex = true;
       }else if(this.opcion == 2){
-        this.pokemonCard = true;
+        //Combate pokemon
+      }else if(this.opcion == 3){
+        if(this.pantallaCompleta){
+          this.pantallaCompleta = false;
+          this.comunicationService.pantallaCompleta.next(false);
+          console.log('apagado')
+        } else{
+          console.log('encendido')
+          this.pantallaCompleta = true;
+          this.comunicationService.pantallaCompleta.next(true);
+        }
+      }else if(this.opcion == 4){
+        this.infoUso = true;
       }
     }
   }
   habilitarMenu() {
     this.pokedex = false;
-    this.pokemonCard = false;
+    this.infoUso = false;
     this.dentroSeccion = false;
     this.secciones.style.visibility = 'visible';
   }

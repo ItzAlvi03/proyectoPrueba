@@ -15,6 +15,7 @@ export class PokedexComponent implements OnInit{
   img: any;
   imagen: any;
   frontImage: boolean = false;
+  pantalla: any;
   constructor(private service: PokedexService, private comunication: ComunicationServiceService){}
   
   ngOnInit(){
@@ -24,9 +25,25 @@ export class PokedexComponent implements OnInit{
     this.comunication.accion.subscribe((event: string) => {
       this.accionTeclaClick(event);
     });
+    this.comunication.pantallaCompleta.subscribe((event: boolean) => {
+      this.reposicionarPantalla(event);
+    });
+  }
+  reposicionarPantalla(event: boolean) {
+    if(this.pantalla){
+      if(event){
+        this.pantalla.classList.remove('no-pantalla-completa');
+        this.pantalla.classList.add('pantalla-completa');
+      } else{
+        this.pantalla.classList.remove('pantalla-completa');
+        this.pantalla.classList.add('no-pantalla-completa');
+      }
+
+    }
   }
   ngAfterViewInit(){
     this.img = document.querySelector('img') as HTMLImageElement;
+    this.pantalla = document.getElementById('content') as any;
   }
 
   private keydownListener = (event: KeyboardEvent) => {
