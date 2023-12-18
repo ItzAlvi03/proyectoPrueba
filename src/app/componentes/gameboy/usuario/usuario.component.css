@@ -1,0 +1,57 @@
+*{
+    font-family: 'pokemonPixel2';
+}
+.pantalla-completa{
+    height: 120%;
+}
+.no-pantalla-completa{
+    height: 100%;
+}
+.seleccionado-usuario{
+    border: 2px dashed white;
+}
+.no-seleccionado-usuario{
+    border: 2px dashed black;
+}
+#contentUsuario{
+    max-width: 100%;
+    min-width: 100%;
+    max-height: 101%;
+    min-height: 101%;
+    bottom: 0%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    color: black;
+    font-weight: 500;
+    border-radius: 0px 0px 10px 10px;
+}
+h2{
+    margin-bottom: 7%;
+    padding: 5%;
+    border-top: 1.5px dashed black;
+    border-bottom: 1.5px dashed black;
+}
+#contentUsuario div{
+    max-width: 90%;
+    min-width: 90%;
+    margin: 2.5% 5%;
+    padding: 2% 10%;
+}
+@media (max-width: 410px){
+    #contentUsuario div{
+        font-size: 14px;
+    }
+}
+@media (max-width: 360px){
+    #contentUsuario div{
+        font-size: 10.5px;
+    }
+}
+@media (max-width: 275px){
+    #contentUsuario div{
+        font-size: 9px;
+    }
+}

@@ -1,0 +1,173 @@
+*{
+    font-family: 'pokemonPixel2';
+}
+.pantalla-completa{
+    height: 120%;
+}
+.no-pantalla-completa{
+    height: 100%;
+}
+#contentInfoUso{
+    max-width: 100%;
+    min-width: 100%;
+    max-height: 101%;
+    min-height: 101%;
+    bottom: 0%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    color: black;
+    font-weight: 500;
+    border-radius: 0px 0px 10px 10px;
+}
+#seccionesUso{
+    margin-top: 0.5%;
+    max-height: 20%;
+    min-height: 20%;
+    max-width: 100%;
+    min-width: 100%;
+    font-size: auto;
+}
+#seccionesUso div{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    min-width: 25%;
+    max-width: 25%;
+    transition: border 0.2s linear, max-height 0.2s linear, margin-top 0.2s linear;
+}
+.no-seleccionadoUso{
+    border: 1.5px dashed black;
+    color: black;
+}
+.seleccionadoUso{
+    margin-top: 2%;
+    max-height: 110%;
+    min-height: 110%;
+    border: 1.5px groove white;
+    color: white;
+}
+#infoSeccionesUso{
+    margin-top: 3%;
+    max-height: 74%;
+    min-height: 74%;
+    max-width: 100%;
+    min-width: 100%;
+    font-size: auto;
+    border-radius: 0px 0px 10px 10px;
+    color: black;
+}
+#informacionUso{
+    margin: 0% 1%;
+    margin-bottom: 0.5%;
+    margin-top: 0.5%;
+    max-width: 98%;
+    min-width: 98%;
+    max-height: 78%;
+    min-height: 78%;
+    border: 1.5px groove black;
+}
+#columnasUso{
+    max-height: 20%;
+    min-height: 20%;
+}
+#columnasUso i{
+    margin: 0% 2%;
+    padding: 0.5%;
+    border: 1.5px solid black;
+}
+#columnasUso label{
+    margin: 0% 2%;
+}
+h6{
+    font-size: auto;
+    max-height: 8%;
+    min-height: 8%;
+    margin-bottom: 0.5%;
+}
+.direccion{
+    max-height: 10%;
+    min-height: 10%;
+    font-size: x-large;
+}
+@media (max-width: 610px){
+    #seccionesUso div{
+        font-size: 14px;
+    }
+}
+@media (max-width: 580px){
+    #seccionesUso div{
+        font-size: 12px;
+    }
+    #columnasUso label{
+        font-size: 12.5px;
+    }
+    .direccion{
+        font-size: large;
+    }
+}
+@media (max-width: 476px){
+    #seccionesUso div{
+        font-size: 10px;
+    }
+    #columnasUso label{
+        font-size: 10.5px;
+    }
+    h6{
+        font-size: 13.5px;
+    }
+    .arriba{
+        margin-bottom: 1%;
+    }
+}
+@media (max-width: 415px){
+    #seccionesUso div{
+        font-size: 8px;
+    }
+    #columnasUso label{
+        font-size: 8.5px;
+    }
+    h6{
+        font-size: 11.5px;
+    }
+    .direccion{
+        font-size: medium;
+    }
+}
+@media (max-width: 350px){
+    #seccionesUso div{
+        font-size: 6px;
+    }
+    #columnasUso label{
+        font-size: 7px;
+    }
+    #columnasUso i{
+        font-size: 9.5px;
+    }
+    h6{
+        font-size: 9.5px;
+    }
+    .direccion{
+        font-size: small;
+    }
+}
+@media (max-width: 290px){
+    #seccionesUso div{
+        font-size: 6.5px;
+    }
+    #columnasUso label{
+        font-size: 6px;
+    }
+    #columnasUso i{
+        font-size: 8px;
+    }
+    h6{
+        font-size: 7px;
+    }
+    .arriba{
+        margin-bottom: 2.5%;
+    }
+}

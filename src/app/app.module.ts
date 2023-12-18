@@ -18,6 +18,9 @@ import { PokedexComponent } from './componentes/gameboy/pokedex/pokedex.componen
 import { PokemonCardComponent } from './componentes/gameboy/pokemon-card/pokemon-card.component';
 import { AnimacionApagarComponent } from './componentes/gameboy/animaciones/animacion-apagar/animacion-apagar.component';
 import { InfoUsoComponent } from './componentes/gameboy/info-uso/info-uso.component';
+import { UsuarioComponent } from './componentes/gameboy/usuario/usuario.component';
+import { LogInComponent } from './componentes/gameboy/usuario/log-in/log-in.component';
+import { SignInComponent } from './componentes/gameboy/usuario/sign-in/sign-in.component';
 
 @NgModule({
   declarations: [
@@ -33,6 +36,9 @@ import { InfoUsoComponent } from './componentes/gameboy/info-uso/info-uso.compon
     PokemonCardComponent,
     AnimacionApagarComponent,
     InfoUsoComponent,
+    UsuarioComponent,
+    LogInComponent,
+    SignInComponent,
   ],
   imports: [
     FormsModule,

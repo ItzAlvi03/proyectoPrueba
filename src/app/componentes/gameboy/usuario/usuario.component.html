@@ -1,0 +1,11 @@
+<div *ngIf="!dentroSeccionUsuario" id="contentUsuario" class="w-100 position-absolute d-flex flex-column justify-content-center align-items-center no-pantalla-completa">
+    <h2 class="w-100 text-center">Usuario</h2>
+    <div class="seleccionado-usuario" id="usuario1">
+        <label><strong>Iniciar Sesion.</strong></label>
+    </div>
+    <div class="no-seleccionado-usuario" id="usuario2">
+        <label><strong>Registrarse.</strong></label>
+    </div>
+</div>
+<app-log-in *ngIf="logIn"></app-log-in>
+<app-sign-in *ngIf="signIn"></app-sign-in>

@@ -13,10 +13,12 @@ export class MenuPrincipalComponent implements OnInit{
   animacionApagar: boolean = false;
   pantallaCompleta: boolean = false;
   infoUso: boolean = false;
-  MAX_OPCIONES: number = 4;
+  usuario: boolean = false;
+  MAX_OPCIONES: number = 5;
   opcion: number = 1;
   dentroSeccion: boolean = false;
   secciones: any;
+  nombreUsuario: any;
 
   constructor(private comunicationService: ComunicationServiceService) {}
 
@@ -45,6 +47,7 @@ export class MenuPrincipalComponent implements OnInit{
     if(event === 'apagado'){
       this.pokedex = false;
       this.infoUso = false;
+      this.usuario = false;
       this.animacionApagar = false;
     }else{
       setTimeout(() => {
@@ -106,20 +109,21 @@ export class MenuPrincipalComponent implements OnInit{
         if(this.pantallaCompleta){
           this.pantallaCompleta = false;
           this.comunicationService.pantallaCompleta.next(false);
-          console.log('apagado')
         } else{
-          console.log('encendido')
           this.pantallaCompleta = true;
           this.comunicationService.pantallaCompleta.next(true);
         }
       }else if(this.opcion == 4){
         this.infoUso = true;
+      }else if(this.opcion == 5){
+        this.usuario = true;
       }
     }
   }
   habilitarMenu() {
     this.pokedex = false;
     this.infoUso = false;
+    this.usuario = false;
     this.dentroSeccion = false;
     this.secciones.style.visibility = 'visible';
   }

@@ -1,0 +1,12 @@
+<div id="contentLogIn" class="position-absolute d-flex flex-column justify-content-center align-items-center no-pantalla-completa">
+    <h2 class="text-center">Iniciar Sesion</h2>
+    <label class="opcionLogIn">Correo electrónico</label>
+    <input class="opcionLogIn" type="email" name="email"  id="email">
+    <label class="opcionLogIn">Contraseña</label>
+    <input class="opcionLogIn" type="password" name="password" id="password">
+    <button class="btn">Iniciar Sesion</button>
+    <div class="escondido" id="mensaje">
+        <label id="correcto" *ngIf="correcto"></label>
+        <label id="error" *ngIf="!correcto">Las credenciales son incorrectas</label>
+    </div>
+</div>

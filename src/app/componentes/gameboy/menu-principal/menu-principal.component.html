@@ -11,7 +11,15 @@
     <div class="no-seleccionado" id="seccion4">
         <label><strong>4.</strong> Info. Uso</label>
     </div>
+    <div class="no-seleccionado" id="seccion5">
+        <label><strong>5.</strong> Iniciar Sesión</label>
+    </div>
+</div>
+<div *ngIf="!dentroSeccion" id="nombreUsuario" class="w-100 d-flex flex-column justify-content-end align-items-end">
+        <label *ngIf="nombreUsuario"><strong>Usuario: {{nombreUsuario}}</strong></label>
+        <label id="noUsuario" *ngIf="!nombreUsuario">Usuario no registrado</label>
 </div>
 <app-pokedex id="pokedex" *ngIf="pokedex"></app-pokedex>
 <app-animacion-apagar id="animacionApagar" *ngIf="animacionApagar"></app-animacion-apagar>
 <app-info-uso id="infoUso" *ngIf="infoUso"></app-info-uso>
+<app-usuario id="usuario" *ngIf="usuario"></app-usuario>
