@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
+import { GameboyAPIService } from 'src/app/Services/Gameboy/gameboy-api.service';
+import { APIServiceService } from 'src/app/Services/apiservice.service';
 
 @Component({
   selector: 'app-log-in',
@@ -13,7 +15,7 @@ export class LogInComponent implements OnInit{
   btnSalir: any;
   btnAhora: string = 'iniciar';
   usarLogIn: boolean = false;
-  constructor(private comunication: ComunicationServiceService){}
+  constructor(private comunication: ComunicationServiceService, private apiservice: GameboyAPIService){}
   
   ngOnInit(){
     this.usarLogIn = true;
@@ -72,5 +74,39 @@ export class LogInComponent implements OnInit{
   }
   iniciarSesion() {
     // Metodo que llamara a la API o BD para comprobar los campos
+    this.comprobarUsuario();
+  }
+  comprobarUsuario() {
+    const correo = document.getElementById('email') as any;
+    const contrasenia = document.getElementById('password') as any;
+    const nuevoUsuario = {
+      correo: correo.value,
+      contraseña: contrasenia.value
+    };
+    this.apiservice.comprobarUsuario(nuevoUsuario).subscribe(
+      (results) => {
+        console.log('Usuario buscado correctamente: ' + results);
+      },
+      (error) => {
+        console.error('Error al insertar usuario:', error);
+      }
+    );
+
+  }
+  insertarUsuario() {
+    const nuevoUsuario = {
+      correo: 'prueba@prueba.com',
+      nombre: 'prueba',
+      contraseña: '123456'
+    };
+    
+    this.apiservice.insertarUsuario(nuevoUsuario).subscribe(
+      () => {
+        console.log('Usuario insertado correctamente');
+      },
+      (error) => {
+        console.error('Error al insertar usuario:', error);
+      }
+    );
   }
 }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
+import { GameboyAPIService } from 'src/app/Services/Gameboy/gameboy-api.service';
 
 @Component({
   selector: 'app-usuario',
@@ -29,6 +30,7 @@ export class UsuarioComponent implements OnInit{
     });
     this.utilizando = true;
   }
+
   private keydownListener = (event: KeyboardEvent) => {
     if(this.comunicationService.encendido){
       if(!this.dentroSeccionUsuario){
