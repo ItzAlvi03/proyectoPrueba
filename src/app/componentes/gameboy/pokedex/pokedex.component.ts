@@ -16,6 +16,7 @@ export class PokedexComponent implements OnInit{
   imagen: any;
   frontImage: boolean = false;
   pantalla: any;
+  usarPokedex: boolean = false;
   constructor(private service: PokedexService, private comunication: ComunicationServiceService){}
   
   ngOnInit(){
@@ -23,22 +24,25 @@ export class PokedexComponent implements OnInit{
       this.getCharacters();
     document.addEventListener('keydown', this.keydownListener);
     this.comunication.accion.subscribe((event: string) => {
-      this.accionTeclaClick(event);
+      this.accionTecla(event);
     });
     this.comunication.pantallaCompleta.subscribe((event: boolean) => {
       this.reposicionarPantalla(event);
     });
+    this.usarPokedex = true;
   }
   reposicionarPantalla(event: boolean) {
-    if(this.pantalla){
-      if(event){
-        this.pantalla.classList.remove('no-pantalla-completa');
-        this.pantalla.classList.add('pantalla-completa');
-      } else{
-        this.pantalla.classList.remove('pantalla-completa');
-        this.pantalla.classList.add('no-pantalla-completa');
+    if(this.usarPokedex){
+      if(this.pantalla){
+        if(event){
+          this.pantalla.classList.remove('no-pantalla-completa');
+          this.pantalla.classList.add('pantalla-completa');
+        } else{
+          this.pantalla.classList.remove('pantalla-completa');
+          this.pantalla.classList.add('no-pantalla-completa');
+        }
+  
       }
-
     }
   }
   ngAfterViewInit(){
@@ -47,30 +51,24 @@ export class PokedexComponent implements OnInit{
   }
 
   private keydownListener = (event: KeyboardEvent) => {
-    this.accionTecla(event);
+    this.accionTecla(event.key);
   };
-  accionTeclaClick(event: string) {
-    setTimeout(() => {
-      if(this.comunication.encendido){
-          if (event === 'ArrowUp' || event === 'ArrowDown') {
-            this.cambiarPokemon(event);
-          }else if(event === 'ArrowRight' || event === 'ArrowLeft'){
-            if(this.img && this.pokemon.image)
-              this.cambiarImg();
-          }
-      }
-    },100)
-  }
-  accionTecla(event: KeyboardEvent) {
-    setTimeout(() => {
-      if(this.comunication.encendido){
-        if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-          this.cambiarPokemon(event.key);
-        }else if(event.key === 'ArrowRight' || event.key === 'ArrowLeft'){
-          this.cambiarImg();
+
+  accionTecla(event: string) {
+    if(this.usarPokedex){
+      setTimeout(() => {
+        if(this.comunication.encendido){
+            if (event === 'ArrowUp' || event === 'ArrowDown') {
+              this.cambiarPokemon(event);
+            }else if(event === 'ArrowRight' || event === 'ArrowLeft'){
+              if(this.img && this.pokemon.image)
+                this.cambiarImg();
+            }else if(event === 'Backspace'){
+              this.usarPokedex = false;
+            }
         }
-      }
-    },100)
+      },100)
+    }
   }
 
   cambiarImg() {

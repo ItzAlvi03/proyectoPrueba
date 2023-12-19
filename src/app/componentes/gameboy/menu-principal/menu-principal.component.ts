@@ -19,14 +19,19 @@ export class MenuPrincipalComponent implements OnInit{
   dentroSeccion: boolean = false;
   secciones: any;
   nombreUsuario: any;
+  volver: boolean = true;
 
   constructor(private comunicationService: ComunicationServiceService) {}
 
   ngOnInit() {
     document.addEventListener('keydown', this.keydownListener);
+    this.comunicationService.volverMenu.subscribe((event: boolean) => {
+      if(!this.primeraVez){
+        this.volver = event;
+      }
+    });
     this.comunicationService.accion.subscribe((event: string) => {
-      if(this.comunicationService.encendido)
-        this.accionTeclaClick(event);
+      this.accionTecla(event);
     });
     this.comunicationService.encendido.subscribe((event: boolean) => {
       if(!this.primeraVez){
@@ -43,7 +48,15 @@ export class MenuPrincipalComponent implements OnInit{
     });
     this.primeraVez = false;
   }
-  accionTeclaClick(event: string) {
+
+  private keydownListener = (event: KeyboardEvent) => {
+    this.accionTecla(event.key);
+  };
+  ngAfterViewInit(){
+    this.secciones = document.getElementById('secciones') as HTMLElement;
+  }
+  //Acciones flechas
+  accionTecla(event: string) {
     if(event === 'apagado'){
       this.pokedex = false;
       this.infoUso = false;
@@ -52,49 +65,22 @@ export class MenuPrincipalComponent implements OnInit{
     }else{
       setTimeout(() => {
         if(this.comunicationService.encendido){
-          if(!this.dentroSeccion){
-            if (event === 'ArrowUp' || event === 'ArrowDown') {
-              this.activarAnimacion(event);
-            }else if(event === 'Enter'){
-              this.entrarEnSeccion();
-            }
-          } else{
-            if(event === 'Backspace'){
-              this.habilitarMenu();
+          if(this.volver){
+            if(!this.dentroSeccion){
+              if (event === 'ArrowUp' || event === 'ArrowDown') {
+                this.activarAnimacion(event);
+              }else if(event === 'Enter'){
+                this.entrarEnSeccion();
+              }
+            } else{
+              if(event === 'Backspace' ){
+                this.habilitarMenu();
+                this.comunicationService.accion.next('')
+              }
             }
           }
         }
       },50);
-    }
-  }
-
-  private keydownListener = (event: KeyboardEvent) => {
-    this.accionTecla(event);
-  };
-  ngAfterViewInit(){
-    this.secciones = document.getElementById('secciones') as HTMLElement;
-  }
-  //Acciones flechas
-  accionTecla(event: KeyboardEvent) {
-    if(this.encendido){
-    setTimeout(() => {
-      if(this.comunicationService.encendido){
-        if(!this.dentroSeccion){
-          if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
-            event.preventDefault();
-          }
-          if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-            this.activarAnimacion(event.key);
-          }else if(event.key === 'Enter'){
-            this.entrarEnSeccion();
-          }
-        } else{
-          if(event.key === 'Backspace'){
-            this.habilitarMenu();
-          }
-        }
-      }
-    },50);
     }
   }
   entrarEnSeccion() {

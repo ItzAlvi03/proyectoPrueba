@@ -14,14 +14,16 @@ export class InfoUsoComponent {
   infoUso: boolean[] = [];
   bajar: boolean = false;
   subir: boolean = false;
+  usarInfoUso: boolean = false;
   constructor(private comunication: ComunicationServiceService){}
   
   ngOnInit(){
+    this.usarInfoUso = true;
     this.infoUso[0] = true;
     this.bajar = true;
     document.addEventListener('keydown', this.keydownListener);
     this.comunication.accion.subscribe((event: string) => {
-      this.accionTeclaClick(event);
+      this.accionTecla(event);
     });
     this.comunication.pantallaCompleta.subscribe((event: boolean) => {
       this.reposicionarPantalla(event);
@@ -32,29 +34,22 @@ export class InfoUsoComponent {
   }
 
   private keydownListener = (event: KeyboardEvent) => {
-    this.accionTecla(event);
+    this.accionTecla(event.key);
   }
-  accionTecla(event: KeyboardEvent) {
-    setTimeout(() => {
-      if(this.comunication.encendido){
-          if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-            this.subirBajarAccion(event.key);
-          }else if(event.key === 'ArrowRight' || event.key === 'ArrowLeft'){
-            this.activarAnimacion(event.key);
-          }
-      }
-    },100)
-  }
-  accionTeclaClick(event: string) {
-    setTimeout(() => {
-      if(this.comunication.encendido){
+  accionTecla(event: string) {
+    if(this.usarInfoUso){
+      setTimeout(() => {
+        if(this.comunication.encendido){
           if (event === 'ArrowUp' || event === 'ArrowDown') {
             this.subirBajarAccion(event);
           }else if(event === 'ArrowRight' || event === 'ArrowLeft'){
             this.activarAnimacion(event);
-          }
-      }
-    },100)
+          }else if(event === 'Backspace'){
+              this.usarInfoUso = false;
+            }
+        }
+      },100);
+    }
   }
   subirBajarAccion(key: string) {
     if (key === 'ArrowUp') {
@@ -71,15 +66,16 @@ export class InfoUsoComponent {
   }
 
   reposicionarPantalla(event: boolean) {
-    if(this.pantalla){
-      if(event){
-        this.pantalla.classList.remove('no-pantalla-completa');
-        this.pantalla.classList.add('pantalla-completa');
-      } else{
-        this.pantalla.classList.remove('pantalla-completa');
-        this.pantalla.classList.add('no-pantalla-completa');
+    if(this.usarInfoUso){
+      if(this.pantalla){
+        if(event){
+          this.pantalla.classList.remove('no-pantalla-completa');
+          this.pantalla.classList.add('pantalla-completa');
+        } else{
+          this.pantalla.classList.remove('pantalla-completa');
+          this.pantalla.classList.add('no-pantalla-completa');
+        }
       }
-
     }
   }
 
@@ -110,7 +106,7 @@ export class InfoUsoComponent {
     antiguaOpcion.classList.add('no-seleccionadoUso');
     //Buscamos y agregamos como nueva opcion seleccionada a la nueva seleccionada
     const nuevaOpcion = document.querySelector('#seccionUso' + this.opcion) as HTMLElement;
-    nuevaOpcion.classList.remove('no-seleccionado');
+    nuevaOpcion.classList.remove('no-seleccionadoUso');
     nuevaOpcion.classList.add('seleccionadoUso');
     this.infoUso[this.opcion-1] = true;
     //Vemos cual es la sección para activar o desactivar la flecha indicatoria de subir/bajar

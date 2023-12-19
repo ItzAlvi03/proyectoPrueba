@@ -16,12 +16,13 @@ export class UsuarioComponent implements OnInit{
   constructor(private comunicationService: ComunicationServiceService) {}
   
   ngOnInit(){
+    this.comunicationService.volverMenu.next(true);
     document.addEventListener('keydown', this.keydownListener);
     this.comunicationService.accion.subscribe((event: string) => {
       if(this.comunicationService.encendido){
         if(!this.dentroSeccionUsuario){
           if(this.utilizando){
-            this.accionTeclaClick(event);
+            this.accionTecla(event);
           }
         }
       }
@@ -32,26 +33,13 @@ export class UsuarioComponent implements OnInit{
     if(this.comunicationService.encendido){
       if(!this.dentroSeccionUsuario){
         if(this.utilizando){
-          this.accionTecla(event);
+          this.accionTecla(event.key);
         }
       }
     }
   }
 
-  accionTecla(event: KeyboardEvent) {
-    setTimeout(() => {
-      if(this.comunicationService.encendido){
-          if (event.key === 'ArrowUp' || event.key === 'ArrowDown') {
-            this.subirBajarAccion(event.key);
-          } else if(event.key === 'Enter'){
-            this.entrarSeccion();
-          } else if(event.key === 'Backspace'){
-            this.utilizando = false;
-          }
-      }
-    },100)
-  }
-  accionTeclaClick(event: string) {
+  accionTecla(event: string) {
     setTimeout(() => {
       if(this.comunicationService.encendido){
           if (event === 'ArrowUp' || event === 'ArrowDown') {
