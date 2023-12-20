@@ -9,7 +9,7 @@ export class ComunicationServiceService {
   public accion = new BehaviorSubject<string>('');
 
   // Para el estado de la GameBoy si está apagada o no
-  public encendido = new BehaviorSubject<boolean>(false);
+  public encendido = new BehaviorSubject<boolean>(true);
 
   // Para que todos los componentes puedan saber si está o no
   // en el modo de pantalla completa y adaptarse
@@ -17,7 +17,10 @@ export class ComunicationServiceService {
   
   // Para que el menu principal pueda volver para atras o no dependiendo
   // del componente donde esté el usuario
-  public volverMenu = new BehaviorSubject<boolean>(false);
+  public volverMenu = new BehaviorSubject<boolean>(true);
+
+  // Este es el nombre del usuario en la DB una vez iniciada la sesión
+  public nombreUsuario = new BehaviorSubject<string>('');
 
   constructor() {}
 }

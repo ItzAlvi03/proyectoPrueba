@@ -9,11 +9,13 @@ import { APIServiceService } from 'src/app/Services/apiservice.service';
   styleUrls: ['./log-in.component.css']
 })
 export class LogInComponent implements OnInit{
-  mostrarMensaje: boolean = false;
+  mensajeNoCorrecto: string = '';
+  error: boolean = false;
+  noCorrecto: boolean = false;
   correcto: boolean = false;
   btnIniciar: any;
   btnSalir: any;
-  btnAhora: string = 'iniciar';
+  btnAhora: string = '';
   usarLogIn: boolean = false;
   constructor(private comunication: ComunicationServiceService, private apiservice: GameboyAPIService){}
   
@@ -28,6 +30,7 @@ export class LogInComponent implements OnInit{
   ngAfterViewInit(){
     this.btnIniciar = document.getElementById('iniciar');
     this.btnSalir = document.getElementById('salir');
+    this.btnAhora = 'iniciar';
   }
   private keydownListener = (event: KeyboardEvent) => {
     this.accionTeclaLogIn(event.key);
@@ -36,7 +39,7 @@ export class LogInComponent implements OnInit{
   accionTeclaLogIn(event: string) {
     if(this.usarLogIn){
       setTimeout(() => {
-        if(this.comunication.encendido){
+        if(this.comunication.encendido.value){
           if(event === 'Enter'){
             this.entrarEnSeccion();
           } else if(event === 'ArrowRight'){
@@ -56,6 +59,8 @@ export class LogInComponent implements OnInit{
               this.btnAhora = 'iniciar';
             }
           }
+        } else{
+          this.usarLogIn = false;
         }
       },50);
     }
@@ -77,36 +82,51 @@ export class LogInComponent implements OnInit{
     this.comprobarUsuario();
   }
   comprobarUsuario() {
-    const correo = document.getElementById('email') as any;
+    const nombre = document.getElementById('user') as any;
     const contrasenia = document.getElementById('password') as any;
-    const nuevoUsuario = {
-      correo: correo.value,
-      contraseña: contrasenia.value
-    };
-    this.apiservice.comprobarUsuario(nuevoUsuario).subscribe(
-      (results) => {
-        console.log('Usuario buscado correctamente: ' + results);
-      },
-      (error) => {
-        console.error('Error al insertar usuario:', error);
-      }
-    );
+    // Comprobamos que tanto el nombre de usuario como la contraseña del
+    // usuario tengan el length adecuado
 
-  }
-  insertarUsuario() {
-    const nuevoUsuario = {
-      correo: 'prueba@prueba.com',
-      nombre: 'prueba',
-      contraseña: '123456'
-    };
-    
-    this.apiservice.insertarUsuario(nuevoUsuario).subscribe(
-      () => {
-        console.log('Usuario insertado correctamente');
-      },
-      (error) => {
-        console.error('Error al insertar usuario:', error);
+    if(nombre.value.length < 18){
+      if(contrasenia.value.length < 16){
+        // Si está todo correcto, procedemos a hacer la consulta
+
+        const nuevoUsuario = {
+          nombre: nombre.value,
+          contraseña: contrasenia.value
+        };
+        this.apiservice.comprobarLogIn(nuevoUsuario).subscribe(
+          results => {
+            this.error = false;
+            try {
+              if(results[0].nombre){
+                this.comunication.nombreUsuario.next(results[0].nombre);
+                this.correcto = true;
+                this.noCorrecto = false;
+              }
+            } catch (error) {
+              this.mensajeNoCorrecto = 'Las credenciales son incorrectas.'
+              this.correcto = false;
+              this.noCorrecto = true;
+            }
+          },
+          error => {
+            this.correcto = false;
+            this.noCorrecto = false;
+            this.error = true;
+          }
+        );
+      }else{
+        this.mensajeNoCorrecto = 'La contraseña no puede tener más de 16 carácteres.';
+        this.error = false;
+        this.correcto = false;
+        this.noCorrecto = true;
       }
-    );
+    }else{
+      this.mensajeNoCorrecto = 'El nombre no puede tener más de 18 carácteres.';
+      this.error = false;
+      this.correcto = false;
+      this.noCorrecto = true;
+    }
   }
 }

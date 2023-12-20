@@ -26,6 +26,10 @@
 #nombreUsuario{
     min-height: 15%;
     max-height: 15%;
+    padding: 0% 2.5%;
+}
+#nombreUsuario label{
+    margin-bottom: 0.5%;
 }
 #noUsuario{
     color: red;

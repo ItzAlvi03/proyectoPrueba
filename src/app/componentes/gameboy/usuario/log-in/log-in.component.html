@@ -1,15 +1,16 @@
 <div id="contentLogIn" class="position-absolute d-flex flex-column justify-content-center align-items-center no-pantalla-completa">
     <h2 class="d-flex justify-content-center align-items-center text-center">Iniciar Sesion</h2>
-    <label class="d-flex justify-content-start align-items-end opcionLogIn">Correo electrónico</label>
-    <input class="opcionLogIn" type="email" name="email"  id="email">
+    <label class="d-flex justify-content-start align-items-end opcionLogIn">Nombre Usuario</label>
+    <input class="opcionLogIn" type="text" name="user"  id="user">
     <label class="d-flex justify-content-start align-items-end opcionLogIn">Contraseña</label>
     <input class="opcionLogIn" type="password" name="password" id="password">
     <div class="d-flex flex-row justify-content-center align-items-center mt-3 mb-3 opcionLogIn">
         <button id="iniciar" (click)="accionTeclaLogIn('Enter')" class="btn d-flex justify-content-center align-items-center text-center seleccionado-log-in">Iniciar</button>
         <button id="salir" (click)="accionTeclaLogIn('Enter')" class="btn d-flex justify-content-center align-items-center text-center no-seleccionado-log-in">Salir</button>
     </div>
-    <div class="escondido d-flex justify-content-center align-items-center text-center" id="mensaje">
+    <div class="d-flex justify-content-center align-items-center text-center" id="mensaje">
         <label id="correcto" *ngIf="correcto">Se ha iniciado sesion correctamente.</label>
-        <label id="error" *ngIf="!correcto">Las credenciales son incorrectas.</label>
+        <label id="noCorrecto" *ngIf="noCorrecto">{{mensajeNoCorrecto}}</label>
+        <label id="error" *ngIf="error">Ocurrió un error al comprobar el usuario.</label>
     </div>
 </div>

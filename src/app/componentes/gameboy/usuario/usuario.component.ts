@@ -28,6 +28,13 @@ export class UsuarioComponent implements OnInit{
         }
       }
     });
+    this.comunicationService.encendido.subscribe((event: boolean) => {
+      if(!event){
+        this.logIn = false;
+        this.signIn = false;
+        this.dentroSeccionUsuario = false;
+      }
+    })
     this.utilizando = true;
   }
 
@@ -43,7 +50,7 @@ export class UsuarioComponent implements OnInit{
 
   accionTecla(event: string) {
     setTimeout(() => {
-      if(this.comunicationService.encendido){
+      if(this.comunicationService.encendido.value){
           if (event === 'ArrowUp' || event === 'ArrowDown') {
             this.subirBajarAccion(event);
           } else if(event === 'Enter'){
@@ -51,11 +58,14 @@ export class UsuarioComponent implements OnInit{
           } else if(event === 'Backspace'){
             this.utilizando = false;
           }
+      } else {
+        this.utilizando = false;
       }
-    },100)
+    },50)
   }
 
   entrarSeccion() {
+    this.comunicationService.accion.next('');
     if(this.opcion == 1){
       this.logIn = true;
       this.dentroSeccionUsuario = true;
@@ -66,15 +76,17 @@ export class UsuarioComponent implements OnInit{
   }
 
   subirBajarAccion(key: string) {
-    if(key == 'ArrowUp'){
-      if(this.opcion > 1){
-        this.opcion--;
-        this.elegirOpcion();
-      }
-    } else{
-      if(this.opcion < this.MAX_OPCIONES){
-        this.opcion++;
-        this.elegirOpcion();
+    if(this.comunicationService.encendido){
+      if(key == 'ArrowUp'){
+        if(this.opcion > 1){
+          this.opcion--;
+          this.elegirOpcion();
+        }
+      } else{
+        if(this.opcion < this.MAX_OPCIONES){
+          this.opcion++;
+          this.elegirOpcion();
+        }
       }
     }
   }

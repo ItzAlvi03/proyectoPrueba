@@ -17,4 +17,7 @@ export class GameboyAPIService {
   comprobarUsuario(usuario: any): Observable<any> {
     return this.http.post(this.apiUrl + '/comprobarUsuario', usuario);
   }
+  comprobarLogIn(usuario: any): Observable<any> {
+    return this.http.post(this.apiUrl + '/comprobarLogIn', usuario);
+  }
 }

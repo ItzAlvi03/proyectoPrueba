@@ -15,7 +15,6 @@ import { MenuComponent } from './componentes/menu/menu.component';
 import { GameboyComponent } from './componentes/gameboy/gameboy.component';
 import { MenuPrincipalComponent } from './componentes/gameboy/menu-principal/menu-principal.component';
 import { PokedexComponent } from './componentes/gameboy/pokedex/pokedex.component';
-import { PokemonCardComponent } from './componentes/gameboy/pokemon-card/pokemon-card.component';
 import { AnimacionApagarComponent } from './componentes/gameboy/animaciones/animacion-apagar/animacion-apagar.component';
 import { InfoUsoComponent } from './componentes/gameboy/info-uso/info-uso.component';
 import { UsuarioComponent } from './componentes/gameboy/usuario/usuario.component';
@@ -33,7 +32,6 @@ import { SignInComponent } from './componentes/gameboy/usuario/sign-in/sign-in.c
     GameboyComponent,
     MenuPrincipalComponent,
     PokedexComponent,
-    PokemonCardComponent,
     AnimacionApagarComponent,
     InfoUsoComponent,
     UsuarioComponent,

@@ -26,26 +26,17 @@ export class MenuPrincipalComponent implements OnInit{
   ngOnInit() {
     document.addEventListener('keydown', this.keydownListener);
     this.comunicationService.volverMenu.subscribe((event: boolean) => {
-      if(!this.primeraVez){
-        this.volver = event;
-      }
+      this.volver = event;
     });
     this.comunicationService.accion.subscribe((event: string) => {
       this.accionTecla(event);
     });
-    this.comunicationService.encendido.subscribe((event: boolean) => {
-      if(!this.primeraVez){
-        if(!event){
-          this.encendido = false;
-          this.deshabilitarMenu();
-        }else{
-          this.encendido = true;
-          this.habilitarMenu();
-        }
-      }else{
-        this.encendido = true;
-      }
-    });
+    this.comunicationService.nombreUsuario.subscribe((event: string) => {
+      if(event !== '')
+        this.nombreUsuario = event;
+      else
+        this.nombreUsuario = null;
+    })
     this.primeraVez = false;
   }
 
@@ -54,6 +45,17 @@ export class MenuPrincipalComponent implements OnInit{
   };
   ngAfterViewInit(){
     this.secciones = document.getElementById('secciones') as HTMLElement;
+    this.comunicationService.encendido.subscribe((event: boolean) => {
+      if(!event){
+        this.encendido = false;
+        this.volver = false;
+        this.deshabilitarMenu();
+      }else{
+        this.encendido = true;
+        this.volver = true;
+        this.habilitarMenu();
+      }
+    });
   }
   //Acciones flechas
   accionTecla(event: string) {
@@ -64,7 +66,7 @@ export class MenuPrincipalComponent implements OnInit{
       this.animacionApagar = false;
     }else{
       setTimeout(() => {
-        if(this.comunicationService.encendido){
+        if(this.comunicationService.encendido.value){
           if(this.volver){
             if(!this.dentroSeccion){
               if (event === 'ArrowUp' || event === 'ArrowDown') {
@@ -112,6 +114,7 @@ export class MenuPrincipalComponent implements OnInit{
     this.usuario = false;
     this.dentroSeccion = false;
     this.secciones.style.visibility = 'visible';
+    this.restablecerOpciones();
   }
   deshabilitarMenu() {
     this.secciones.style.visibility = 'hidden';
@@ -133,11 +136,25 @@ export class MenuPrincipalComponent implements OnInit{
     }
   }
   elegirOpcion() {
-    //Buscamos y quitamos la antigua opcion seleccionada como seleccionado
+    // Buscamos y quitamos la antigua opcion seleccionada como seleccionado
     const antiguaOpcion = document.querySelector('.seleccionado') as HTMLElement;
     antiguaOpcion.classList.remove('seleccionado');
     antiguaOpcion.classList.add('no-seleccionado');
-    //Buscamos y agregamos como nueva opcion seleccionada a la nueva seleccionada
+
+    // Buscamos y agregamos como nueva opcion seleccionada a la nueva seleccionada
+    const nuevaOpcion = document.querySelector('#seccion' + this.opcion) as HTMLElement;
+    nuevaOpcion.classList.remove('no-seleccionado');
+    nuevaOpcion.classList.add('seleccionado');
+  }
+  restablecerOpciones(){
+    // Quitamos el antiguo seleccionado y se lo ponemos al primero como al
+    // iniciar la Gameboy por primera vez.
+    const antiguaOpcion = document.querySelector('.seleccionado') as HTMLElement;
+    antiguaOpcion.classList.remove('seleccionado');
+    antiguaOpcion.classList.add('no-seleccionado');
+
+    // Buscamos y agregamos como nueva opcion seleccionada a la primera opcion
+    this.opcion = 1;
     const nuevaOpcion = document.querySelector('#seccion' + this.opcion) as HTMLElement;
     nuevaOpcion.classList.remove('no-seleccionado');
     nuevaOpcion.classList.add('seleccionado');

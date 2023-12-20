@@ -39,7 +39,7 @@ export class InfoUsoComponent {
   accionTecla(event: string) {
     if(this.usarInfoUso){
       setTimeout(() => {
-        if(this.comunication.encendido){
+        if(this.comunication.encendido.value){
           if (event === 'ArrowUp' || event === 'ArrowDown') {
             this.subirBajarAccion(event);
           }else if(event === 'ArrowRight' || event === 'ArrowLeft'){
@@ -47,8 +47,10 @@ export class InfoUsoComponent {
           }else if(event === 'Backspace'){
               this.usarInfoUso = false;
             }
+        } else {
+          this.usarInfoUso = false;
         }
-      },100);
+      },50);
     }
   }
   subirBajarAccion(key: string) {

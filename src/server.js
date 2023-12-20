@@ -29,26 +29,41 @@ db.connect((err) => {
 app.post('/insertarUsuario', (req, res) => {
   const { correo, nombre, contraseña } = req.body;
 
-  const query = 'INSERT INTO usuario (correo, nombre, contraseña) VALUES (?, ?, ?)';
+  const query = 'INSERT INTO usuarios (correo, nombre, contraseña) VALUES (?, ?, ?)';
   db.query(query, [correo, nombre, contraseña], (err, result) => {
     if (err) {
       console.error('Error al insertar usuario:', err);
-      res.status(500).send('Error al insertar usuario');
+      res.status(500).json('Error al insertar usuario');
     } else {
       console.log('Usuario insertado correctamente');
-      res.status(200).send('Usuario insertado correctamente');
+      res.status(200).json('Usuario insertado correctamente');
     }
   });
 });
 app.post('/comprobarUsuario', (req, res) => {
-    const { correo, contraseña } = req.body;
+    const { nombre, contraseña } = req.body;
   
-    const query = 'SELECT correo, contraseña FROM usuario WHERE correo = ? AND contraseña = ?';
-    db.query(query, [correo, contraseña], (err, result) => {
+    const query = 'SELECT * FROM usuarios WHERE nombre = ?';
+    db.query(query, [nombre, contraseña], (err, result) => {
       if (err) {
         console.error('Error al buscar usuario:', err);
-        res.status(500).send('Error al buscar usuario');
+        res.status(500).json('Error al buscar usuario');
       } else {
+        console.log('Busqueda de usuario realizada con exito.')
+        res.status(200).json(result);
+      }
+    });
+  });
+  app.post('/comprobarLogIn', (req, res) => {
+    const { nombre, contraseña } = req.body;
+  
+    const query = 'SELECT * FROM usuarios WHERE nombre = ? AND contraseña = ?';
+    db.query(query, [nombre, contraseña], (err, result) => {
+      if (err) {
+        console.error('Error al buscar usuario:', err);
+        res.status(500).json('Error al buscar usuario');
+      } else {
+        console.log('Busqueda de usuario realizada con exito.')
         res.status(200).json(result);
       }
     });

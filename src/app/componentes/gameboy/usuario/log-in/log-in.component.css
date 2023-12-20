@@ -56,9 +56,6 @@ button{
     padding: 2% 1%;
     transition: border 0.2s linear;
 }
-.escondido{
-    opacity: 1;
-}
 #correcto{
     color: greenyellow;
 }

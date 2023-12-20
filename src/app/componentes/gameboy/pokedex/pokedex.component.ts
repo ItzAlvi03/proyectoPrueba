@@ -57,7 +57,7 @@ export class PokedexComponent implements OnInit{
   accionTecla(event: string) {
     if(this.usarPokedex){
       setTimeout(() => {
-        if(this.comunication.encendido){
+        if(this.comunication.encendido.value){
             if (event === 'ArrowUp' || event === 'ArrowDown') {
               this.cambiarPokemon(event);
             }else if(event === 'ArrowRight' || event === 'ArrowLeft'){
@@ -66,8 +66,10 @@ export class PokedexComponent implements OnInit{
             }else if(event === 'Backspace'){
               this.usarPokedex = false;
             }
+        } else{
+          this.usarPokedex = false;
         }
-      },100)
+      },50)
     }
   }
 
