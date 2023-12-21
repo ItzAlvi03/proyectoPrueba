@@ -6,15 +6,16 @@ const cors = require('cors'); // Importa el paquete cors
 const app = express();
 const port = 3000;
 
-app.use(cors()); // Habilita CORS para todas las rutas
+app.use(cors());
 app.use(bodyParser.json());
 
 // Configuración de la conexión a MySQL
 const db = mysql.createConnection({
-  host: 'localhost',
-  database: 'bdprueba',
-  user: 'root',
-  password: '010203'
+  host: process.env.DB_HOST,
+  user: process.env.DB_USER,
+  password: process.env.DB_PASSWORD,
+  database: process.env.DB_DATABASE,
+  port: 3306
 });
 
 db.connect((err) => {

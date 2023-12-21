@@ -9,6 +9,11 @@ services:
       - "3000:3000"
     depends_on:
       - db
+    environment:
+      DB_HOST: db
+      DB_USER: alvaro
+      DB_PASSWORD: 010203
+      DB_DATABASE: alvarodb
 
   db:
     image: mysql:5.7
@@ -18,7 +23,7 @@ services:
       MYSQL_USER: alvaro
       MYSQL_PASSWORD: 010203
     ports:
-      - "3310:3306"
+      - "3306:3306"
     volumes:
       - mysql_data:/var/lib/mysql
 
