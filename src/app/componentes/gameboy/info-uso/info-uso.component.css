@@ -30,7 +30,12 @@
     min-width: 100%;
     font-size: auto;
 }
-#seccionesUso div{
+#seccionUsuario{
+    max-height: 70%;
+    min-height: 70%;
+    margin-bottom: 0.5%;
+}
+.seccionUso{
     display: flex;
     text-align: center;
     justify-content: center;
@@ -69,6 +74,19 @@
     max-height: 78%;
     min-height: 78%;
     border: 1.5px groove black;
+}
+#informacionUsoUsuario{
+    margin: 0% 1%;
+    margin-bottom: 0.5%;
+    margin-top: 0.5%;
+    max-width: 98%;
+    min-width: 98%;
+    max-height: 98%;
+    min-height: 98%;
+    border: 1.5px groove black;
+}
+.margen{
+    margin: 1%;
 }
 #columnasUso{
     max-height: 20%;

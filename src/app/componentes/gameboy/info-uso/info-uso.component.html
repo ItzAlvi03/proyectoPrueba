@@ -1,16 +1,23 @@
 <div id="contentInfoUso" class="w-100 position-absolute d-flex flex-column justify-content-center align-items-center no-pantalla-completa">
     <div id="seccionesUso" class="d-flex flex-row align-items-center">
-        <div class="h-100 p-1 seleccionadoUso" id="seccionUso1">
-            <label><strong>Botones</strong></label>
+        <div *ngIf="!seccionDerecha" class="w-100 h-100 d-flex flex-row align-items-center">
+            <div class="h-100 p-1 no-seleccionadoUso seccionUso" id="seccionUso1">
+                <label><strong>Botones</strong></label>
+            </div>
+            <div class="h-100 p-1 no-seleccionadoUso seccionUso" id="seccionUso2">
+                <label><strong>Pokedex</strong></label>
+            </div>
+            <div class="h-100 p-1 no-seleccionadoUso seccionUso" id="seccionUso3">
+                <label><strong>C.vs CPU</strong></label>
+            </div>
+            <div class="h-100 p-1 no-seleccionadoUso seccionUso" id="seccionUso4">
+                <label><strong>Pant. Compl.</strong></label>
+            </div>
         </div>
-        <div class="h-100 p-1 no-seleccionadoUso" id="seccionUso2">
-            <label><strong>Pokedex</strong></label>
-        </div>
-        <div class="h-100 p-1 no-seleccionadoUso" id="seccionUso3">
-            <label><strong>C.vs CPU</strong></label>
-        </div>
-        <div class="h-100 p-1 no-seleccionadoUso" id="seccionUso4">
-            <label><strong>Pant. Compl.</strong></label>
+        <div *ngIf="seccionDerecha" class="w-100 h-100 d-flex flex-row align-items-center">
+            <div class="h-100 p-1 no-seleccionadoUso seccionUso" id="seccionUso5">
+                <label><strong>Usuario</strong></label>
+            </div>
         </div>
     </div>
     <div id="infoSeccionesUso" class="d-flex justify-content-center align-items-start">
@@ -60,6 +67,9 @@
             <div class="w-100 h-100" *ngIf="bajar">
                 <div class="d-flex flex-column justify-content-around align-items-start" id="informacionUso">
                     <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <label>Una pokedex para consultar los datos de los pokemon.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
                         <i class="bi bi-arrow-left"></i>
                         <label>Cambiar la vista del pokemon (de frente o de espaldas).</label>
                     </div>
@@ -71,10 +81,6 @@
                         <i class="bi bi-arrow-up"></i>
                         <label>Pasar al siguiente pokemon de la pokedex.</label>
                     </div>
-                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
-                        <i class="bi bi-arrow-down"></i>
-                        <label>Volver al pokemon anterior en la pokedex.</label>
-                    </div>
                 </div>
                 <div class="w-100 d-flex justify-content-center align-items-center direccion">
                     <i class="bi bi-arrow-down-square text-center"></i>
@@ -85,6 +91,10 @@
                     <i class="bi bi-arrow-up-square text-center"></i>
                 </div>
                 <div class="d-flex flex-column justify-content-around align-items-start" id="informacionUso">
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-arrow-down"></i>
+                        <label>Volver al pokemon anterior en la pokedex.</label>
+                    </div>
                     <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
                         <i class="bi bi-2-circle"></i>
                         <label>Salir al menú principal.</label>
@@ -110,6 +120,83 @@
                 </div>
                 <div id="columnasUso" class="d-flex flex-row justify-content-center align-items-center">
                     <label>Es recomendable jugar con la pantalla de la GameBoy por defecto y a poder ser con un móvil o en la vista de móvil.</label>
+                </div>
+            </div>
+        </div>
+        <div class="h-100 w-100 d-flex flex-column"*ngIf="infoUso[4]">
+            <h6 *ngIf="usuario[0]" class="text-center">Pantalla Usuario</h6>
+            <div id="seccionUsuario" class="w-100" *ngIf="usuario[0]">
+                <div class="d-flex flex-column justify-content-around align-items-start" id="informacionUsoUsuario">
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center margen">
+                        <label>1.iniciar sesion con una cuenta existente.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center margen">
+                        <label>2.Registrarse.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-arrow-left"></i>
+                        <label>Mover al botón izquierdo.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-arrow-right"></i>
+                        <label>Mover al botón derecho.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-1-circle"></i>
+                        <label>Pulsar en el boton marcado (también se le puede hacer click).</label>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="usuario[0]" class="w-100 d-flex justify-content-center align-items-center direccion">
+                <i class="bi bi-arrow-down-square text-center"></i>
+            </div>
+            <h6 *ngIf="usuario[1]" class="text-center">Iniciar Sesion</h6>
+            <div *ngIf="usuario[1]" class="w-100 d-flex justify-content-center align-items-center direccion">
+                <i class="bi bi-arrow-up-square text-center"></i>
+            </div>
+            <div id="seccionUsuario" class="w-100" *ngIf="usuario[1]">
+                <div class="d-flex flex-column justify-content-around align-items-start" id="informacionUsoUsuario">
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <label>Iniciar sesion si ya tiene una cuenta registrada.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-arrow-left"></i>
+                        <label>Mover al botón izquierdo.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-arrow-right"></i>
+                        <label>Mover al botón derecho.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-1-circle"></i>
+                        <label>Pulsar en el boton marcado (también se le puede hacer click).</label>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="usuario[1]" class="w-100 d-flex justify-content-center align-items-center direccion">
+                <i class="bi bi-arrow-down-square text-center"></i>
+            </div>
+            <h6 *ngIf="usuario[2]" class="text-center">Registrarse</h6>
+            <div *ngIf="usuario[2]" class="w-100 d-flex justify-content-center align-items-center direccion">
+                <i class="bi bi-arrow-up-square text-center"></i>
+            </div>
+            <div id="seccionUsuario" class="w-100" *ngIf="usuario[2]">
+                <div class="d-flex flex-column justify-content-around align-items-start" id="informacionUsoUsuario">
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <label>Registrar una nueva cuenta.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-arrow-left"></i>
+                        <label>Mover al botón izquierdo.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-arrow-right"></i>
+                        <label>Mover al botón derecho.</label>
+                    </div>
+                    <div id="columnasUso" class="w-100 d-flex flex-row justify-content-start align-items-center">
+                        <i class="bi bi-1-circle"></i>
+                        <label>Pulsar en el boton marcado (también se le puede hacer click).</label>
+                    </div>
                 </div>
             </div>
         </div>
