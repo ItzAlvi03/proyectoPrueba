@@ -11,7 +11,6 @@ export class MenuPrincipalComponent implements OnInit{
   primeraVez: boolean = true;
   pokedex: boolean = false;
   combateCPU: boolean = false;
-  animacionApagar: boolean = false;
   pantallaCompleta: boolean = false;
   infoUso: boolean = false;
   usuario: boolean = false;
@@ -26,6 +25,16 @@ export class MenuPrincipalComponent implements OnInit{
 
   ngOnInit() {
     document.addEventListener('keydown', this.keydownListener);
+    this.comunicationService.fueraDeGameboy.subscribe((event: boolean) => {
+      if(event){
+        this.pokedex = false;
+        this.combateCPU = false;
+        this.infoUso = false;
+        this.usuario = false;
+        this.dentroSeccion = false;
+        this.encendido = false;
+      }
+    })
     this.comunicationService.volverMenu.subscribe((event: boolean) => {
       this.volver = event;
     });
@@ -65,7 +74,6 @@ export class MenuPrincipalComponent implements OnInit{
       this.combateCPU = false;
       this.infoUso = false;
       this.usuario = false;
-      this.animacionApagar = false;
     }else{
       setTimeout(() => {
         if(this.comunicationService.encendido.value){

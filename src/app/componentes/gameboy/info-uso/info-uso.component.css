@@ -1,5 +1,5 @@
 *{
-    font-family: 'pokemonPixel2';
+    font-family: 'gameboy';
 }
 .pantalla-completa{
     height: 120%;
@@ -40,9 +40,20 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    min-width: 25%;
-    max-width: 25%;
+    min-width: 20%;
+    max-width: 20%;
     transition: border 0.2s linear, max-height 0.2s linear, margin-top 0.2s linear;
+}
+.icono-seccion-uso{
+    display: flex;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    min-width: 10%;
+    max-width: 10%;
+}
+.icono-seccion-uso i{
+    font-size: large;
 }
 .no-seleccionadoUso{
     border: 1.5px dashed black;

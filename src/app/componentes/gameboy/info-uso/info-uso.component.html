@@ -1,6 +1,9 @@
 <div id="contentInfoUso" class="w-100 position-absolute d-flex flex-column justify-content-center align-items-center no-pantalla-completa">
     <div id="seccionesUso" class="d-flex flex-row align-items-center">
         <div *ngIf="!seccionDerecha" class="w-100 h-100 d-flex flex-row align-items-center">
+            <div class="h-100 p-1 icono-seccion-uso">
+                <i class="bi bi-arrow-left"></i>
+            </div>
             <div class="h-100 p-1 no-seleccionadoUso seccionUso" id="seccionUso1">
                 <label><strong>Botones</strong></label>
             </div>
@@ -13,10 +16,19 @@
             <div class="h-100 p-1 no-seleccionadoUso seccionUso" id="seccionUso4">
                 <label><strong>Pant. Compl.</strong></label>
             </div>
+            <div class="h-100 p-1 icono-seccion-uso">
+                <i class="bi bi-arrow-right"></i>
+            </div>
         </div>
         <div *ngIf="seccionDerecha" class="w-100 h-100 d-flex flex-row align-items-center">
+            <div class="h-100 p-1 icono-seccion-uso">
+                <i class="bi bi-arrow-left"></i>
+            </div>
             <div class="h-100 p-1 no-seleccionadoUso seccionUso" id="seccionUso5">
                 <label><strong>Usuario</strong></label>
+            </div>
+            <div class="h-100 p-1 icono-seccion-uso">
+                <i class="bi bi-arrow-right"></i>
             </div>
         </div>
     </div>

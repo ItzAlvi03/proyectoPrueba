@@ -20,10 +20,13 @@ export class GameboyComponent implements OnInit{
   btnIzquierda: any;
   btnAdelante: any;
   btnAtras: any;
+  btnEncender: any;
   usando: any = false;
   //Estas variables booleanas indicarán qué componente se ve
   //dentro de la pantalla de la gameboy
   menuPrincipal: boolean = false;
+  encender: boolean = false;
+  apagar: boolean = false;
 
   constructor(private comunicationService: ComunicationServiceService) {}
 
@@ -34,6 +37,14 @@ export class GameboyComponent implements OnInit{
     this.comunicationService.pantallaCompleta.subscribe((event: boolean) => {
       this.reposicionarPantalla(event);
     });
+    this.comunicationService.fueraDeGameboy.subscribe((event: boolean) => {
+      if(event){
+        this.menuPrincipal = false;
+        this.encender = false;
+        this.encendido = false;
+        this.usando = false;
+      }
+    })
   }
   reposicionarPantalla(event: boolean) {
     if(this.pantalla) {
@@ -49,6 +60,8 @@ export class GameboyComponent implements OnInit{
     }
   }
   ngAfterViewInit(){
+    this.btnEncender = document.querySelector('button') as HTMLButtonElement;
+    this.btnEncender.addEventListener("click", () => this.encenderApagar());
     this.pantalla = document.getElementById('pantalla');
     this.elementosPantalla = document.getElementById('elementosPantalla');
     this.btnArriba = document.getElementById('arriba');
@@ -124,29 +137,33 @@ export class GameboyComponent implements OnInit{
   }
   
   encenderApagar() {
-    if(!this.usando){
-      this.usando = true;
-      setTimeout(() => {
-        if(this.encendido){
+    setTimeout(() => {
+      if (this.encendido && !this.encender) {
+        // Animación de apagar
+        this.apagar = true;
+        setTimeout(() => {
+          this.apagar = false;
           this.comunicationService.encendido.next(false);
           this.comunicationService.accion.next('apagado');
-          setTimeout(() => {
-            this.elementosPantalla.style.opacity = '0';
-            this.pantalla.style.backgroundColor = 'black';
-          }, 100);
+          this.elementosPantalla.style.opacity = '0';
+          this.pantalla.style.backgroundColor = 'black';
+        }, 2000);
+        setTimeout(() => {
           this.encendido = false;
-        }else{
+        },100);
+      } else if(!this.encendido && !this.apagar){
+        // Animación de encender
+        this.elementosPantalla.style.opacity = '1';
+        this.pantalla.style.backgroundColor = 'rgb(132, 153, 86)';
+        this.encender = true;
+        setTimeout(() => {
+          this.encender = false;
           this.comunicationService.encendido.next(true);
-          this.pantalla.style.backgroundColor = 'rgb(132, 153, 86)';
-          setTimeout(() => {
-            this.menuPrincipal = true;
-            this.elementosPantalla.style.opacity = '1';
-          }, 400);
+          this.menuPrincipal = true;
           this.encendido = true;
-        }
-        this.usando = false;
-      }, 50);
-    }
-  }
+        },3500);
+      }
+    }, 50);
+  }  
 }
 

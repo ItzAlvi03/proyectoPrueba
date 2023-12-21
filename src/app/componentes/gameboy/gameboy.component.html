@@ -4,11 +4,13 @@
     </div>
 </div>
 <div id="contentPantalla" class="w-100 h-100 d-flex flex-column justify-content-center align-items-center position-relative">
-    <button (click)="encenderApagar()" class="w-100 btn btn-danger m-4">ENCENDER/APAGAR</button>
+    <button class="w-100 btn btn-danger m-4">ENCENDER/APAGAR</button>
     <div id="imagen" class="w-100 h-100 mb-2">
         <div class="no-pantalla-completa" id="pantalla">
             <div class="w-100 h-100" id="elementosPantalla">
                 <app-menu-principal *ngIf="menuPrincipal"></app-menu-principal>
+                <app-animacion-encender id="opacidad" *ngIf="encender"></app-animacion-encender>
+                <app-animacion-apagar id="opacidad" *ngIf="apagar"></app-animacion-apagar>
             </div>
         </div>
         <div (click)="activarAnimacion('ClickArrowUp')" id="arriba">

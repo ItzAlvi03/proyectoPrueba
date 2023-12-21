@@ -121,7 +121,6 @@ export class InfoUsoComponent {
         this.opcion++;
       }
     }
-    console.log(this.opcion)
     this.elegirOpcion();
   }
 

@@ -1,7 +1,7 @@
 *{
     font-family: 'gameboy';
 }
-.apagar-animation {
+.encender-animation {
     position: absolute;
     top: 0;
     height: 100%;
@@ -14,15 +14,15 @@
   }
   
   h2 {
-    opacity: 1;
-    animation: apagar 4s ease-in-out forwards;
+    margin-top: -100%;
+    animation: aparecerDesdeArriba 3s ease-out forwards;
   }
   
-  @keyframes apagar {
+  @keyframes aparecerDesdeArriba {
     0% {
-        opacity: 1;
+        margin-top: -100%;
     }
     100% {
-        opacity: 0;
+        margin-top: 0%;
     }
   }

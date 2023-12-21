@@ -22,5 +22,8 @@ export class ComunicationServiceService {
   // Este es el nombre del usuario en la DB una vez iniciada la sesión
   public nombreUsuario = new BehaviorSubject<string>('');
 
+  // Cuando se sale de la app que nada pueda usarse porque salían errores
+  public fueraDeGameboy = new BehaviorSubject<boolean>(false);
+
   constructor() {}
 }

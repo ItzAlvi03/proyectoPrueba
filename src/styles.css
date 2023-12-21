@@ -5,9 +5,13 @@
   }
   @font-face {
     font-family:'pokemonPixel';
-    src: url(./assets/fonts/pokemon_pixel_font.ttf) format("truetype");
+    src: url(./assets/fonts/pokemon_pixel_font.ttf);
   }
   @font-face {
     font-family:'pokemonPixel2';
     src: url(./assets/fonts/Pokemon_GB.ttf) format("truetype");
+  }
+  @font-face {
+    font-family: 'gameboy';
+    src: url(./assets/fonts/GameBoy.ttf);
   }
