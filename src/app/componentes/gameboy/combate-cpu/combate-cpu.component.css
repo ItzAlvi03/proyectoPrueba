@@ -1,0 +1,18 @@
+*{
+    font-family: 'pokemonPixel2';
+}
+.no-pantalla-completa{
+    height: 100%;
+}
+#contentCombateCPU{
+    max-width: 100%;
+    bottom: 0%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    color: black;
+    font-weight: 500;
+    border-radius: 0px 0px 10px 10px;
+}

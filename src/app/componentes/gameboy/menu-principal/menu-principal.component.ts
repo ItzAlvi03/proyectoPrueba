@@ -10,6 +10,7 @@ export class MenuPrincipalComponent implements OnInit{
   encendido: boolean = false;
   primeraVez: boolean = true;
   pokedex: boolean = false;
+  combateCPU: boolean = false;
   animacionApagar: boolean = false;
   pantallaCompleta: boolean = false;
   infoUso: boolean = false;
@@ -61,6 +62,7 @@ export class MenuPrincipalComponent implements OnInit{
   accionTecla(event: string) {
     if(event === 'apagado'){
       this.pokedex = false;
+      this.combateCPU = false;
       this.infoUso = false;
       this.usuario = false;
       this.animacionApagar = false;
@@ -92,7 +94,7 @@ export class MenuPrincipalComponent implements OnInit{
       if(this.opcion == 1){
         this.pokedex = true;
       }else if(this.opcion == 2){
-        //Combate pokemon
+        this.combateCPU = true
       }else if(this.opcion == 3){
         if(this.pantallaCompleta){
           this.pantallaCompleta = false;
@@ -110,6 +112,7 @@ export class MenuPrincipalComponent implements OnInit{
   }
   habilitarMenu() {
     this.pokedex = false;
+    this.combateCPU = false;
     this.infoUso = false;
     this.usuario = false;
     this.dentroSeccion = false;

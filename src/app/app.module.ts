@@ -20,6 +20,7 @@ import { InfoUsoComponent } from './componentes/gameboy/info-uso/info-uso.compon
 import { UsuarioComponent } from './componentes/gameboy/usuario/usuario.component';
 import { LogInComponent } from './componentes/gameboy/usuario/log-in/log-in.component';
 import { SignInComponent } from './componentes/gameboy/usuario/sign-in/sign-in.component';
+import { CombateCPUComponent } from './componentes/gameboy/combate-cpu/combate-cpu.component';
 
 @NgModule({
   declarations: [
@@ -37,6 +38,7 @@ import { SignInComponent } from './componentes/gameboy/usuario/sign-in/sign-in.c
     UsuarioComponent,
     LogInComponent,
     SignInComponent,
+    CombateCPUComponent,
   ],
   imports: [
     FormsModule,
