@@ -98,16 +98,16 @@ export class LogInComponent implements OnInit{
         this.apiservice.comprobarLogIn(nuevoUsuario).subscribe(
           results => {
             this.error = false;
-            try {
-              if(results[0].nombre){
-                this.comunication.nombreUsuario.next(results[0].nombre);
+            if (results) {
+              if (results.usuario) {
+                this.comunication.nombreUsuario.next(results.usuario[0]);
                 this.correcto = true;
                 this.noCorrecto = false;
+              } else {
+                this.mensajeNoCorrecto = 'Las credenciales son incorrectas.';
+                this.correcto = false;
+                this.noCorrecto = true;
               }
-            } catch (error) {
-              this.mensajeNoCorrecto = 'Las credenciales son incorrectas.'
-              this.correcto = false;
-              this.noCorrecto = true;
             }
           },
           error => {

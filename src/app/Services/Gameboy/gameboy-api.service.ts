@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class GameboyAPIService {
-  private apiUrl = 'http://localhost:3000';
+  private apiUrl = 'https://itzalvi03.pythonanywhere.com/';
 
   constructor(private http: HttpClient) { }
 
