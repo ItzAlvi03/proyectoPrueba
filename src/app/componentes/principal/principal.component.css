@@ -6,30 +6,40 @@
     width: 100%;
     height: 100%;
     margin-bottom: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
 }
-#img{
-    margin: 5% 0%;
-    max-width: 400px;
-    object-fit: contain;
-}
-#mensaje {
-    max-width: 400px;
-    position: fixed;
-    bottom: 100px;
-    right: -100%;
-    padding: 20px;
-    border: 1.5px solid black;
+#card{
+    width: 25%;
+    padding: 0% 5%;
     border-radius: 7px;
-    opacity: 0;
-    transition: right 1.5s ease-out, opacity 1.7s linear;
+    margin-left: 2.5%;
+    margin-right: 2.5%;
+    box-shadow: 0px 0px 4px 2px;
+    transition: box-shadow 0.3s ease-in-out;
 }
-@media (max-width: 450px){
-    #mensaje,#img{
-        max-width: 280px;
+img{
+    max-height: 350px;
+
+}
+@media (max-width:1200px){
+    #card{
+        width: 40%;
     }
 }
-@media (max-width: 360px){
-    #mensaje,#img{
-        max-width: 220px;
+@media (max-width:700px){
+    #card{
+        width: 60%;
+        margin: 5% 20%;
+        padding: 0%;
+    }
+    img{
+        width: 55%;
+        height: auto;
+    }
+    p{
+        padding: 0% 5%;
     }
 }
