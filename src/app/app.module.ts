@@ -8,7 +8,6 @@ import { PrincipalComponent } from './componentes/principal/principal.component'
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 import { APIServiceService } from './Services/apiservice.service';
 import { FormsModule } from '@angular/forms';
-import { FooterComponent } from './componentes/footer/footer.component';
 import { RickMortyComponent } from './componentes/rick-morty/rick-morty.component';
 import { RickMortyCardComponent } from './componentes/rick-morty-card/rick-morty-card.component';
 import { MenuComponent } from './componentes/menu/menu.component';
@@ -27,7 +26,6 @@ import { AnimacionEncenderComponent } from './componentes/gameboy/animaciones/an
   declarations: [
     AppComponent,
     PrincipalComponent,
-    FooterComponent,
     RickMortyComponent,
     RickMortyCardComponent,
     MenuComponent,

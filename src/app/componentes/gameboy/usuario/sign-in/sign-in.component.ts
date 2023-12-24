@@ -92,8 +92,8 @@ export class SignInComponent {
     // Comprobamos que tanto el nombre de usuario como la contraseña del
     // usuario tengan el length adecuado
 
-    if(nombre.value.length < 18){
-      if(contrasenia.value.length < 16){
+    if(nombre.value.length < 18 && nombre.value.length > 0){
+      if(contrasenia.value.length < 16 && contrasenia.value.length >= 6){
         // Si está todo correcto, procedemos a hacer la consulta
 
         const nuevoUsuario = {
@@ -104,15 +104,16 @@ export class SignInComponent {
           results => {
             this.error = false;
             this.correcto = false;
-            try {
-              if(results[0].nombre){
+            console.log('entre: ' + results)
+            if (results) {
+              if (results === 'existe') {
                 this.mensajeNoCorrecto = 'La cuenta ya existe';
                 this.noCorrecto = true;
+              } else {
+                this.cuentaUsuario = nuevoUsuario;
+                this.noCorrecto = false;
               }
-            } catch (error) {
-              this.cuentaUsuario = nuevoUsuario;
-              this.noCorrecto = false;
-            }
+            } 
           },
           error => {
             this.correcto = false;
@@ -121,13 +122,19 @@ export class SignInComponent {
           }
         );
       }else{
+        if(nombre.value.length > 16)
         this.mensajeNoCorrecto = 'La contraseña no puede tener más de 16 carácteres.';
+        else
+          this.mensajeNoCorrecto = 'La contraseña no puede tener menos de 6 carácteres.';
         this.error = false;
         this.correcto = false;
         this.noCorrecto = true;
       }
     }else{
-      this.mensajeNoCorrecto = 'El nombre no puede tener más de 18 carácteres.';
+      if(nombre.value.length > 18)
+        this.mensajeNoCorrecto = 'El nombre no puede tener más de 18 carácteres.';
+      else
+        this.mensajeNoCorrecto = 'El nombre no puede estar vacío.';
       this.error = false;
       this.correcto = false;
       this.noCorrecto = true;
