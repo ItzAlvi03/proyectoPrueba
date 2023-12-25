@@ -104,7 +104,6 @@ export class SignInComponent {
           results => {
             this.error = false;
             this.correcto = false;
-            console.log('entre: ' + results)
             if (results) {
               if (results === 'existe') {
                 this.mensajeNoCorrecto = 'La cuenta ya existe';
