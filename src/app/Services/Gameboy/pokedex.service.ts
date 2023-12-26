@@ -11,4 +11,7 @@ export class PokedexService {
   getPokemon(number: any): Observable<any> {
     return this.http.get('https://pokeapi.co/api/v2/pokemon/' + number);
   }
+  getMove(url: any): Observable<any> {
+    return this.http.get(url)
+  }
 }
