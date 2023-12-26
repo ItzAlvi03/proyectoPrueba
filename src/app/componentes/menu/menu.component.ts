@@ -18,11 +18,13 @@ export class MenuComponent {
     this.divMenu.style.width = '100%'
   }
 
-  cerrarMenu() {
+  cerrarMenu(event: boolean) {
     this.divMenu.style.right = '-100%';
     this.divMenu.style.width = '0'
-    this.comunicator.encendido.next(false);
-    this.comunicator.accion.next('apagado');
-    this.comunicator.fueraDeGameboy.next(true);
+    if(event){
+      this.comunicator.encendido.next(false);
+      this.comunicator.accion.next('apagado');
+      this.comunicator.fueraDeGameboy.next(true);
+    }
   }
 }

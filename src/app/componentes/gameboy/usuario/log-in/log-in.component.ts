@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
 import { GameboyAPIService } from 'src/app/Services/Gameboy/gameboy-api.service';
 import { APIServiceService } from 'src/app/Services/apiservice.service';
@@ -8,7 +9,8 @@ import { APIServiceService } from 'src/app/Services/apiservice.service';
   templateUrl: './log-in.component.html',
   styleUrls: ['./log-in.component.css']
 })
-export class LogInComponent implements OnInit{
+export class LogInComponent implements OnInit, OnDestroy{
+  private destroyed$ = new Subject<void>();
   mensajeNoCorrecto: string = '';
   error: boolean = false;
   noCorrecto: boolean = false;
@@ -18,12 +20,20 @@ export class LogInComponent implements OnInit{
   btnAhora: string = '';
   usarLogIn: boolean = false;
   constructor(private comunication: ComunicationServiceService, private apiservice: GameboyAPIService){}
-  
+
+  ngOnDestroy(): void {
+    this.usarLogIn = false;
+    document.removeEventListener('keydown', this.keydownListener);
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
   ngOnInit(){
     this.usarLogIn = true;
     this.comunication.volverMenu.next(false);
     document.addEventListener('keydown', this.keydownListener);
-    this.comunication.accion.subscribe((event: string) => {
+    this.comunication.accion.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: string) => {
       this.accionTeclaLogIn(event);
     });
   }
@@ -60,7 +70,7 @@ export class LogInComponent implements OnInit{
             }
           }
         } else{
-          this.usarLogIn = false;
+          this.ngOnDestroy();
         }
       },50);
     }
@@ -73,9 +83,9 @@ export class LogInComponent implements OnInit{
     }
   }
    salir() {
-    this.usarLogIn = false;
-    this.comunication.volverMenu.next(true);
-    this.comunication.accion.next('Backspace');
+     this.comunication.volverMenu.next(true);
+     this.comunication.accion.next('Backspace');
+     this.ngOnDestroy();
   }
   iniciarSesion() {
     // Metodo que llamara a la API o BD para comprobar los campos

@@ -1,4 +1,6 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
 
 @Component({
@@ -6,7 +8,8 @@ import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunicatio
   templateUrl: './info-uso.component.html',
   styleUrls: ['./info-uso.component.css']
 })
-export class InfoUsoComponent {
+export class InfoUsoComponent implements OnDestroy{
+  private destroyed$ = new Subject<void>();
   pantalla: any;
   MAX_OPCIONES: number = 5;
   opcion: number = 1;
@@ -18,6 +21,13 @@ export class InfoUsoComponent {
   seccionDerecha: boolean = false;
   usuario: boolean[] = [];
   constructor(private comunication: ComunicationServiceService){}
+
+  ngOnDestroy(): void {
+    this.usarInfoUso = false;
+    document.removeEventListener('keydown', this.keydownListener);
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
   
   ngOnInit(){
     this.usarInfoUso = true;
@@ -25,10 +35,14 @@ export class InfoUsoComponent {
     this.usuario[0] = true;
     this.bajar = true;
     document.addEventListener('keydown', this.keydownListener);
-    this.comunication.accion.subscribe((event: string) => {
+    this.comunication.accion.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: string) => {
       this.accionTecla(event);
     });
-    this.comunication.pantallaCompleta.subscribe((event: boolean) => {
+    this.comunication.pantallaCompleta.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: boolean) => {
       this.reposicionarPantalla(event);
     });
   }
@@ -49,10 +63,10 @@ export class InfoUsoComponent {
           }else if(event === 'ArrowRight' || event === 'ArrowLeft'){
             this.activarAnimacion(event);
           }else if(event === 'Backspace'){
-              this.usarInfoUso = false;
+              this.ngOnDestroy();
             }
         } else {
-          this.usarInfoUso = false;
+          this.ngOnDestroy();
         }
       },50);
     }

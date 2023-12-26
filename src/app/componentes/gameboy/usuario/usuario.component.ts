@@ -1,13 +1,14 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
-import { GameboyAPIService } from 'src/app/Services/Gameboy/gameboy-api.service';
 
 @Component({
   selector: 'app-usuario',
   templateUrl: './usuario.component.html',
   styleUrls: ['./usuario.component.css']
 })
-export class UsuarioComponent implements OnInit{
+export class UsuarioComponent implements OnInit, OnDestroy{
+  private destroyed$ = new Subject<void>();
   logIn: boolean = false;
   signIn: boolean = false;
   opcion: number = 1;
@@ -16,10 +17,18 @@ export class UsuarioComponent implements OnInit{
   dentroSeccionUsuario: boolean = false;
   constructor(private comunicationService: ComunicationServiceService) {}
   
+  ngOnDestroy(): void {
+    this.utilizando = false;
+    document.removeEventListener('keydown', this.keydownListener);
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
   ngOnInit(){
     this.comunicationService.volverMenu.next(true);
     document.addEventListener('keydown', this.keydownListener);
-    this.comunicationService.accion.subscribe((event: string) => {
+    this.comunicationService.accion.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: string) => {
       if(this.comunicationService.encendido){
         if(!this.dentroSeccionUsuario){
           if(this.utilizando){
@@ -28,7 +37,9 @@ export class UsuarioComponent implements OnInit{
         }
       }
     });
-    this.comunicationService.encendido.subscribe((event: boolean) => {
+    this.comunicationService.encendido.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: boolean) => {
       if(!event){
         this.logIn = false;
         this.signIn = false;
@@ -56,10 +67,10 @@ export class UsuarioComponent implements OnInit{
           } else if(event === 'Enter'){
             this.entrarSeccion();
           } else if(event === 'Backspace'){
-            this.utilizando = false;
+            this.ngOnDestroy();
           }
       } else {
-        this.utilizando = false;
+        this.ngOnDestroy();
       }
     },50)
   }

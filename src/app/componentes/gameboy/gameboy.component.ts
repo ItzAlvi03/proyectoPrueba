@@ -1,14 +1,14 @@
-import { Component, OnInit } from '@angular/core';
-import { eventListeners } from '@popperjs/core';
-import { MenuPrincipalComponent } from './menu-principal/menu-principal.component';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
+import { Subject, takeUntil } from 'rxjs';
 
 @Component({
   selector: 'app-gameboy',
   templateUrl: './gameboy.component.html',
   styleUrls: ['./gameboy.component.css']
 })
-export class GameboyComponent implements OnInit{
+export class GameboyComponent implements OnInit, OnDestroy{
+  private destroyed$ = new Subject<void>();
   //Variables que se utilizan
   pantallaCompleta: boolean = false;
   encendido: boolean = false;
@@ -30,22 +30,33 @@ export class GameboyComponent implements OnInit{
 
   constructor(private comunicationService: ComunicationServiceService) {}
 
+  ngOnDestroy(): void {
+    document.removeEventListener('keydown', this.keydownListener);
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
   ngOnInit() {
-    document.addEventListener('keydown', (event) => {
-      this.accionTecla(event);
-    });
-    this.comunicationService.pantallaCompleta.subscribe((event: boolean) => {
+    document.addEventListener('keydown', this.keydownListener);
+    this.comunicationService.pantallaCompleta.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: boolean) => {
       this.reposicionarPantalla(event);
     });
-    this.comunicationService.fueraDeGameboy.subscribe((event: boolean) => {
+    this.comunicationService.fueraDeGameboy.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: boolean) => {
       if(event){
         this.menuPrincipal = false;
         this.encender = false;
         this.encendido = false;
         this.usando = false;
       }
-    })
+    });
   }
+  private keydownListener = (event: KeyboardEvent) => {
+    this.accionTecla(event);
+  };
   reposicionarPantalla(event: boolean) {
     if(this.pantalla) {
       if(event){

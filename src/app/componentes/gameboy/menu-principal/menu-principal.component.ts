@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
 
 @Component({
@@ -6,7 +7,8 @@ import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunicatio
   templateUrl: './menu-principal.component.html',
   styleUrls: ['./menu-principal.component.css']
 })
-export class MenuPrincipalComponent implements OnInit{
+export class MenuPrincipalComponent implements OnInit, OnDestroy{
+  private destroyed$ = new Subject<void>();
   encendido: boolean = false;
   primeraVez: boolean = true;
   pokedex: boolean = false;
@@ -22,10 +24,18 @@ export class MenuPrincipalComponent implements OnInit{
   volver: boolean = true;
 
   constructor(private comunicationService: ComunicationServiceService) {}
+  ngOnDestroy(): void {
+    this.primeraVez = true;
+    document.removeEventListener('keydown', this.keydownListener);
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
 
   ngOnInit() {
     document.addEventListener('keydown', this.keydownListener);
-    this.comunicationService.fueraDeGameboy.subscribe((event: boolean) => {
+    this.comunicationService.fueraDeGameboy.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: boolean) => {
       if(event){
         this.pokedex = false;
         this.combateCPU = false;
@@ -35,13 +45,19 @@ export class MenuPrincipalComponent implements OnInit{
         this.encendido = false;
       }
     })
-    this.comunicationService.volverMenu.subscribe((event: boolean) => {
+    this.comunicationService.volverMenu.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: boolean) => {
       this.volver = event;
     });
-    this.comunicationService.accion.subscribe((event: string) => {
+    this.comunicationService.accion.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: string) => {
       this.accionTecla(event);
     });
-    this.comunicationService.nombreUsuario.subscribe((event: string) => {
+    this.comunicationService.nombreUsuario.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: string) => {
       if(event !== '')
         this.nombreUsuario = event;
       else
@@ -55,7 +71,9 @@ export class MenuPrincipalComponent implements OnInit{
   };
   ngAfterViewInit(){
     this.secciones = document.getElementById('secciones') as HTMLElement;
-    this.comunicationService.encendido.subscribe((event: boolean) => {
+    this.comunicationService.encendido.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: boolean) => {
       if(!event){
         this.encendido = false;
         this.volver = false;

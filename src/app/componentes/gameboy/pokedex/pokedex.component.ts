@@ -1,14 +1,16 @@
-import { ChangeDetectorRef, Component, ElementRef, OnInit, QueryList, ViewChild, ViewChildren } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
 import { PokedexService } from 'src/app/Services/Gameboy/pokedex.service';
-import { Pokemon } from 'src/app/interfaces/pokemon';
 
 @Component({
   selector: 'app-pokedex',
   templateUrl: './pokedex.component.html',
   styleUrls: ['./pokedex.component.css']
 })
-export class PokedexComponent implements OnInit{
+export class PokedexComponent implements OnInit, OnDestroy{
+  private destroyed$ = new Subject<void>();
   pokemon: any = {};
   numero: number = 1;
   types: any;
@@ -18,15 +20,26 @@ export class PokedexComponent implements OnInit{
   pantalla: any;
   usarPokedex: boolean = false;
   constructor(private service: PokedexService, private comunication: ComunicationServiceService){}
+
+  ngOnDestroy(): void {
+    this.usarPokedex = false;
+    this.destroyed$.next();
+    this.destroyed$.complete();
+    document.removeEventListener('keydown', this.keydownListener);
+  }
   
   ngOnInit(){
     if(this.comunication.encendido)
       this.getCharacters();
     document.addEventListener('keydown', this.keydownListener);
-    this.comunication.accion.subscribe((event: string) => {
+    this.comunication.accion.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: string) => {
       this.accionTecla(event);
     });
-    this.comunication.pantallaCompleta.subscribe((event: boolean) => {
+    this.comunication.pantallaCompleta.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: boolean) => {
       this.reposicionarPantalla(event);
     });
     this.usarPokedex = true;
@@ -64,10 +77,10 @@ export class PokedexComponent implements OnInit{
               if(this.img && this.pokemon.image)
                 this.cambiarImg();
             }else if(event === 'Backspace'){
-              this.usarPokedex = false;
+              this.ngOnDestroy();
             }
         } else{
-          this.usarPokedex = false;
+          this.ngOnDestroy();
         }
       },50)
     }

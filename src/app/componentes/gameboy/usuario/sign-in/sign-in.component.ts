@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, OnDestroy } from '@angular/core';
+import { Subject, takeUntil } from 'rxjs';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
 import { GameboyAPIService } from 'src/app/Services/Gameboy/gameboy-api.service';
 
@@ -7,7 +8,8 @@ import { GameboyAPIService } from 'src/app/Services/Gameboy/gameboy-api.service'
   templateUrl: './sign-in.component.html',
   styleUrls: ['./sign-in.component.css']
 })
-export class SignInComponent {
+export class SignInComponent implements OnDestroy{
+  private destroyed$ = new Subject<void>();
   cuentaUsuario: any;
   error: boolean = false;
   noCorrecto: boolean = false;
@@ -18,12 +20,20 @@ export class SignInComponent {
   usarSignIn: boolean = false;
   mensajeNoCorrecto: string = '';
   constructor(private comunication: ComunicationServiceService, private apiservice: GameboyAPIService){}
-  
+
+  ngOnDestroy(): void {
+    this.usarSignIn = false;
+    document.removeEventListener('keydown', this.keydownListener);
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
   ngOnInit(){
     this.usarSignIn = true;
     this.comunication.volverMenu.next(false);
     document.addEventListener('keydown', this.keydownListener);
-    this.comunication.accion.subscribe((event: string) => {
+    this.comunication.accion.pipe(
+      takeUntil(this.destroyed$)
+    ).subscribe((event: string) => {
       this.accionTeclaSignIn(event);
     });
   }
@@ -60,7 +70,7 @@ export class SignInComponent {
             }
           }
         } else{
-          this.usarSignIn = false;
+          this.ngOnDestroy();
         }
       },50);
     }
@@ -77,9 +87,9 @@ export class SignInComponent {
     }
   }
    salir() {
-    this.usarSignIn = false;
     this.comunication.volverMenu.next(true);
     this.comunication.accion.next('Backspace');
+    this.ngOnDestroy();
   }
   registrarUsuario() {
     // Metodo que llamara a la API o BD para comprobar los campos
