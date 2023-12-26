@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
 import { GameboyAPIService } from 'src/app/Services/Gameboy/gameboy-api.service';
 import { APIServiceService } from 'src/app/Services/apiservice.service';
-import * as bcrypt from 'bcrypt';
 
 @Component({
   selector: 'app-log-in',
@@ -18,7 +17,6 @@ export class LogInComponent implements OnInit{
   btnSalir: any;
   btnAhora: string = '';
   usarLogIn: boolean = false;
-  private SALT_ROUNDS = 10;
   constructor(private comunication: ComunicationServiceService, private apiservice: GameboyAPIService){}
   
   ngOnInit(){
@@ -92,10 +90,10 @@ export class LogInComponent implements OnInit{
     if(nombre.value.length < 18 && nombre.value.length > 0){
       if(contrasenia.value.length < 16 && contrasenia.value.length >= 6){
         // Si está todo correcto, procedemos a hacer la consulta
-        const hashedPassword = bcrypt.hashSync(contrasenia.value, this.SALT_ROUNDS);
+
         const nuevoUsuario = {
           nombre: nombre.value,
-          contraseña: hashedPassword
+          contraseña: contrasenia.value
         };
         this.apiservice.comprobarLogIn(nuevoUsuario).subscribe(
           results => {
