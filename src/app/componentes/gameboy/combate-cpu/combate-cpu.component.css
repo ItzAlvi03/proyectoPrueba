@@ -16,3 +16,93 @@
     font-weight: 500;
     border-radius: 0px 0px 10px 10px;
 }
+#lado{
+    width: 45%;
+    height: 100%;
+}
+#lado img{
+    display: block;
+    height: auto;
+    max-height: 55%;
+    margin-bottom: 2%;
+    z-index: 3;
+}
+#plataforma{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    height: 14%;
+    margin-left: 10%;
+    background-color: rgb(202, 202, 202);
+    border: 2.5px solid black;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.abajo{
+    height: 83%;
+    margin-bottom: -5%;
+}
+.arriba{
+    height: 65%;
+    margin-bottom: 35%;
+}
+#infoPokemon{
+    position: absolute;
+    height: auto;
+    width: 45%;
+    height: auto;
+    min-height: 15%;
+    z-index: 4;
+    background-color: white;
+    border: 3px solid black;
+    border-radius: 8px;
+    font-size: small;
+}
+.infoDerecha{
+    bottom: 0;
+    right: 0;
+    margin-right: 2%;
+    margin-bottom: 2%;
+}
+.infoIzquierda{
+    top: 0;
+    left: 0;
+    margin-left: 2%;
+    margin-top: 2%;
+}
+.barra-salud {
+    width: 90%;
+    min-height: 10%;
+    background-color: black;
+    border-radius: 9px;
+    padding: 0% 1.2%;
+    border: 2px solid black;
+    color: red;
+    font-weight: 700;
+    overflow: hidden;
+    transition: width 0.5s linear;
+}
+#infoPokemon p{
+    margin: 0%;
+    margin-bottom: 1%;
+}
+.barra-salud p{
+    margin: 0%;
+}
+@media (max-width: 600px) {
+    #infoPokemon p{
+        font-size: 10.5px;
+    }
+}
+@media (max-width: 485px) {
+    #infoPokemon p{
+        font-size: 9px;
+    }
+}
+@media (max-width: 385px) {
+    #infoPokemon p{
+        font-size: 7.5px;
+    }
+}
