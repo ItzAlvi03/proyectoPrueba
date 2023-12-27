@@ -46,6 +46,53 @@ export class CombateCPUComponent implements OnInit{
       }
       console.log(this.pokemon[i])
     }
+    console.log('Pokemons listos! Empieza la prueba:')
+    var hp1 = this.pokemon[0].stats[0].base_stat as number;
+    var hp2 = this.pokemon[1].stats[0].base_stat as number;
+    var resultado = "" as any;
+    var ataque = 0 as number;
+    var continuar = true as boolean;
+    while(continuar){
+      console.log(this.pokemon[0].name + " va a utilizar " + this.pokemon[0].atack1.name);
+      resultado = this.logica.calcularDaño(this.pokemon[0], this.pokemon[1], this.pokemon[0].atack1);
+      if(resultado.fallo){
+        console.log(this.pokemon[0].name + " ha fallado al realizar el ataque.");
+      } else{
+        ataque = resultado.daño as number;
+        if(resultado.critico)
+          console.log(this.pokemon[0].atack1.name + " con CRÍTICO ha quitado un total de " + ataque + " hp.")
+        else
+          console.log(this.pokemon[0].atack1.name + " ha quitado un total de " + ataque + " hp.")
+
+        if(ataque >= hp2){
+          continuar = false;
+          console.log(this.pokemon[1].name + " ha sido derrotado.");
+        }else{
+          hp2 -= ataque;
+          console.log(this.pokemon[1].name + " se ha quedado a " + hp2 + " de vida.");
+        }
+      }
+      if(continuar){
+        console.log(this.pokemon[1].name + " va a utilizar " + this.pokemon[1].atack1.name);
+        resultado = this.logica.calcularDaño(this.pokemon[1], this.pokemon[0], this.pokemon[1].atack1);
+        if(resultado.fallo){
+          console.log(this.pokemon[1].name + " ha fallado al realizar el ataque.");
+        } else{
+          ataque = resultado.daño as number;
+          if(resultado.critico)
+            console.log(this.pokemon[1].atack1.name + " con CRÍTICO ha quitado un total de " + ataque + " hp.")
+          else
+            console.log(this.pokemon[1].atack1.name + " ha quitado un total de " + ataque + " hp.")
+            if(ataque >= hp1){
+              continuar = false;
+              console.log(this.pokemon[0].name + " ha sido derrotado.");
+            }else{
+              hp1 -= ataque;
+              console.log(this.pokemon[0].name + " se ha quedado a " + hp1 + " de vida.");
+            }
+        }
+      }
+    }
   }
 
   randomNumber(max: number) {
@@ -79,7 +126,7 @@ export class CombateCPUComponent implements OnInit{
             }
           }
         } catch (error) {
-          console.error("Error obteniendo movimiento:", error);
+          console.log("Error obteniendo movimiento, probando a coger otro movimiento...");
         }
       }
     }

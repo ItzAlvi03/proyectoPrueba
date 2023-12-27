@@ -4,21 +4,92 @@ import { Injectable } from '@angular/core';
   providedIn: 'root'
 })
 export class LogicaService {
+  private relacionesDeTipo = {
+    NORMAL: { ROCK: 0.5, GHOST: 0, STEEL: 0.5 },
+    FIGHTING: { NORMAL: 2, FLYING: 0.5, POISON: 0.5, ROCK: 2, BUG: 0.5, GHOST: 0, STEEL: 2, PSYCHIC:0.5, ICE: 2, DARK: 2, FAIRY: 0.5 },
+    FLYING: { FIGHTING: 2, ROCK: 0.5, BUG: 2, STEEL: 0.5, GRASS: 2, ELECTRIC: 0.5 },
+    POISON: { POISON: 0.5, GROUND: 0.5, ROCK: 0.5, GHOST: 0.5, STEEL: 0, GRASS: 2, FAIRY: 2 },
+    GROUND: { FLYING: 0, POISON: 2, ROCK: 2, BUG: 0.5, STEEL: 2, FIRE: 2, GRASS: 0.5, ELECTRIC: 2 },
+    ROCK: { FIGHTING: 0.5, FLYING: 2, GROUND: 0.5, BUG: 2, STEEL: 0.5, FIRE: 2, ICE: 2 },
+    BUG: { FIGHTING: 0.5, FLYING: 0.5, POISON: 0.5, GHOST: 0.5, STEEL: 0.5, FIRE: 0.5, GRASS: 2, PSYCHIC: 2, DARK: 2, FAIRY: 0.5 },
+    GHOST: { NORMAL: 0, GHOST: 2, PSYCHIC: 2, DARK: 0.5 },
+    STEEL: { ROCK: 2, STEEL: 0.5, FIRE: 0.5, WATER: 0.5, ELECTRIC: 0.5, ICE: 2, FAIRY: 2 },
+    FIRE: { ROCK: 0.5, BUG: 2, STEEL: 2, FIRE: 0.5, WATER: 0.5, GRASS: 2, ICE: 2, DRAGON: 0.5 },
+    WATER: { GROUND: 2, ROCK: 2, FIRE: 2, GRASS: 0.5, WATER: 0.5, DRAGON: 0.5 },
+    GRASS: { FLYING: 0.5, POISON: 0.5, GROUND: 2, ROCK: 2, BUG: 0.5, STEEL: 0.5, FIRE: 0.5, WATER: 2, GRASS: 0.5, DRAGON: 0.5 },
+    ELECTRIC: { FLYING: 2, GROUND: 0, WATER: 2, GRASS: 0.5, ELECTRIC: 0.5, DRAGON: 0.5 },
+    PSYCHIC: { FIGHTING: 2, POISON: 2, STEEL: 0.5, PSYCHIC: 0.5, DARK: 0 },
+    ICE: { FLYING: 2, GROUND: 2, STEEL: 0.5, FIRE: 0.5, WATER: 0.5, GRASS: 2, ICE: 0.5, DRAGON: 2 },
+    DRAGON: { STEEL: 0.5, DRAGON: 2, FAIRY: 0 },
+    DARK: { FIGHTING: 0.5, GHOST: 2, PSYCHIC: 2, DARK: 0.5, FAIRY: 0.5 },
+    FAIRY: { FIGHTING: 2, POISON: 0.5, STEEL: 0.5, FIRE: 0.5, DRAGON: 2, DARK: 2 },
+  } as any;
 
   constructor() { }
-  calcularDaño(nivelAtacante: number, ataqueAtacante: number, defensaDefensor: number, poderAtaque: number): number {
-    // Modificadores
-    const mod1 = 1;  // 1°Mod.
-    const STAB = 1;  // Modificador de tipo
-    const efectividad = 1;  // Efectividad (puedes ajustar esto según el tipo del ataque y el Pokémon defensor)
+  calcularDaño(pokemonAtacante: any, pokemonDefensor: any, atack: any): any {
+    var mod1 = 1;  // Si el atacante tiene el ataque con alguna habilidad subido
+    var STAB = 1;  // Modificador de tipo si el ataque es el mismo tipo que el pokemon
+    var efectividad = 1;  // Efectividad del ataque contra el tipo del oponente
+    const ataqueBase = pokemonAtacante.stats[1]?.base_stat as number || 0;
+    const defensaBase = pokemonDefensor.stats[2]?.base_stat as number || 0;
+    var random = this.generarRandom();
+    if(random <= (atack.accuracy as number)){
+      // Calculamos el crítico
+      random = this.generarRandom();
+      var critico = 1;
+      if(random <= 10)
+          critico = 1.5;
 
-    // Fórmula del daño
-    const daño = Math.floor(
-      ((2 * nivelAtacante / 5 + 2) * ataqueAtacante * poderAtaque / defensaDefensor) / 50 * mod1 + 2
-    ) * STAB * efectividad;
+      // Calculamos si el STAB será de 1 o 1.5
+      pokemonAtacante.types.forEach((tipo: any) => {
+        if(tipo.toUpperCase() === atack.type.toUpperCase())
+        STAB = 1.5;
+      });
 
-    return daño;
+      // Calculamos la efectividad final del ataque contra el defensor
+      efectividad = this.calcularEfectividad(atack, pokemonDefensor.types);
+      
+      // Fórmula del daño
+      const daño = Math.floor(
+        (((2 * 1 / 5 + 2) * ataqueBase * atack.power / defensaBase) / 50 * mod1 + 2)
+        * STAB * critico * efectividad);
+
+      var ch = false as boolean;
+       if(critico != 1)
+        ch = true;
+      const resultado = {
+        fallo: false as boolean,
+        daño: daño,
+        critico: ch as boolean
+      }
+      return resultado;
+
+    } else{
+      // Falla el ataque porque el accuracy no fue el suficiente para realizarlo
+      const resultado = {
+        fallo: true as boolean,
+        daño: 0
+      }
+      return resultado;
+    }
   }
+  
+  private generarRandom(): number {
+    return Math.floor(Math.random() * 101);
+  }
+
+  private calcularEfectividad(ataque:any, tiposPokemonDefensor:any) {
+    const tipoAtaque = ataque.type.toUpperCase() as string;
+    let efectividadTotal = 1;
+    tiposPokemonDefensor.forEach((tipoDefensor: any) => {
+        if (this.relacionesDeTipo[tipoAtaque] && this.relacionesDeTipo[tipoAtaque][tipoDefensor] !== undefined) {
+            efectividadTotal *= this.relacionesDeTipo[tipoAtaque][tipoDefensor];
+        }
+    });
+
+    return efectividadTotal;
+}
+
 
   elegirColor(type: any) {
     switch(type){
