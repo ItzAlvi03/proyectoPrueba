@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { LogicaService } from 'src/app/Services/Gameboy/CombatePokemon/logica.service';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
@@ -9,18 +9,35 @@ import { PokedexService } from 'src/app/Services/Gameboy/pokedex.service';
   templateUrl: './combate-cpu.component.html',
   styleUrls: ['./combate-cpu.component.css']
 })
-export class CombateCPUComponent implements OnInit{
+export class CombateCPUComponent implements OnInit, OnDestroy{
   private destroyed$ = new Subject<void>();
-  usarCombateCPU: boolean = false;
+  private usarCombateCPU: boolean = false;
   private MAX_POKEMON = 649 as number;
   pokemon!: any [];
   cargado: boolean = false;
-  barraSalud!: any[];
+  private barraSalud!: any[];
   hp!: any[];
   maxHp!: any[];
+  menu: boolean = false;
+  private contadorError: number = 0;
+  private arriba: boolean = true;
+  private numSeccion: number = 1;
+  dentroSeccion: boolean = false;
+  seccionMenu: number = 1;
+  seccionLuchar: boolean = false;
+  seccionPokemon: boolean = false;
+  seccionBolsa: boolean = false;
   
   constructor(private comunication: ComunicationServiceService, private pokedex: PokedexService, private logica: LogicaService){}
-  
+
+  ngOnDestroy(): void {
+    this.cargado = false;
+    this.usarCombateCPU = false;
+    document.removeEventListener('keydown', this.keydownListener);
+    this.destroyed$.next();
+    this.destroyed$.complete();
+  }
+
   ngOnInit(){
     this.usarCombateCPU = true;
     document.addEventListener('keydown', this.keydownListener);
@@ -34,11 +51,12 @@ export class CombateCPUComponent implements OnInit{
     async ngAfterViewInit(){
       await this.generarPokemon();
       this.cargado = true;
+      this.comunication.volverMenu.next(false);
       this.barraSalud = [];
       setTimeout(() => {
         this.barraSalud = document.querySelectorAll('#salud') as any;
       },50);
-
+      this.menu = true;
     }
 
     resize() {
@@ -104,6 +122,11 @@ export class CombateCPUComponent implements OnInit{
       this.maxHp[i] = this.hp[i];
       console.log(this.pokemon[i])
     }
+    if(this.contadorError >= 10){
+      this.contadorError = 0;
+      console.log('Se produjo un error al asignar las habilidades de un pokemon, volviendo a buscar pokemon...')
+      this.generarPokemon();
+    }
     //console.log('Pokemons listos! Empieza la prueba:')
     //var hp1 = this.pokemon[0].stats[0].base_stat as number;
     //var hp2 = this.pokemon[1].stats[0].base_stat as number;
@@ -159,10 +182,9 @@ export class CombateCPUComponent implements OnInit{
 
   async asignarAtaques(res: any) {
     var ataques = [] as any;
-  
+    var errorCount = 0;
     for (var i = 0; i < 2; i++) {
       var movimiento = "";
-  
       while (movimiento !== "damage") {
         var number = this.randomNumber(res.moves.length);
   
@@ -185,10 +207,16 @@ export class CombateCPUComponent implements OnInit{
           }
         } catch (error) {
           console.log("Error obteniendo movimiento, probando a coger otro movimiento...");
+          errorCount++;
+        }
+        // Si ha fallado más de 5 veces reseteamos y cambiamos los pokemon
+        if(errorCount >= 10){
+          movimiento = "damage";
+          i = 3;
         }
       }
     }
-    return ataques;
+      return ataques;
   }
 
   private keydownListener = (event: KeyboardEvent) => {
@@ -200,10 +228,41 @@ export class CombateCPUComponent implements OnInit{
       setTimeout(() => {
         if(this.comunication.encendido.value){
             if(event === 'Backspace'){
-              this.usarCombateCPU = false;
-            } else if(event === 'Enter'){
-              if(this.cargado)
-                this.quitarVida();
+              if(!this.cargado)
+                this.ngOnDestroy();
+              else{
+                if(this.dentroSeccion){
+                  setTimeout(() => {
+                    this.dentroSeccion = false;
+                    this.seccionBolsa = false;
+                    this.seccionLuchar = false;
+                    this.seccionPokemon = false;
+                  },20)
+                  setTimeout(() => {
+                    this.cambiarSeleccionado();
+                  }, 20);
+                }
+              }
+            } else if(event === 'Enter' && this.cargado){
+              if(!this.dentroSeccion){
+                this.entrarSeccion();
+              }
+            } else if(event === 'ArrowRight' && this.cargado){
+              if(!this.dentroSeccion){
+                this.moverMenu("derecha");
+              }
+            } else if(event === 'ArrowLeft' && this.cargado){
+              if(!this.dentroSeccion){
+                this.moverMenu("izquierda");
+              }
+            } else if(event === 'ArrowUp' && this.cargado){
+              if(!this.dentroSeccion){
+                this.moverMenu("arriba");
+              }
+            } else if(event === 'ArrowDown' && this.cargado){
+              if(!this.dentroSeccion){
+                this.moverMenu("abajo");
+              }
             }
         } else{
           this.usarCombateCPU = false;
@@ -211,12 +270,83 @@ export class CombateCPUComponent implements OnInit{
       },50)
     }
   }
-  quitarVida() {
-    if(this.hp[0] > 0)
-      this.hp[0] -= 10;
-    if(this.hp[0] <= 0)
-      this.hp[0] = 0;
-    const porcentaje = (this.hp[0] * 100) / this.maxHp[0];
-    this.barraSalud[0].style.width = porcentaje + "%"
+  moverMenu(lugar: string) {
+    if(!this.dentroSeccion){
+
+      if(lugar === "derecha"){
+        if(this.arriba){
+          if(this.numSeccion == 1){
+            this.numSeccion++;
+            this.cambiarSeleccionado();
+          }
+        } else {
+          if(this.numSeccion == 3){
+            this.numSeccion++
+            this.cambiarSeleccionado()
+          }
+        }
+      } else if(lugar === "izquierda"){
+        if(this.arriba){
+          if(this.numSeccion == 2){
+            this.numSeccion--;
+            this.cambiarSeleccionado();
+          }
+        } else {
+          if(this.numSeccion == 4){
+            this.numSeccion--;
+            this.cambiarSeleccionado()
+          }
+        }
+      } else if(lugar === "arriba"){
+          if(!this.arriba){
+            this.arriba = true;
+            this.numSeccion -= 2;
+            this.cambiarSeleccionado()
+          }
+      } else{
+        if(this.arriba){
+          this.arriba = false;
+          this.numSeccion += 2;
+          this.cambiarSeleccionado()
+        }
+      }
+
+    }
   }
+
+  cambiarSeleccionado() {
+    // Buscamos y quitamos la antigua opcion seleccionada como seleccionado
+    const antiguaOpcion = document.querySelector('.seleccionado-combate') as HTMLElement;
+    antiguaOpcion.classList.remove('seleccionado-combate');
+    antiguaOpcion.classList.add('no-seleccionado-combate');
+
+    // Buscamos y agregamos como nueva opcion seleccionada a la nueva seleccionada
+    const nuevaOpcion = document.querySelector('#seccionCombate' + this.numSeccion) as HTMLElement;
+    nuevaOpcion.classList.remove('no-seleccionado-combate');
+    nuevaOpcion.classList.add('seleccionado-combate');
+  }
+  //quitarVida() {
+  //  if(this.hp[0] > 0)
+  //    this.hp[0] -= 10;
+  //  if(this.hp[0] <= 0)
+  //    this.hp[0] = 0;
+  //  const porcentaje = (this.hp[0] * 100) / this.maxHp[0];
+  //  this.barraSalud[0].style.width = porcentaje + "%"
+  //}
+
+  entrarSeccion(){
+    this.dentroSeccion = true;
+    if(this.numSeccion == 1){
+      this.seccionLuchar = true;
+      } else if(this.numSeccion == 2){
+        this.seccionPokemon = true;
+      } else if(this.numSeccion == 3){
+        this.seccionBolsa = true;
+      } else if(this.numSeccion == 4){
+        this.comunication.volverMenu.next(true);
+        this.comunication.accion.next('Backspace');
+        this.ngOnDestroy();
+      }
+    }
 }
+
