@@ -57,7 +57,7 @@
                                 <div class="d-flex flex-column justify-content-around align-items-center movimiento">
                                     <label id="nombreMovimiento">{{pokemon[0].atack1.name}}</label>
                                     <div class="w-100 d-flex flex-row justify-content-around align-items-center">
-                                        <div [style.background-color]="pokemon[0].atack1.color" class="tipo p-1" id="tipo1">{{pokemon[0].atack1.type}}</div>
+                                        <div [style.background-color]="pokemon[0].atack1.color" class="tipo" id="tipo1">{{pokemon[0].atack1.type}}</div>
                                         <label> PP {{pokemon[0].atack1.pp}}</label>
                                     </div>
                                 </div>
@@ -68,8 +68,8 @@
                                 <div class="d-flex flex-column justify-content-around align-items-center movimiento">
                                     <label id="nombreMovimiento">{{pokemon[0].atack2.name}}</label>
                                     <div class="w-100 d-flex flex-row justify-content-around align-items-center">
-                                        <div [style.background-color]="pokemon[0].atack2.color" class="tipo p-1" id="tipo2">{{pokemon[1].atack1.type}}</div>
-                                        <label> PP {{pokemon[1].atack1.pp}}</label>
+                                        <div [style.background-color]="pokemon[0].atack2.color" class="tipo" id="tipo2">{{pokemon[0].atack2.type}}</div>
+                                        <label> PP {{pokemon[0].atack2.pp}}</label>
                                     </div>
                                 </div>
                             </div>
