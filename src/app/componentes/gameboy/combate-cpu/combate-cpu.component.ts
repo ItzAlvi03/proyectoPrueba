@@ -3,6 +3,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { LogicaService } from 'src/app/Services/Gameboy/CombatePokemon/logica.service';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
 import { PokedexService } from 'src/app/Services/Gameboy/pokedex.service';
+import { CombatePokemonDirective } from 'src/app/truncate/combate-pokemon.directive';
 
 @Component({
   selector: 'app-combate-cpu',
@@ -15,7 +16,8 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
   private MAX_POKEMON = 649 as number;
   pokemon!: any [];
   cargado: boolean = false;
-  private barraSalud!: any[];
+  private barraSaludUser: any;
+  private barraSaludCPU: any;
   hp!: any[];
   maxHp!: any[];
   menu: boolean = false;
@@ -27,6 +29,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
   seccionLuchar: boolean = false;
   seccionPokemon: boolean = false;
   seccionBolsa: boolean = false;
+  mensaje: string = "";
   
   constructor(private comunication: ComunicationServiceService, private pokedex: PokedexService, private logica: LogicaService){}
 
@@ -52,9 +55,9 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       await this.generarPokemon();
       this.cargado = true;
       this.comunication.volverMenu.next(false);
-      this.barraSalud = [];
       setTimeout(() => {
-        this.barraSalud = document.querySelectorAll('#salud') as any;
+        this.barraSaludUser = document.querySelector('#salud1') as any;
+        this.barraSaludCPU = document.querySelector('#salud2') as any;
       },50);
       this.menu = true;
     }
@@ -127,53 +130,6 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       console.log('Se produjo un error al asignar las habilidades de un pokemon, volviendo a buscar pokemon...')
       this.generarPokemon();
     }
-    //console.log('Pokemons listos! Empieza la prueba:')
-    //var hp1 = this.pokemon[0].stats[0].base_stat as number;
-    //var hp2 = this.pokemon[1].stats[0].base_stat as number;
-    //var resultado = "" as any;
-    //var ataque = 0 as number;
-    //var continuar = true as boolean;
-    //while(continuar){
-    //  console.log(this.pokemon[0].name + " va a utilizar " + this.pokemon[0].atack1.name);
-    //  resultado = this.logica.calcularDaño(this.pokemon[0], this.pokemon[1], this.pokemon[0].atack1);
-    //  if(resultado.fallo){
-    //    console.log(this.pokemon[0].name + " ha fallado al realizar el ataque.");
-    //  } else{
-    //    ataque = resultado.daño as number;
-    //    if(resultado.critico)
-    //      console.log(this.pokemon[0].atack1.name + " con CRÍTICO ha quitado un total de " + ataque + " hp.")
-    //    else
-    //      console.log(this.pokemon[0].atack1.name + " ha quitado un total de " + ataque + " hp.")
-//
-    //    if(ataque >= hp2){
-    //      continuar = false;
-    //      console.log(this.pokemon[1].name + " ha sido derrotado.");
-    //    }else{
-    //      hp2 -= ataque;
-    //      console.log(this.pokemon[1].name + " se ha quedado a " + hp2 + " de vida.");
-    //    }
-    //  }
-    //  if(continuar){
-    //    console.log(this.pokemon[1].name + " va a utilizar " + this.pokemon[1].atack1.name);
-    //    resultado = this.logica.calcularDaño(this.pokemon[1], this.pokemon[0], this.pokemon[1].atack1);
-    //    if(resultado.fallo){
-    //      console.log(this.pokemon[1].name + " ha fallado al realizar el ataque.");
-    //    } else{
-    //      ataque = resultado.daño as number;
-    //      if(resultado.critico)
-    //        console.log(this.pokemon[1].atack1.name + " con CRÍTICO ha quitado un total de " + ataque + " hp.")
-    //      else
-    //        console.log(this.pokemon[1].atack1.name + " ha quitado un total de " + ataque + " hp.")
-    //        if(ataque >= hp1){
-    //          continuar = false;
-    //          console.log(this.pokemon[0].name + " ha sido derrotado.");
-    //        }else{
-    //          hp1 -= ataque;
-    //          console.log(this.pokemon[0].name + " se ha quedado a " + hp1 + " de vida.");
-    //        }
-    //    }
-    //  }
-    //}
   }
 
   randomNumber(max: number) {
@@ -226,7 +182,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
 
   accionTecla(event: string) {
     if(this.usarCombateCPU){
-      setTimeout(() => {
+      setTimeout(async () => {
         if(this.comunication.encendido.value){
             if(event === 'Backspace'){
               if(!this.cargado)
@@ -247,6 +203,18 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
             } else if(event === 'Enter' && this.cargado){
               if(!this.dentroSeccion){
                 this.entrarSeccion();
+              }
+              else if(this.seccionLuchar){
+                var ganador = false;
+                for (let i = 0; i < 2; i++) {
+                  await this.realizarMovimiento(i);
+                  const ganador = this.comprobarGanador();
+                  if (await ganador) {
+                    i = 3;
+                    this.usarCombateCPU = false;
+                  }
+                  await delay(800);
+                }
               }
             } else if(event === 'ArrowRight' && this.cargado){
                 this.moverMenu("derecha");
@@ -314,14 +282,19 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
     nuevaOpcion.classList.remove('no-seleccionado-combate');
     nuevaOpcion.classList.add('seleccionado-combate');
   }
-  //quitarVida() {
-  //  if(this.hp[0] > 0)
-  //    this.hp[0] -= 10;
-  //  if(this.hp[0] <= 0)
-  //    this.hp[0] = 0;
-  //  const porcentaje = (this.hp[0] * 100) / this.maxHp[0];
-  //  this.barraSalud[0].style.width = porcentaje + "%"
-  //}
+  async quitarVida(daño: number, pokemon: number) {
+    if(this.hp[pokemon] > 0)
+      this.hp[pokemon] -= daño;
+    if(this.hp[pokemon] <= 0)
+      this.hp[pokemon] = 0;
+    const porcentaje = (this.hp[pokemon] * 100) / this.maxHp[pokemon];
+    if(pokemon == 0){
+      this.barraSaludUser.style.width = porcentaje + "%";
+    } else{
+      this.barraSaludCPU.style.width = porcentaje + "%";
+    }
+    await delay(800);
+  }
 
   entrarSeccion(){
     this.dentroSeccion = true;
@@ -337,5 +310,74 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
         this.ngOnDestroy();
       }
     }
-}
+    async realizarMovimiento(pokemon: number){
+      var movimiento = "" as any;
+      var ataque = 0;
 
+      if(pokemon == 0){
+        if(this.numSeccion == 1){
+          movimiento = this.pokemon[pokemon].atack1;
+        }else if(this.numSeccion == 2){
+          movimiento = this.pokemon[pokemon].atack2;
+        }
+      }else{
+        const num = Math.round(Math.random());
+        if(num == 0){
+          movimiento = this.pokemon[pokemon].atack1;
+        }else {
+          movimiento = this.pokemon[pokemon].atack2;
+        }
+      }
+      // Movimiento del usuario
+      this.mensaje = (this.pokemon[pokemon].name + " va a utilizar " + movimiento.name);
+      var resultado = "" as any;
+      if(pokemon == 0)
+        resultado = this.logica.calcularDaño(this.pokemon[0], this.pokemon[1], movimiento);
+      else
+        resultado = this.logica.calcularDaño(this.pokemon[1], this.pokemon[0], movimiento);
+        return new Promise<void>((resolve) => {
+            if(resultado.fallo){
+              this.mensaje = (this.pokemon[pokemon].name + " ha fallado al realizar el ataque.");
+            } else{
+              ataque = resultado.daño as number;
+              if(pokemon == 0)
+                this.quitarVida(ataque,1);
+              else
+                this.quitarVida(ataque,0);
+              if(resultado.critico)
+                this.mensaje = (movimiento.name + " con CRÍTICO ha quitado un total de " + ataque + " hp.")
+              else
+                this.mensaje = (movimiento.name + " ha quitado un total de " + ataque + " hp.")
+            }
+            resolve();
+        });
+    }
+
+    async comprobarGanador(){
+      var ganador = false;
+      var num = -1;
+      for(var i = 0; i < 2; i++){
+        if(this.pokemon[i].hp == 0)
+          num = i;
+      }
+      if(num != -1){
+        ganador = true;
+        this.usarCombateCPU = false;
+        this.mensaje = (this.pokemon[i].name + " ha sido DERROTADO.")
+        setTimeout(() => {
+          if(num == 0){
+            this.mensaje = ("El pokemon " + this.pokemon[1].name + " ha ganado la pelea.");
+          } else{
+            this.mensaje = ("El pokemon " + this.pokemon[1].name + " ha ganado la pelea.");
+          }
+        }, 600);
+        setTimeout(() => {
+          this.comunication.volverMenu.next(true);
+        }, 600);
+      }
+      return ganador;
+    }
+  }
+  async function delay(ms: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, ms));
+  }

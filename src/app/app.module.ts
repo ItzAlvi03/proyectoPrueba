@@ -21,6 +21,7 @@ import { LogInComponent } from './componentes/gameboy/usuario/log-in/log-in.comp
 import { SignInComponent } from './componentes/gameboy/usuario/sign-in/sign-in.component';
 import { CombateCPUComponent } from './componentes/gameboy/combate-cpu/combate-cpu.component';
 import { AnimacionEncenderComponent } from './componentes/gameboy/animaciones/animacion-encender/animacion-encender.component';
+import { CombatePokemonDirective } from './truncate/combate-pokemon.directive';
 
 @NgModule({
   declarations: [
@@ -39,6 +40,7 @@ import { AnimacionEncenderComponent } from './componentes/gameboy/animaciones/an
     SignInComponent,
     CombateCPUComponent,
     AnimacionEncenderComponent,
+    CombatePokemonDirective,
   ],
   imports: [
     FormsModule,
