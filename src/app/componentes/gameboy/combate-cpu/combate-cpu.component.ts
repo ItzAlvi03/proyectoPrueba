@@ -198,6 +198,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
               ataques[i] = {
                 name: res2.name,
                 accuracy: res2.accuracy,
+                maxpp: res2.pp,
                 pp: res2.pp,
                 power: res2.power,
                 type: res2.type.name,
@@ -248,31 +249,21 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
                 this.entrarSeccion();
               }
             } else if(event === 'ArrowRight' && this.cargado){
-              if(!this.dentroSeccion){
                 this.moverMenu("derecha");
-              }
             } else if(event === 'ArrowLeft' && this.cargado){
-              if(!this.dentroSeccion){
                 this.moverMenu("izquierda");
-              }
             } else if(event === 'ArrowUp' && this.cargado){
-              if(!this.dentroSeccion){
                 this.moverMenu("arriba");
-              }
             } else if(event === 'ArrowDown' && this.cargado){
-              if(!this.dentroSeccion){
                 this.moverMenu("abajo");
-              }
             }
         } else{
-          this.usarCombateCPU = false;
+          this.ngOnDestroy();
         }
       },50)
     }
   }
   moverMenu(lugar: string) {
-    if(!this.dentroSeccion){
-
       if(lugar === "derecha"){
         if(this.arriba){
           if(this.numSeccion == 1){
@@ -310,8 +301,6 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
           this.cambiarSeleccionado()
         }
       }
-
-    }
   }
 
   cambiarSeleccionado() {

@@ -104,7 +104,7 @@
 }
 #menu{
     background-color: rgba(252, 255, 252, 0.85);
-    padding: 2%;
+    padding: 1%;
     position: absolute;
     bottom: 0;
     left: 0;
@@ -122,14 +122,16 @@
     font-size: large;
     text-align: center;
     align-items: center;
-    width: 80%;
-    height: 80%;
+    width: 84%;
+    height: 84%;
 }
 .seccion-luchar{
     border: 2.5px solid #D0C6C1;
     outline: 2.5px solid #7C7F7A;
     outline-offset: 0;
     border-radius: 8px;
+    max-width: 84%;
+    max-height: 84%;
     font-weight: 900;
     display: block;
     z-index: 4;
