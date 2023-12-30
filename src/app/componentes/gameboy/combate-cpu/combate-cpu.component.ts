@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit, Renderer2 } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
 import { LogicaService } from 'src/app/Services/Gameboy/CombatePokemon/logica.service';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
@@ -16,6 +16,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
   private MAX_POKEMON = 649 as number;
   pokemon!: any [];
   cargado: boolean = false;
+  cargando!: boolean;
   private barraSaludUser: any;
   private barraSaludCPU: any;
   hp!: any[];
@@ -30,18 +31,23 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
   seccionPokemon: boolean = false;
   seccionBolsa: boolean = false;
   mensaje: string = "";
+  mensajeSpinner!: string;
+  private fin: boolean = false;
   
-  constructor(private comunication: ComunicationServiceService, private pokedex: PokedexService, private logica: LogicaService){}
+  constructor(private comunication: ComunicationServiceService, private pokedex: PokedexService, private logica: LogicaService, private render: Renderer2 ){}
 
   ngOnDestroy(): void {
     this.cargado = false;
+    this.fin = true;
     this.usarCombateCPU = false;
     document.removeEventListener('keydown', this.keydownListener);
+    this.cargando = false;
     this.destroyed$.next();
     this.destroyed$.complete();
   }
 
   ngOnInit(){
+    this.cargando = true;
     this.usarCombateCPU = true;
     document.addEventListener('keydown', this.keydownListener);
     this.comunication.accion.pipe(
@@ -53,8 +59,12 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
 
     async ngAfterViewInit(){
       await this.generarPokemon();
-      this.cargado = true;
+      setTimeout(() => {
+        this.mensajeSpinner = "Pokemons Cargados, iniciando el combate..."
+      }, 50);
       this.comunication.volverMenu.next(false);
+      this.cargando = false;
+      this.cargado = true;
       setTimeout(() => {
         this.barraSaludUser = document.querySelector('#salud1') as any;
         this.barraSaludCPU = document.querySelector('#salud2') as any;
@@ -108,8 +118,23 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       this.pokemon = [];
       
     for (var i = 0; i < 2; i++) {
+      setTimeout(() => {
+        if(i == 0)
+          this.mensajeSpinner = "Cargando Pokemon del Usuario...";
+        else
+          this.mensajeSpinner = "Cargando Pokemon de la CPU...";
+      }, 50);
+
       var number = this.randomNumber(this.MAX_POKEMON);
       const res = await this.pokedex.getPokemon(number).toPromise();
+
+      setTimeout(() => {
+        if(i == 0)
+          this.mensajeSpinner = "Genereando ataques del Pokemon del Usuario...";
+        else
+          this.mensajeSpinner = "Generando ataques del Pokemon de la CPU...";
+      }, 50);
+
       const ataques = await this.asignarAtaques(res) as any;
       this.pokemon[i] = {
         name: res.name.toUpperCase(),
@@ -123,11 +148,9 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       }
       this.hp[i] = this.pokemon[i].stats[0].base_stat as number;
       this.maxHp[i] = this.hp[i];
-      console.log(this.pokemon[i])
     }
     if(this.contadorError >= 10){
       this.contadorError = 0;
-      console.log('Se produjo un error al asignar las habilidades de un pokemon, volviendo a buscar pokemon...')
       this.generarPokemon();
     }
   }
@@ -283,33 +306,38 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
     nuevaOpcion.classList.add('seleccionado-combate');
   }
   async quitarVida(daño: number, pokemon: number) {
-    if(this.hp[pokemon] > 0)
-      this.hp[pokemon] -= daño;
-    if(this.hp[pokemon] <= 0)
-      this.hp[pokemon] = 0;
-    const porcentaje = (this.hp[pokemon] * 100) / this.maxHp[pokemon];
-    if(pokemon == 0){
-      this.barraSaludUser.style.width = porcentaje + "%";
-    } else{
-      this.barraSaludCPU.style.width = porcentaje + "%";
+    if(!this.fin){
+      if(this.hp[pokemon] > 0)
+        this.hp[pokemon] -= daño;
+      if(this.hp[pokemon] <= 0)
+        this.hp[pokemon] = 0;
+      const porcentaje = (this.hp[pokemon] * 100) / this.maxHp[pokemon];
+      if(pokemon == 0){
+        this.barraSaludUser.style.width = porcentaje + "%";
+      } else{
+        this.barraSaludCPU.style.width = porcentaje + "%";
+      }
+      var pokemonDañado;
+      if(pokemon == 0){
+        pokemonDañado = document.getElementById('pokemonUsuario') as any;
+      } else{
+        pokemonDañado = document.getElementById('pokemonCPU') as any;
+      }
+      this.animacionDaño(pokemonDañado);
     }
-    var pokemonDañado;
-    if(pokemon == 0){
-      pokemonDañado = document.getElementById('pokemonUsuario') as any;
-    } else{
-      pokemonDañado = document.getElementById('pokemonCPU') as any;
-    }
-    this.animacionDaño(pokemonDañado);
   }
 
   async animacionDaño(pokemonDañado: any) {
+    if(!this.fin)
     for(var i = 0; i < 3; i++){
-      pokemonDañado.classList.remove('no-atacado');
-      pokemonDañado.classList.add('atacado');
-      await delay(120);
-      pokemonDañado.classList.remove('atacado');
-      pokemonDañado.classList.add('no-atacado');
-      await delay(120);
+      if(!this.fin){
+        pokemonDañado.classList.remove('no-atacado');
+        pokemonDañado.classList.add('atacado');
+        await delay(120);
+        pokemonDañado.classList.remove('atacado');
+        pokemonDañado.classList.add('no-atacado');
+        await delay(120);
+      }
     }
   }
 
@@ -416,23 +444,33 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
         }
       }
       if(num != -1){
-        this.usarCombateCPU = false;
-        this.mensaje = (this.pokemon[num].name + " ha sido DERROTADO.")
-        this.usarCombateCPU = false;
-        await delay(1500);
-        if(num == 0){
-          this.mensaje = ("El pokemon " + this.pokemon[1].name + " ha ganado la pelea.");
-        } else{
-          this.mensaje = ("El pokemon " + this.pokemon[0].name + " ha ganado la pelea.");
+        if(!this.fin){
+          var img: any;
+          if(num == 0)
+            img = this.render.selectRootElement('#pokemonUsuario');
+          else
+            img = this.render.selectRootElement('#pokemonCPU');
+          
+          this.render.addClass(img, 'achicar');
+
+          this.usarCombateCPU = false;
+          this.mensaje = (this.pokemon[num].name + " ha sido DERROTADO.")
+          this.usarCombateCPU = false;
+          await delay(1500);
+          if(num == 0){
+            this.mensaje = ("El pokemon " + this.pokemon[1].name + " ha ganado la pelea.");
+          } else{
+            this.mensaje = ("El pokemon " + this.pokemon[0].name + " ha ganado la pelea.");
+          }
+          await delay(1500);
+          for(var seg = 5; seg >= 0; seg--){
+            this.mensaje = "Volviendo al menú de la Gameboy en " + seg + " segundos...";
+            await delay(1000);
+          }
+          this.comunication.volverMenu.next(true);
+          this.comunication.accion.next('Backspace');
+          this.ngOnDestroy();
         }
-        await delay(1500);
-        for(var seg = 5; seg >= 0; seg--){
-          this.mensaje = "Volviendo al menú de la Gameboy en " + seg + " segundos...";
-          await delay(1000);
-        }
-        this.comunication.volverMenu.next(true);
-        this.comunication.accion.next('Backspace');
-        this.ngOnDestroy();
       } else if(num == -1 && pokemon == 1){
         this.usarCombateCPU = true;
         this.menu = true;
