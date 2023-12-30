@@ -130,7 +130,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
 
       setTimeout(() => {
         if(i == 0)
-          this.mensajeSpinner = "Genereando ataques del Pokemon del Usuario...";
+          this.mensajeSpinner = "Generando ataques del Pokemon del Usuario...";
         else
           this.mensajeSpinner = "Generando ataques del Pokemon de la CPU...";
       }, 50);
