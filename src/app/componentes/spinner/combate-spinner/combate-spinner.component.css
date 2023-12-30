@@ -1,0 +1,42 @@
+*{
+    font-family: 'pokemonPixel2';
+}
+#contentSpinner{
+    max-width: 100%;
+    max-height: 100%;
+    bottom: 0%;
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: space-around;
+    align-items: center;
+    color: black;
+    font-weight: 700;
+    z-index: 4;
+    background-color: rgba(0, 0, 0, 0.25);
+}
+#mensaje{
+    font-size: large;
+    text-align: center;
+    align-items: center;
+}
+@media (max-width: 700px){
+    #mensaje{
+        font-size: medium;
+    }
+}
+@media (max-width: 490px) {
+    #mensaje{
+        font-size: small;
+    }
+}
+@media (max-width: 420px){
+    #mensaje{
+        font-size: x-small;
+    }
+}
+@media (max-width: 320px){
+    #mensaje{
+        font-size: xx-small;
+    }
+}

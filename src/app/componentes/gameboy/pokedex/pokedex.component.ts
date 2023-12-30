@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Subject } from 'rxjs';
 import { takeUntil } from 'rxjs/operators';
+import { LogicaService } from 'src/app/Services/Gameboy/CombatePokemon/logica.service';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
 import { PokedexService } from 'src/app/Services/Gameboy/pokedex.service';
 
@@ -19,7 +20,7 @@ export class PokedexComponent implements OnInit, OnDestroy{
   frontImage: boolean = false;
   pantalla: any;
   usarPokedex: boolean = false;
-  constructor(private service: PokedexService, private comunication: ComunicationServiceService){}
+  constructor(private service: PokedexService, private comunication: ComunicationServiceService, private logica: LogicaService){}
 
   ngOnDestroy(): void {
     this.usarPokedex = false;
@@ -123,54 +124,10 @@ export class PokedexComponent implements OnInit, OnDestroy{
   colorType() {
     this.types = document.querySelectorAll('#type')
     for(var i = 0; i < this.types.length; i++){
-      const color = this.elegirColor(this.types[i].textContent);
+      const color = this.logica.elegirColor(this.types[i].textContent);
       this.types[i].style.backgroundColor = color;
     }
   }
-
-  elegirColor(type: any) {
-    switch(type){
-      case 'GRASS':
-        return "rgb(61,162,36)";
-      case 'POISON':
-        return "rgb(146,63,204)";
-      case 'FIRE':
-        return "#E62425";
-      case 'FLYING':
-        return "#81B9EF";
-      case 'WATER':
-        return "#2980EF";
-      case 'BUG':
-        return "#91A119";
-      case 'NORMAL':
-        return "#A0A2A0";
-      case 'ELECTRIC':
-        return "#FAC000";
-      case 'GROUND':
-        return "#915121";
-      case 'FIGHTING':
-        return "#FF8000";
-      case 'PSYCHIC':
-        return "#EF4179";
-      case 'ROCK':
-        return "#AFA981";
-      case 'STEEL':
-        return "#61A1B8";
-      case 'ICE':
-        return "#3FD8FF";
-      case 'FAIRY':
-        return "#D38BB1";
-      case 'GHOST':
-        return "#642265";
-      case 'DRAGON':
-        return "#5061E1";
-      case 'DARK':
-        return "#50413F";
-      default:
-        return "rgb(0,0,0)";
-    }
-  }
-  
 
   getCharacters() {
     this.service.getPokemon(this.numero).subscribe((res: any) => {

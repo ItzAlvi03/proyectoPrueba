@@ -16,3 +16,271 @@
     font-weight: 500;
     border-radius: 0px 0px 10px 10px;
 }
+#lado{
+    width: 47%;
+}
+.arriba img, .abajo img {
+    margin-bottom: -8%;
+    z-index: 3;
+    display: block;
+    height: auto;
+}
+
+.arriba img {
+    max-height: 80%;
+}
+
+.abajo img {
+    max-height: 82.5%;
+}
+#plataforma{
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 80%;
+    height: 17.5%;
+    margin-left: 10%;
+    background-color: rgb(202, 202, 202);
+    border: 2.5px solid black;
+    border-radius: 50%;
+    z-index: 2;
+}
+
+.abajo{
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+    align-items: end;
+    height: 95%;
+    margin-bottom: 5%;
+}
+.arriba{
+    display: flex;
+    flex-direction: column;
+    justify-content: start;
+    align-items: start;
+    height: 95%;
+}
+#infoPokemon{
+    height: auto;
+    width: 100%;
+    max-height: 30%;
+    height: auto;
+    font-size: small;
+    font-weight: 900;
+    margin-bottom: 2%;
+    display: block;
+    z-index: 3;
+}
+.arriba #img{
+    max-height: 70%;
+    height: 70%;
+}
+.abajo #img{
+    max-height: 75%;
+    height: 75%;
+    margin-bottom: 12%;
+}
+.imgClase{
+    transition: filter 0.12s linear, height 0.6s ease-in-out;
+}
+.atacado{
+    filter: brightness(0%);
+}
+.no-atacado{
+    filter: brightness(100%);
+}
+.barra-salud {
+    width: 90%;
+    min-height: 15%;
+    background-color: black;
+    border-radius: 9px;
+    padding: 0% 1.2%;
+    border: 2px solid black;
+    color: red;
+    font-weight: 700;
+    overflow: hidden;
+    transition: width 0.6s ease-out;
+}
+.progress-bar{
+    transition: width 0.6s ease-out;
+}
+#infoPokemon p{
+    margin: 0%;
+    margin-bottom: 1%;
+}
+.barra-salud p{
+    margin: 0%;
+}
+#contenidoPokemon{
+    height: 60%;
+}
+#menu{
+    background-color: rgba(252, 255, 252, 0.85);
+    padding: 1%;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    z-index: 4;
+    border-top: 2.5px solid #7C7F7A;
+}
+.seccion-combate{
+    border: 2.5px solid #D0C6C1;
+    outline: 2.5px solid #7C7F7A;
+    outline-offset: 0;
+    border-radius: 8px;
+    font-weight: 900;
+    display: block;
+    z-index: 4;
+    font-size: large;
+    text-align: center;
+    align-items: center;
+    width: 84%;
+    height: 84%;
+}
+.seccion-luchar{
+    border: 2.5px solid #D0C6C1;
+    outline: 2.5px solid #7C7F7A;
+    outline-offset: 0;
+    border-radius: 8px;
+    max-width: 84%;
+    max-height: 84%;
+    font-weight: 900;
+    display: block;
+    z-index: 4;
+    font-size: large;
+    text-align: center;
+    align-items: center;
+}
+.movimiento{
+    width: 85%;
+    height: 90%;
+    background-color: #F0EBDD;
+    border-radius: 8px;
+    display: block;
+    font-size: medium;
+}
+.tipo{
+    border: 1px solid #F0EBDD;
+    border-radius: 6px;
+    padding: 0% 0.5%;
+    font-weight: 900;
+    text-align: center;
+    align-items: center;
+}
+#luchar{
+    background-color: #FA5664;
+}
+#bolsa{
+    background-color: #FCB754;
+}
+#cambiar{
+    background-color: #82CC47;
+}
+#salir{
+    background-color: #42ADD6;
+}
+.seleccionado-combate,.no-seleccionado-combate{
+    background-repeat: no-repeat;
+    background-size: contain;
+    background-position: center;
+}
+.seleccionado-combate{
+    background-image: url(../../../../assets/images/seleccionado.png);
+    padding: 0.5%;
+}
+.no-seleccionado-combate{
+    background-image: none;
+    padding: 0%;
+}
+#mensaje{
+    font-size: large;
+    text-align: center;
+    align-items: center;
+}
+.achicar {
+    animation: achicar 0.5s ease-in-out forwards;
+}
+
+@keyframes achicar {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+@media (max-width: 800px){
+    .seccion{
+        font-size: medium;
+    }
+    .movimiento{
+        font-size: smaller;
+    }
+}
+@media (max-width: 700px){
+    .movimiento{
+        font-size: small;
+    }
+    #mensaje{
+        font-size: medium;
+    }
+}
+@media (max-width: 670px) {
+    #infoPokemon p{
+        font-size: 10.5px;
+    }
+}
+@media (max-width: 585px){
+    .movimiento{
+        font-size: x-small;
+    }
+    .seccion-combate{
+        font-size: medium;
+    }
+}
+@media (max-width: 555px) {
+    #infoPokemon p{
+        font-size: 9px;
+    }
+}
+@media (max-width: 490px) {
+    #infoPokemon p{
+        font-size: 7.5px;
+    }
+    #mensaje{
+        font-size: small;
+    }
+}
+@media (max-width: 460px){
+    .movimiento{
+        width: 88%;
+        font-size: xx-small;
+    }
+    .seccion-combate{
+        font-size: small;
+    }
+}
+@media (max-width: 420px){
+    #mensaje{
+        font-size: x-small;
+    }
+}
+@media (max-width: 390px){
+    .movimiento{
+        font-size: 7px;
+    }
+}
+@media (max-width: 360px){
+    .movimiento{
+        font-size: 6px;
+    }
+    .seccion-combate{
+        font-size: x-small;
+    }
+}
+@media (max-width: 320px){
+    #mensaje{
+        font-size: xx-small;
+    }
+}
