@@ -205,15 +205,15 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
                 this.entrarSeccion();
               }
               else if(this.seccionLuchar){
-                var ganador = false;
-                for (let i = 0; i < 2; i++) {
-                  await this.realizarMovimiento(i);
-                  const ganador = this.comprobarGanador();
-                  if (await ganador) {
-                    i = 3;
-                    this.usarCombateCPU = false;
+                // Compruebo si son las dos únicas opciones disponibles a usar
+                if(this.numSeccion == 1 || this.numSeccion == 2){
+                  // Aquí basicamente compruebo que si el movimiento seleccionado tenga PP para poder usarse, en caso de que
+                  // ninguno de los 2 únicos movimientos tengan PP se realizará igualmente pero ya está controlado dentro de la función
+                  if(this.numSeccion == 1 && this.pokemon[0].atack1.pp > 0 || this.numSeccion == 2 && this.pokemon[0].atack2.pp > 0){
+                    this.realizarTurnos();
+                  } else if(this.pokemon[0].atack1.pp == 0 && this.pokemon[0].atack2.pp == 0){
+                    this.realizarTurnos();
                   }
-                  await delay(800);
                 }
               }
             } else if(event === 'ArrowRight' && this.cargado){
@@ -293,7 +293,24 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
     } else{
       this.barraSaludCPU.style.width = porcentaje + "%";
     }
-    await delay(800);
+    var pokemonDañado;
+    if(pokemon == 0){
+      pokemonDañado = document.getElementById('pokemonUsuario') as any;
+    } else{
+      pokemonDañado = document.getElementById('pokemonCPU') as any;
+    }
+    this.animacionDaño(pokemonDañado);
+  }
+
+  async animacionDaño(pokemonDañado: any) {
+    for(var i = 0; i < 3; i++){
+      pokemonDañado.classList.remove('no-atacado');
+      pokemonDañado.classList.add('atacado');
+      await delay(120);
+      pokemonDañado.classList.remove('atacado');
+      pokemonDañado.classList.add('no-atacado');
+      await delay(120);
+    }
   }
 
   entrarSeccion(){
@@ -310,72 +327,116 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
         this.ngOnDestroy();
       }
     }
+    async realizarTurnos(){
+      this.menu = false;
+      this.usarCombateCPU = false;
+      for (let i = 0; i < 2; i++) {
+        await this.realizarMovimiento(i);
+        await(1500);
+        await this.comprobarGanador(i);
+      }
+      this.numSeccion = 1;
+      this.arriba = true;
+    }
+
     async realizarMovimiento(pokemon: number){
       var movimiento = "" as any;
       var ataque = 0;
-
-      if(pokemon == 0){
-        if(this.numSeccion == 1){
-          movimiento = this.pokemon[pokemon].atack1;
-        }else if(this.numSeccion == 2){
-          movimiento = this.pokemon[pokemon].atack2;
-        }
-      }else{
-        const num = Math.round(Math.random());
-        if(num == 0){
-          movimiento = this.pokemon[pokemon].atack1;
-        }else {
-          movimiento = this.pokemon[pokemon].atack2;
+      // Se comprueba que alguna tecnica tenga al menos pp
+      if(this.pokemon[pokemon].atack1.pp == 0 && this.pokemon[pokemon].atack2.pp == 0){
+        movimiento = null;
+      } else {
+        // Si es el pokemon 0 siginifica que es el del usuario, sino será la CPU
+        if(pokemon == 0){
+          if(this.numSeccion == 1){
+            movimiento = this.pokemon[pokemon].atack1;
+            this.pokemon[pokemon].atack1.pp--;
+          }else {
+            movimiento = this.pokemon[pokemon].atack2;
+            this.pokemon[pokemon].atack2.pp--;
+          }
+        } else{
+          // Si el movimiento no tiene pp para utilizarse se volverá a intentar
+          movimiento = {
+            pp: 0 as number
+          }
+          while(movimiento.pp == 0){
+            const num = Math.round(Math.random());
+            if(num == 0){
+              movimiento = this.pokemon[pokemon].atack1;
+              this.pokemon[pokemon].atack1.pp--;
+            }else {
+              movimiento = this.pokemon[pokemon].atack2;
+              this.pokemon[pokemon].atack2.pp--;
+            }
+          }
         }
       }
-      // Movimiento del usuario
-      this.mensaje = (this.pokemon[pokemon].name + " va a utilizar " + movimiento.name);
-      var resultado = "" as any;
-      if(pokemon == 0)
-        resultado = this.logica.calcularDaño(this.pokemon[0], this.pokemon[1], movimiento);
-      else
-        resultado = this.logica.calcularDaño(this.pokemon[1], this.pokemon[0], movimiento);
-        return new Promise<void>((resolve) => {
-            if(resultado.fallo){
-              this.mensaje = (this.pokemon[pokemon].name + " ha fallado al realizar el ataque.");
-            } else{
-              ataque = resultado.daño as number;
-              if(pokemon == 0)
-                this.quitarVida(ataque,1);
-              else
-                this.quitarVida(ataque,0);
-              if(resultado.critico)
-                this.mensaje = (movimiento.name + " con CRÍTICO ha quitado un total de " + ataque + " hp.")
-              else
-                this.mensaje = (movimiento.name + " ha quitado un total de " + ataque + " hp.")
-            }
-            resolve();
-        });
+      if(movimiento != null){
+        // Movimiento del usuario
+        this.mensaje = (this.pokemon[pokemon].name + " ha usado " + movimiento.name);
+        var resultado = "" as any;
+        if(pokemon == 0)
+          resultado = this.logica.calcularDaño(this.pokemon[0], this.pokemon[1], movimiento);
+        else
+          resultado = this.logica.calcularDaño(this.pokemon[1], this.pokemon[0], movimiento);
+        if(resultado.fallo){
+          await delay(1500);
+          if(!resultado.efecto){
+            var enemigo = 0;
+            if(pokemon == 0)
+              enemigo = 1;
+            this.mensaje = (movimiento.name + " no ha surgido efecto...");
+          } else
+            this.mensaje = (this.pokemon[pokemon].name + " ha fallado al realizar el ataque...");
+        } else{
+          await delay(750);
+          ataque = resultado.daño as number;
+          if(pokemon == 0)
+            this.quitarVida(ataque,1);
+          else
+            this.quitarVida(ataque,0);
+        }
+        await delay(1500);
+        if(resultado.critico && ataque > 0){
+          this.mensaje = (movimiento.name + " es súper efectivo.")
+        }
+
+      } else{
+        this.mensaje = (this.pokemon[pokemon].name + " no tiene ninguna habilidad para usar.");
+        await delay(1500);
+      }
     }
 
-    async comprobarGanador(){
-      var ganador = false;
+    async comprobarGanador(pokemon: number){
       var num = -1;
       for(var i = 0; i < 2; i++){
-        if(this.pokemon[i].hp == 0)
+        if((this.hp[i] as number) == 0){
           num = i;
+        }
       }
       if(num != -1){
-        ganador = true;
         this.usarCombateCPU = false;
-        this.mensaje = (this.pokemon[i].name + " ha sido DERROTADO.")
-        setTimeout(() => {
-          if(num == 0){
-            this.mensaje = ("El pokemon " + this.pokemon[1].name + " ha ganado la pelea.");
-          } else{
-            this.mensaje = ("El pokemon " + this.pokemon[1].name + " ha ganado la pelea.");
-          }
-        }, 600);
-        setTimeout(() => {
-          this.comunication.volverMenu.next(true);
-        }, 600);
+        this.mensaje = (this.pokemon[num].name + " ha sido DERROTADO.")
+        this.usarCombateCPU = false;
+        await delay(1500);
+        if(num == 0){
+          this.mensaje = ("El pokemon " + this.pokemon[1].name + " ha ganado la pelea.");
+        } else{
+          this.mensaje = ("El pokemon " + this.pokemon[0].name + " ha ganado la pelea.");
+        }
+        await delay(1500);
+        for(var seg = 5; seg >= 0; seg--){
+          this.mensaje = "Volviendo al menú de la Gameboy en " + seg + " segundos...";
+          await delay(1000);
+        }
+        this.comunication.volverMenu.next(true);
+        this.comunication.accion.next('Backspace');
+        this.ngOnDestroy();
+      } else if(num == -1 && pokemon == 1){
+        this.usarCombateCPU = true;
+        this.menu = true;
       }
-      return ganador;
     }
   }
   async function delay(ms: number): Promise<void> {

@@ -11,7 +11,7 @@
                 </div>
                 <div class="w-100 d-flex justify-content-center align-items-center position-relative" id="img">
                     <div class="izquierda" id="plataforma"></div>
-                    <img (load)="resize()" class="imgClase" src="{{pokemon[0].image.other.showdown.back_default}}" alt="pokemonUsuario">
+                    <img (load)="resize()" id="pokemonUsuario" class="imgClase no-atacado" src="{{pokemon[0].image.other.showdown.back_default}}" alt="pokemonUsuario">
                 </div>
             </div>
         </div>
@@ -26,7 +26,7 @@
                 </div>
                 <div class="w-100 d-flex justify-content-center align-items-center position-relative" id="img">
                     <div class="derecha" id="plataforma"></div>
-                    <img (load)="resize()" class="imgClase" src="{{pokemon[1].image.other.showdown.front_default}}" alt="pokemonCPU">
+                    <img (load)="resize()" id="pokemonCPU" class="imgClase no-atacado" src="{{pokemon[1].image.other.showdown.front_default}}" alt="pokemonCPU">
                 </div>
             </div>
         </div>
@@ -97,12 +97,15 @@
                     </div>
                 </div>
                 <div *ngIf="seccionPokemon" class="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
-                    seccion pokemon
+                    No hay más pokemon
                 </div>
                 <div *ngIf="seccionBolsa" class="w-100 h-100 d-flex flex-column justify-content-center align-items-center">
-                    seccion bolsa
+                    Ningún item en la bolsa
                 </div>
             </div>
+        </div>
+        <div id="menu" class="w-100 h-25 d-flex flex-column justify-content-center align-items-center" *ngIf="!menu">
+            <p id="mensaje">{{mensaje}}</p>
         </div>
     </div>
     <img class="w-100 h-100 position-absolute top-0 left-0" src="https://unite.pokemon.com/images/home/team-up/background.jpg" alt="">

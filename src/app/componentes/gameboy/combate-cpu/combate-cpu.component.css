@@ -80,6 +80,15 @@
     max-height: 75%;
     height: 75%;
 }
+.imgClase{
+    transition: filter 0.12s linear;
+}
+.atacado{
+    filter: brightness(0%);
+}
+.no-atacado{
+    filter: brightness(100%);
+}
 .barra-salud {
     width: 90%;
     min-height: 15%;
@@ -90,7 +99,10 @@
     color: red;
     font-weight: 700;
     overflow: hidden;
-    transition: width 0.5s linear;
+    transition: width 0.6s ease-out;
+}
+.progress-bar{
+    transition: width 0.6s ease-out;
 }
 #infoPokemon p{
     margin: 0%;
@@ -180,6 +192,11 @@
     background-image: none;
     padding: 0%;
 }
+#mensaje{
+    font-size: large;
+    text-align: center;
+    align-items: center;
+}
 @media (max-width: 800px){
     .seccion{
         font-size: medium;
@@ -191,6 +208,9 @@
 @media (max-width: 700px){
     .movimiento{
         font-size: small;
+    }
+    #mensaje{
+        font-size: medium;
     }
 }
 @media (max-width: 670px) {
@@ -215,6 +235,9 @@
     #infoPokemon p{
         font-size: 7.5px;
     }
+    #mensaje{
+        font-size: small;
+    }
 }
 @media (max-width: 460px){
     .movimiento{
@@ -223,6 +246,11 @@
     }
     .seccion-combate{
         font-size: small;
+    }
+}
+@media (max-width: 420px){
+    #mensaje{
+        font-size: x-small;
     }
 }
 @media (max-width: 390px){
@@ -236,5 +264,10 @@
     }
     .seccion-combate{
         font-size: x-small;
+    }
+}
+@media (max-width: 320px){
+    #mensaje{
+        font-size: xx-small;
     }
 }

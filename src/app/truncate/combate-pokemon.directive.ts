@@ -13,10 +13,12 @@ export class CombatePokemonDirective {
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
   private truncateText(text: string): void {
-    const truncatedText = text.length > this.maxLength
-      ? text.substring(0, this.maxLength) + '...'
-      : text;
+    if(text){
+      const truncatedText = text.length > this.maxLength
+        ? text.substring(0, this.maxLength) + '.'
+        : text;
+        this.renderer.setProperty(this.el.nativeElement, 'textContent', truncatedText);
+    }
 
-    this.renderer.setProperty(this.el.nativeElement, 'textContent', truncatedText);
   }
 }

@@ -48,27 +48,42 @@ export class LogicaService {
 
       // Calculamos la efectividad final del ataque contra el defensor
       efectividad = this.calcularEfectividad(atack, pokemonDefensor.types);
-      
-      // Fórmula del daño
-      const daño = Math.floor(
-        (((2 * 1 / 5 + 2) * ataqueBase * atack.power / defensaBase) / 50 * mod1 + 2)
-        * STAB * critico * efectividad);
+      var resultado;
+      if(efectividad == 0){
+        // El tipo del ataque no tiene efecto contra el tipo del pokemon
+        resultado = {
+          fallo: true as boolean,
+          daño: 0 as number,
+          critico: false as boolean,
+          efecto: false as boolean
+        }
 
-      var ch = false as boolean;
-       if(critico != 1)
-        ch = true;
-      const resultado = {
-        fallo: false as boolean,
-        daño: daño,
-        critico: ch as boolean
+      } else {
+        // Fórmula del daño
+        const daño = Math.floor(
+          (((2 * 1 / 5 + 2) * ataqueBase * atack.power / defensaBase) / 50 * mod1 + 2)
+          * STAB * critico * efectividad);
+  
+        var ch = false as boolean;
+         if(critico != 1)
+          ch = true;
+          resultado = {
+            fallo: false as boolean,
+            daño: daño as number,
+            critico: ch as boolean,
+            efecto: true as boolean
+          }
+
       }
       return resultado;
 
     } else{
       // Falla el ataque porque el accuracy no fue el suficiente para realizarlo
-      const resultado = {
+      resultado = {
         fallo: true as boolean,
-        daño: 0
+        daño: 0 as number,
+        critico: false as boolean,
+        efecto: true as boolean
       }
       return resultado;
     }
