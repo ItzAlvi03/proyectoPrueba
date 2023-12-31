@@ -430,10 +430,11 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
           else
             this.quitarVida(ataque,0);
         }
-        await delay(1500);
         if(resultado.critico && ataque > 0){
-          this.mensaje = (movimiento.name + " es súper efectivo.")
+          await delay(1200);
+          this.mensaje = (movimiento.name + " es súper efectivo.");
         }
+        await delay(1500);
 
       } else{
         this.mensaje = (this.pokemon[pokemon].name + " no tiene ninguna habilidad para usar.");

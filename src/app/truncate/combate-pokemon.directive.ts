@@ -8,7 +8,7 @@ export class CombatePokemonDirective {
     this.truncateText(value);
   }
 
-  @Input() maxLength: number = 12; 
+  @Input() maxLength: number = 11; 
 
   constructor(private el: ElementRef, private renderer: Renderer2) {}
 
