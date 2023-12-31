@@ -148,4 +148,45 @@ export class LogicaService {
         return "rgb(0,0,0)";
     }
   }
+
+  elegirAnimacion(type: any):any {
+    switch(type){
+      case 'GRASS':
+        return null;
+      case 'POISON':
+        return null;
+      case 'FIRE':
+        return "../../../../assets/gifs/fireball.gif";
+      case 'FLYING':
+        return null;
+      case 'WATER':
+        return "../../../../assets/gifs/waterball.gif";
+      case 'BUG':
+        return null;
+      case 'NORMAL':
+        return null;
+      case 'ELECTRIC':
+        return null;
+      case 'GROUND':
+        return null;
+      case 'FIGHTING':
+        return null;
+      case 'PSYCHIC':
+        return null;
+      case 'ROCK':
+        return null;
+      case 'STEEL':
+        return null;
+      case 'ICE':
+        return null;
+      case 'FAIRY':
+        return null;
+      case 'GHOST':
+        return null;
+      case 'DRAGON':
+        return null;
+      case 'DARK':
+        return null;
+    }
+  }
 }

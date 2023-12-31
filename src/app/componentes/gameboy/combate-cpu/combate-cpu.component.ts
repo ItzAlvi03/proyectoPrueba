@@ -423,7 +423,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
           } else
             this.mensaje = (this.pokemon[pokemon].name + " ha fallado al realizar el ataque...");
         } else{
-          await this.animacionMovimiento(pokemon);
+          await this.animacionMovimiento(pokemon,movimiento.type);
           ataque = resultado.daño as number;
           if(pokemon == 0)
             this.quitarVida(ataque,1);
@@ -442,40 +442,45 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       }
     }
 
-  async animacionMovimiento(pokemon: number) {
+  async animacionMovimiento(pokemon: number, type: string) {
     // Esperamos un poco desde que se muestra el mensaje del ataque a realizar,
-    // luego ponemos el fondo oscuro y la animación en cuestión 
-    await delay(250);
-    this.background.classList.remove('no-oscuro');
-    this.background.classList.add('oscuro');
-    this.gifAtaque = "../../../../assets/gifs/fireball.gif";
-    var img: any;
-    
-    // Si es 0 significa que el ataque va desde el pokemon usuario hasta el CPU
-    if (pokemon == 0) {
-      this.animacionUsuario = true;
-      await delay(950);
-      img = document.getElementById('ataqueAnimacion');
-      img.classList.add('lanzar-derecha');
-    } else {
-      this.animacionCPU = true;
-      await delay(950);
-      img = document.getElementById('ataqueAnimacion');
-      img.classList.add('lanzar-izquierda');
-    }
-    // Esperamos hasta que la animación se complete y luego volvemos a resetear todo
-    await delay(500);
-    this.background.classList.remove('oscuro');
-    this.background.classList.add('no-oscuro');
-    
-    if (img) {
+    // luego ponemos el fondo oscuro y la animación en cuestión
+    await delay(350);
+    var movimiento = this.logica.elegirAnimacion(type.toUpperCase());
+
+    if(movimiento) {
+      this.background.classList.remove('no-oscuro');
+      this.background.classList.add('oscuro');
+      this.gifAtaque = movimiento;
+      var img: any;
+      
+      // Si es 0 significa que el ataque va desde el pokemon usuario hasta el CPU
       if (pokemon == 0) {
-        img.classList.remove('lanzar-derecha');
-        this.animacionUsuario = false;
+        this.animacionUsuario = true;
+        await delay(950);
+        img = document.getElementById('ataqueAnimacion');
+        img.classList.add('lanzar-derecha');
       } else {
-        img.classList.remove('lanzar-izquierda');
-        this.animacionCPU = false;
+        this.animacionCPU = true;
+        await delay(950);
+        img = document.getElementById('ataqueAnimacion');
+        img.classList.add('lanzar-izquierda');
       }
+      // Esperamos hasta que la animación se complete y luego volvemos a resetear todo
+      await delay(500);
+      this.background.classList.remove('oscuro');
+      this.background.classList.add('no-oscuro');
+      
+      if (img) {
+        if (pokemon == 0) {
+          img.classList.remove('lanzar-derecha');
+          this.animacionUsuario = false;
+        } else {
+          img.classList.remove('lanzar-izquierda');
+          this.animacionCPU = false;
+        }
+      }
+      this.gifAtaque = "";
     }
   }
 
