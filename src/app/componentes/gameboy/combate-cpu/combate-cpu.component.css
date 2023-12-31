@@ -201,7 +201,64 @@
 .achicar {
     animation: achicar 0.5s ease-in-out forwards;
 }
+#ataqueAnimacion{
+    position: absolute;
+    width: 15%;
+    height: 15%;
+    z-index: 3;
+}
+#ataqueAnimacion img{
+    z-index: 3;
+}
+.abajoAnimacion {
+    bottom: 0;
+    left: 0;
+    margin-left: 25%;
+    margin-bottom: 17%;
+  }
+.lanzar-derecha{
+  animation: moveLeftToRight 0.45s linear forwards;
+}
+.arribaAnimacion {
+  top: 0;
+  right: 0;
+  margin-right: 25%;
+  margin-top: 23%;
+}
+.lanzar-izquierda{
+    animation: moveRightToLeft 0.45s linear forwards;
+}
+#background{
+    transition: filter 0.2s linear;
+}
+.no-oscuro{
+    filter: brightness(100%);
+}
+.oscuro{
+    filter: brightness(60%);
+}
 
+@keyframes moveLeftToRight {
+    0% {
+        margin-left: 25%;
+        margin-bottom: 17%;
+    }
+    100% {
+        margin-left: 57.5%;
+        margin-bottom: 38%;
+    }
+  }
+  
+  @keyframes moveRightToLeft {
+    0% {
+        margin-right: 25%;
+        margin-top: 23%;
+    }
+    100% {
+        margin-right: 59%;
+        margin-top: 38%;
+    }
+  }
 @keyframes achicar {
     0% {
         transform: scale(1);

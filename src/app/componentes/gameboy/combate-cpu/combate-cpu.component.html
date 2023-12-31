@@ -1,5 +1,11 @@
 <app-combate-spinner [mensaje]="mensajeSpinner" *ngIf="cargando"></app-combate-spinner>
 <div id="contentCombateCPU" class="w-100 position-absolute d-flex flex-column justify-content-center align-items-center no-pantalla-completa">
+    <div *ngIf="animacionUsuario" id="ataqueAnimacion" class="abajoAnimacion">
+        <img class="w-100 h-100" src="{{gifAtaque}}" alt="ataque del usuario">
+    </div>
+    <div *ngIf="animacionCPU" id="ataqueAnimacion" class="arribaAnimacion">
+        <img class="w-100 h-100" src="{{gifAtaque}}" alt="ataque de la CPU">
+    </div>
     <div *ngIf="cargado" class="w-100 h-100 d-flex flex-row justify-content-between">
         <div class="abajo" id="lado">
             <div id="contenidoPokemon" class="w-100 d-flex flex-column justify-content-end align-items-end">
@@ -109,5 +115,5 @@
             <p id="mensaje">{{mensaje}}</p>
         </div>
     </div>
-    <img class="w-100 h-100 position-absolute top-0 left-0" src="https://unite.pokemon.com/images/home/team-up/background.jpg" alt="">
+    <img id="background" class="w-100 h-100 position-absolute top-0 left-0 no-oscuro" src="https://unite.pokemon.com/images/home/team-up/background.jpg" alt="">
 </div>
