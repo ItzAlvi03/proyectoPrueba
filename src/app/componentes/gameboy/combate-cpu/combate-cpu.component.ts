@@ -33,6 +33,10 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
   mensaje: string = "";
   mensajeSpinner!: string;
   private fin: boolean = false;
+  gifAtaque: any;
+  animacionUsuario: boolean = false;
+  animacionCPU: boolean = false;
+  background: any;
   
   constructor(private comunication: ComunicationServiceService, private pokedex: PokedexService, private logica: LogicaService, private render: Renderer2 ){}
 
@@ -70,6 +74,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
         this.barraSaludCPU = document.querySelector('#salud2') as any;
       },50);
       this.menu = true;
+      this.background = document.getElementById('background') as any;
     }
 
     resize() {
@@ -418,7 +423,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
           } else
             this.mensaje = (this.pokemon[pokemon].name + " ha fallado al realizar el ataque...");
         } else{
-          await delay(750);
+          await this.animacionMovimiento(pokemon);
           ataque = resultado.daño as number;
           if(pokemon == 0)
             this.quitarVida(ataque,1);
@@ -435,6 +440,43 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
         await delay(1500);
       }
     }
+
+  async animacionMovimiento(pokemon: number) {
+    // Esperamos un poco desde que se muestra el mensaje del ataque a realizar,
+    // luego ponemos el fondo oscuro y la animación en cuestión 
+    await delay(250);
+    this.background.classList.remove('no-oscuro');
+    this.background.classList.add('oscuro');
+    this.gifAtaque = "../../../../assets/gifs/fireball.gif";
+    var img: any;
+    
+    // Si es 0 significa que el ataque va desde el pokemon usuario hasta el CPU
+    if (pokemon == 0) {
+      this.animacionUsuario = true;
+      await delay(950);
+      img = document.getElementById('ataqueAnimacion');
+      img.classList.add('lanzar-derecha');
+    } else {
+      this.animacionCPU = true;
+      await delay(950);
+      img = document.getElementById('ataqueAnimacion');
+      img.classList.add('lanzar-izquierda');
+    }
+    // Esperamos hasta que la animación se complete y luego volvemos a resetear todo
+    await delay(500);
+    this.background.classList.remove('oscuro');
+    this.background.classList.add('no-oscuro');
+    
+    if (img) {
+      if (pokemon == 0) {
+        img.classList.remove('lanzar-derecha');
+        this.animacionUsuario = false;
+      } else {
+        img.classList.remove('lanzar-izquierda');
+        this.animacionCPU = false;
+      }
+    }
+  }
 
     async comprobarGanador(pokemon: number){
       var num = -1;
