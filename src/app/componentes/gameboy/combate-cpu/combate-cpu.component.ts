@@ -141,6 +141,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       }, 50);
 
       const ataques = await this.asignarAtaques(res) as any;
+      const ailments = await this.asignarAilments() as any;
       this.pokemon[i] = {
         name: res.name.toUpperCase(),
         height: res.height,
@@ -148,8 +149,11 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
         types: res.types.map((type: any) => type.type.name.toUpperCase()),
         image: res.sprites,
         stats: res.stats,
+        mod1: 1,
+        mod2: 1,
         atack1: ataques[0],
-        atack2: ataques[1]
+        atack2: ataques[1],
+        ailments: ailments
       }
       this.hp[i] = this.pokemon[i].stats[0].base_stat as number;
       this.maxHp[i] = this.hp[i];
@@ -159,7 +163,6 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       this.generarPokemon();
     }
   }
-
   randomNumber(max: number) {
     return Math.floor(Math.random() * (max - 1) + 1);
   }
@@ -202,6 +205,21 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       }
     }
       return ataques;
+  }
+
+  async asignarAilments() {
+    var anterior = 0 as number;
+    var ailments = [] as any;
+    var numAilments = 0 as number;
+    while(numAilments < 2){
+      const num = this.randomNumber(4);
+      if(num != anterior){
+        ailments[numAilments] = this.logica.elegirAilment(num);
+        anterior = num;
+        numAilments++;
+      }
+    }
+    return ailments;
   }
 
   private keydownListener = (event: KeyboardEvent) => {

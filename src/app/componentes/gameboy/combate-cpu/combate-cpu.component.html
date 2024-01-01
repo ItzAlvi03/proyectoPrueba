@@ -84,19 +84,23 @@
                     </div>
                     <div class="w-100 h-50 d-flex flex-row justify-content-around align-items-center p-1">
                         <div id="seccionCombate3" class="w-50 h-100 d-flex justify-content-center align-items-center m-1 no-seleccionado-combate">
-                            <div class="d-flex justify-content-center align-items-center seccion-luchar">
-                                <div id="luchar" class="w-100 h-100 d-flex justify-content-center align-items-center seccion-luchar">
-                                    <div id="ataque" class="d-flex flex-column justify-content-center align-items-center movimiento">
-    
+                            <div id="seccionLuchar3" [style.background-color]="pokemon[0].ailments[0].color" class="w-100 h-100 d-flex justify-content-center align-items-center seccion-luchar">
+                                <div class="d-flex flex-column justify-content-around align-items-center movimiento">
+                                    <label [appCombatePokemon]="pokemon[0].ailments[0].name" [maxLength]="11" id="nombreMovimiento">{{pokemon[0].ailments[0].name}}</label>
+                                    <div class="w-100 d-flex flex-row justify-content-around align-items-center">
+                                        <div [style.background-color]="pokemon[0].ailments[0].color" class="tipo" id="tipo3">{{pokemon[0].ailments[0].type}}</div>
+                                        <label> PP {{pokemon[0].atack2.pp}}/{{pokemon[0].atack2.maxpp}}</label>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div id="seccionCombate4" class="w-50 h-100 d-flex justify-content-center align-items-center m-1 no-seleccionado-combate">
-                            <div class="d-flex justify-content-center align-items-center seccion-luchar">
-                                <div id="luchar" class="w-100 h-100 d-flex justify-content-center align-items-center seccion-luchar">
-                                    <div id="ataque" class="d-flex flex-column justify-content-center align-items-center movimiento">
-    
+                            <div id="seccionLuchar4" [style.background-color]="pokemon[0].ailments[1].color" class="w-100 h-100 d-flex justify-content-center align-items-center seccion-luchar">
+                                <div class="d-flex flex-column justify-content-around align-items-center movimiento">
+                                    <label [appCombatePokemon]="pokemon[0].ailments[1].name" [maxLength]="11" id="nombreMovimiento">{{pokemon[0].ailments[1].name}}</label>
+                                    <div class="w-100 d-flex flex-row justify-content-around align-items-center">
+                                        <div [style.background-color]="pokemon[0].ailments[1].color" class="tipo" id="tipo3">{{pokemon[0].ailments[1].type}}</div>
+                                        <label> PP {{pokemon[0].atack2.pp}}/{{pokemon[0].atack2.maxpp}}</label>
                                     </div>
                                 </div>
                             </div>

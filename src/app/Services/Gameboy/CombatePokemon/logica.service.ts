@@ -24,10 +24,16 @@ export class LogicaService {
     DARK: { FIGHTING: 0.5, GHOST: 2, PSYCHIC: 2, DARK: 0.5, FAIRY: 0.5 },
     FAIRY: { FIGHTING: 2, POISON: 0.5, STEEL: 0.5, FIRE: 0.5, DRAGON: 2, DARK: 2 },
   } as any;
+  private ailments: { [key: number]: { name: string, type: string, mod_stat: string, target: string, color: string } } = {
+    1: { name: 'Sword-Dance', type: 'normal', mod_stat: 'attack', target: 'user', color: "#A0A2A0" },
+    2: { name: 'Block', type: 'normal', mod_stat: 'defense', target: 'user', color: "#A0A2A0"  },
+    3: { name: 'Growl ', type: 'normal', mod_stat: 'attack', target: 'enemy', color: "#A0A2A0"  },
+  };
 
   constructor() { }
   calcularDaño(pokemonAtacante: any, pokemonDefensor: any, atack: any): any {
-    var mod1 = 1;  // Si el atacante tiene el ataque con alguna habilidad subido
+    const mod1 = pokemonAtacante.mod1 as number;  // Si el atacante tiene el ataque con alguna habilidad subido o bajada
+    const mod2 = pokemonDefensor.mod2 as number; // Este modificador es la defensa extra si está subida o bajada en el defensor
     var STAB = 1;  // Modificador de tipo si el ataque es el mismo tipo que el pokemon
     var efectividad = 1;  // Efectividad del ataque contra el tipo del oponente
     const ataqueBase = pokemonAtacante.stats[1]?.base_stat as number || 0;
@@ -61,8 +67,9 @@ export class LogicaService {
       } else {
         // Fórmula del daño
         const daño = Math.floor(
-          (((2 * 1 / 5 + 2) * ataqueBase * atack.power / defensaBase) / 50 * mod1 + 2)
-          * STAB * critico * efectividad);
+          (((2 * 1 / 5 + 2) * ataqueBase * atack.power / (defensaBase * mod2)) / 50 * mod1 + 2)
+          * STAB * critico * efectividad
+      );
   
         var ch = false as boolean;
          if(critico != 1)
@@ -188,5 +195,9 @@ export class LogicaService {
       case 'DARK':
         return null;
     }
+  }
+
+  elegirAilment(num: number): any{
+    return this.ailments[num];
   }
 }
