@@ -13,7 +13,7 @@ import { CombatePokemonDirective } from 'src/app/truncate/combate-pokemon.direct
 export class CombateCPUComponent implements OnInit, OnDestroy{
   private destroyed$ = new Subject<void>();
   private usarCombateCPU: boolean = false;
-  private MAX_POKEMON = 649 as number;
+  private MAX_POKEMON = 650 as number;
   pokemon!: any [];
   cargado: boolean = false;
   cargando!: boolean;
@@ -181,14 +181,15 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
           if (res2.meta.category.name === "damage") {
             if (res2.accuracy != null && res2.pp != null && res2.power != null && res2.type != null && res2.name != null) {
               movimiento = "damage";
-              const bgcolor = this.logica.elegirColor(res2.type.name.toUpperCase());
+              const movimientoCopiaProfunda = JSON.parse(JSON.stringify(res2));
+              const bgcolor = this.logica.elegirColor(movimientoCopiaProfunda.type.name.toUpperCase());
               ataques[i] = {
-                name: res2.name,
-                accuracy: res2.accuracy,
-                maxpp: res2.pp,
-                pp: res2.pp,
-                power: res2.power,
-                type: res2.type.name,
+                name: movimientoCopiaProfunda.name,
+                accuracy: movimientoCopiaProfunda.accuracy,
+                maxpp: movimientoCopiaProfunda.pp,
+                pp: movimientoCopiaProfunda.pp,
+                power: movimientoCopiaProfunda.power,
+                type: movimientoCopiaProfunda.type.name,
                 color: bgcolor
               };
             }
@@ -211,14 +212,18 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
     var anterior = 0 as number;
     var ailments = [] as any;
     var numAilments = 0 as number;
-    while(numAilments < 2){
+  
+    while (numAilments < 2) {
       const num = this.randomNumber(4);
-      if(num != anterior){
-        ailments[numAilments] = this.logica.elegirAilment(num);
+  
+      if (num != anterior) {
+        const newAilment = { ...this.logica.elegirAilment(num) };
+        ailments[numAilments] = newAilment;
         anterior = num;
         numAilments++;
       }
     }
+  
     return ailments;
   }
 
@@ -251,15 +256,23 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
                 this.entrarSeccion();
               }
               else if(this.seccionLuchar){
+                var turno = false;
                 // Compruebo si son las dos únicas opciones disponibles a usar
                 if(this.numSeccion == 1 || this.numSeccion == 2){
                   // Aquí basicamente compruebo que si el movimiento seleccionado tenga PP para poder usarse, en caso de que
                   // ninguno de los 2 únicos movimientos tengan PP se realizará igualmente pero ya está controlado dentro de la función
                   if(this.numSeccion == 1 && this.pokemon[0].atack1.pp > 0 || this.numSeccion == 2 && this.pokemon[0].atack2.pp > 0){
-                    this.realizarTurnos();
-                  } else if(this.pokemon[0].atack1.pp == 0 && this.pokemon[0].atack2.pp == 0){
+                    turno = true;
                     this.realizarTurnos();
                   }
+                } else{
+                  if(this.numSeccion == 3 && this.pokemon[0].ailments[0].pp > 0 || this.numSeccion == 4 && this.pokemon[0].ailments[1].pp > 0){
+                    turno = true;
+                    this.realizarTurnos();
+                  }
+                }
+                if(!turno && (this.pokemon[0].atack1.pp == 0 && this.pokemon[0].atack2.pp == 0 && this.pokemon[0].ailments[0].pp == 0 && this.pokemon[0].ailments[1].pp == 0)){
+                  this.realizarTurnos();
                 }
               }
             } else if(event === 'ArrowRight' && this.cargado){
@@ -393,72 +406,163 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
     async realizarMovimiento(pokemon: number){
       var movimiento = "" as any;
       var ataque = 0;
-      // Se comprueba que alguna tecnica tenga al menos pp
-      if(this.pokemon[pokemon].atack1.pp == 0 && this.pokemon[pokemon].atack2.pp == 0){
-        movimiento = null;
+      // Si es un movimiento que no es de ataque
+      if(pokemon == 0 && (this.numSeccion == 3 || this.numSeccion == 4)){
+        var usar = false;
+        if(this.numSeccion == 3 && this.pokemon[0].ailments[0].pp > 0){
+          usar = true;
+          this.pokemon[0].ailments[0].pp--;
+          this.pokemon[0].ailments[0].usado++;
+        } else if(this.numSeccion == 4 && this.pokemon[0].ailments[1].pp > 0){
+          usar = true;
+          this.pokemon[0].ailments[1].pp--;
+          this.pokemon[0].ailments[1].usado++;
+        }
+        if(usar){
+          const num = this.numSeccion - 3 as number;
+          await this.realizarAilment(this.pokemon[pokemon].ailments[num], pokemon);
+        }
       } else {
-        // Si es el pokemon 0 siginifica que es el del usuario, sino será la CPU
-        if(pokemon == 0){
-          if(this.numSeccion == 1){
-            movimiento = this.pokemon[pokemon].atack1;
-            this.pokemon[pokemon].atack1.pp--;
-          }else {
-            movimiento = this.pokemon[pokemon].atack2;
-            this.pokemon[pokemon].atack2.pp--;
-          }
-        } else{
-          // Si el movimiento no tiene pp para utilizarse se volverá a intentar
-          movimiento = {
-            pp: 0 as number
-          }
-          while(movimiento.pp == 0){
-            const num = Math.round(Math.random());
-            if(num == 0){
+        var ailment = false;
+        // Se comprueba que alguna tecnica tenga al menos pp
+        if(this.pokemon[pokemon].atack1.pp == 0 && this.pokemon[pokemon].atack2.pp == 0 && this.pokemon[pokemon].ailments[0].pp == 0 && this.pokemon[pokemon].ailments[1].pp == 0){
+          movimiento = null;
+        } else {
+          // Si es el pokemon 0 siginifica que es el del usuario, sino será la CPU
+          if(pokemon == 0){
+            if(this.numSeccion == 1){
               movimiento = this.pokemon[pokemon].atack1;
               this.pokemon[pokemon].atack1.pp--;
             }else {
               movimiento = this.pokemon[pokemon].atack2;
               this.pokemon[pokemon].atack2.pp--;
             }
+          } else{
+            // Si el movimiento no tiene pp para utilizarse se volverá a intentar
+            movimiento = {
+              pp: 0 as number
+            }
+            while(movimiento.pp == 0){
+              const num = Math.floor(Math.random() * (4 - 0) + 0);
+              if(num == 0){
+                movimiento = this.pokemon[1].atack1;
+                this.pokemon[1].atack1.pp--;
+              }else if(num == 1) {
+                movimiento = this.pokemon[1].atack2;
+                this.pokemon[1].atack2.pp--;
+              } else if(num == 2){
+                if(this.pokemon[1].ailments[0].pp > 0){
+                  ailment = true;
+                  this.pokemon[1].ailments[0].pp--;
+                  this.pokemon[1].ailments[0].usado++;
+                  await this.realizarAilment(this.pokemon[1].ailments[0], 1);
+                  movimiento.pp = 1;
+                }
+              } else if(num == 3){
+                if(this.pokemon[pokemon].ailments[1].pp > 0){
+                  ailment = true;
+                  this.pokemon[1].ailments[1].pp--;
+                  this.pokemon[1].ailments[1].usado++;
+                  await this.realizarAilment(this.pokemon[1].ailments[1], 1);
+                  movimiento.pp = 1;
+                }
+              }
+            }
+            if(ailment){
+              movimiento = null;
+            }
+          }
+          if(movimiento != null){
+            // Movimiento del usuario
+            this.mensaje = (this.pokemon[pokemon].name + " ha usado " + movimiento.name);
+            var resultado = "" as any;
+            if(pokemon == 0)
+              resultado = this.logica.calcularDaño(this.pokemon[0], this.pokemon[1], movimiento);
+            else
+              resultado = this.logica.calcularDaño(this.pokemon[1], this.pokemon[0], movimiento);
+            if(resultado.fallo){
+              await delay(1500);
+              if(!resultado.efecto){
+                var enemigo = 0;
+                if(pokemon == 0)
+                  enemigo = 1;
+                this.mensaje = (movimiento.name + " no ha surgido efecto...");
+              } else
+                this.mensaje = (this.pokemon[pokemon].name + " ha fallado al realizar el ataque...");
+            } else{
+              await this.animacionMovimiento(pokemon,movimiento.type);
+              ataque = resultado.daño as number;
+              if(pokemon == 0)
+                this.quitarVida(ataque,1);
+              else
+                this.quitarVida(ataque,0);
+            }
+            if(resultado.critico && ataque > 0){
+              await delay(1200);
+              this.mensaje = (movimiento.name + " es súper efectivo.");
+            }
+            await delay(1500);
+    
+          } else{
+            if(!ailment){
+              this.mensaje = (this.pokemon[pokemon].name + " no tiene ninguna habilidad para usar.");
+              await delay(1500);
+            }
           }
         }
       }
-      if(movimiento != null){
-        // Movimiento del usuario
-        this.mensaje = (this.pokemon[pokemon].name + " ha usado " + movimiento.name);
-        var resultado = "" as any;
-        if(pokemon == 0)
-          resultado = this.logica.calcularDaño(this.pokemon[0], this.pokemon[1], movimiento);
-        else
-          resultado = this.logica.calcularDaño(this.pokemon[1], this.pokemon[0], movimiento);
-        if(resultado.fallo){
-          await delay(1500);
-          if(!resultado.efecto){
-            var enemigo = 0;
-            if(pokemon == 0)
-              enemigo = 1;
-            this.mensaje = (movimiento.name + " no ha surgido efecto...");
-          } else
-            this.mensaje = (this.pokemon[pokemon].name + " ha fallado al realizar el ataque...");
-        } else{
-          await this.animacionMovimiento(pokemon,movimiento.type);
-          ataque = resultado.daño as number;
-          if(pokemon == 0)
-            this.quitarVida(ataque,1);
-          else
-            this.quitarVida(ataque,0);
-        }
-        if(resultado.critico && ataque > 0){
-          await delay(1200);
-          this.mensaje = (movimiento.name + " es súper efectivo.");
-        }
-        await delay(1500);
+    }
 
+    async realizarAilment(movimiento: any, pokemon: number){
+      this.mensaje = (this.pokemon[pokemon].name + " ha usado " + movimiento.name);
+      var resultado = false;
+      var num = 0;
+      if(movimiento.usado <= 6){
+        if(movimiento.target === 'user')
+          resultado = await this.modificarStats(pokemon, movimiento, "subir");
+        else{
+          if(pokemon == 0)
+            num = 1;
+  
+          resultado = await this.modificarStats(num,movimiento, "bajar");
+        }
+      }
+      await delay(1200);
+      if(resultado){
+        if(movimiento.target === 'user')
+          this.mensaje = (this.pokemon[pokemon].name + " ha subido su " + movimiento.mod_stat)
+        else
+          this.mensaje = (this.pokemon[num].name + " ha bajado su " + movimiento.mod_stat)
       } else{
-        this.mensaje = (this.pokemon[pokemon].name + " no tiene ninguna habilidad para usar.");
-        await delay(1500);
+        if(movimiento.target === 'user')
+          this.mensaje = (this.pokemon[pokemon].name + "no puede subir más su " + movimiento.mod_stat)
+        else
+          this.mensaje = (this.pokemon[num].name + " no puede bajar más su " + movimiento.mod_stat)
+      }
+      await delay(1500);
+    }
+  
+  async modificarStats(num: number, movimiento: any, modificador: string): Promise<boolean> {
+    var resultado = false;
+    if(movimiento.mod_stat === 'attack'){
+      if(modificador === 'subir'){
+        resultado = true;
+        this.pokemon[num].mod1 *= 1.5;
+      } else if(modificador === 'bajar'){
+        resultado = true;
+        this.pokemon[num].mod1 *= 0.5;
+      }
+    } else if(movimiento.mod_stat === 'defense'){
+      if(modificador === 'subir'){
+        resultado = true;
+        this.pokemon[num].mod2 *= 1.5;
+      } else if(modificador === 'bajar'){
+        resultado = true;
+        this.pokemon[num].mod2 *= 0.5;
       }
     }
+    return resultado;
+  }
 
   async animacionMovimiento(pokemon: number, type: string) {
     // Esperamos un poco desde que se muestra el mensaje del ataque a realizar,

@@ -24,10 +24,10 @@ export class LogicaService {
     DARK: { FIGHTING: 0.5, GHOST: 2, PSYCHIC: 2, DARK: 0.5, FAIRY: 0.5 },
     FAIRY: { FIGHTING: 2, POISON: 0.5, STEEL: 0.5, FIRE: 0.5, DRAGON: 2, DARK: 2 },
   } as any;
-  private ailments: { [key: number]: { name: string, type: string, mod_stat: string, target: string, color: string } } = {
-    1: { name: 'Sword-Dance', type: 'normal', mod_stat: 'attack', target: 'user', color: "#A0A2A0" },
-    2: { name: 'Block', type: 'normal', mod_stat: 'defense', target: 'user', color: "#A0A2A0"  },
-    3: { name: 'Growl ', type: 'normal', mod_stat: 'attack', target: 'enemy', color: "#A0A2A0"  },
+  private ailments: { [key: number]: { name: string, type: string, mod_stat: string, target: string, color: string, pp: number, maxpp: number, usado: number } } = {
+    1: { name: 'Sword-Dance', type: 'normal', mod_stat: 'attack', target: 'user', color: "#A0A2A0", pp: 20, maxpp: 20, usado: 0 },
+    2: { name: 'Block', type: 'normal', mod_stat: 'defense', target: 'user', color: "#A0A2A0", pp: 5, maxpp: 5, usado: 0 },
+    3: { name: 'Growl ', type: 'normal', mod_stat: 'attack', target: 'enemy', color: "#A0A2A0", pp: 40, maxpp: 40, usado: 0 },
   };
 
   constructor() { }

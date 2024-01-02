@@ -89,7 +89,7 @@
                                     <label [appCombatePokemon]="pokemon[0].ailments[0].name" [maxLength]="11" id="nombreMovimiento">{{pokemon[0].ailments[0].name}}</label>
                                     <div class="w-100 d-flex flex-row justify-content-around align-items-center">
                                         <div [style.background-color]="pokemon[0].ailments[0].color" class="tipo" id="tipo3">{{pokemon[0].ailments[0].type}}</div>
-                                        <label> PP {{pokemon[0].atack2.pp}}/{{pokemon[0].atack2.maxpp}}</label>
+                                        <label> PP {{pokemon[0].ailments[0].pp}}/{{pokemon[0].ailments[0].maxpp}}</label>
                                     </div>
                                 </div>
                             </div>
@@ -100,7 +100,7 @@
                                     <label [appCombatePokemon]="pokemon[0].ailments[1].name" [maxLength]="11" id="nombreMovimiento">{{pokemon[0].ailments[1].name}}</label>
                                     <div class="w-100 d-flex flex-row justify-content-around align-items-center">
                                         <div [style.background-color]="pokemon[0].ailments[1].color" class="tipo" id="tipo3">{{pokemon[0].ailments[1].type}}</div>
-                                        <label> PP {{pokemon[0].atack2.pp}}/{{pokemon[0].atack2.maxpp}}</label>
+                                        <label> PP {{pokemon[0].ailments[1].pp}}/{{pokemon[0].ailments[1].maxpp}}</label>
                                     </div>
                                 </div>
                             </div>
