@@ -237,7 +237,38 @@
 .oscuro{
     filter: brightness(60%);
 }
-
+#ailment{
+    opacity: 0.8;
+    width: 250%;
+    height: 300%;
+}
+.abajoAnimacion #ailment{
+    z-index: 5;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    margin-left: -125%;
+    
+}
+.arribaAnimacion #ailment{
+    z-index: 5;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin-right: -135%;
+}
+.abajoAnimacion .upgrade{
+    margin-bottom: -47%;
+}
+.abajoAnimacion .low{
+    margin-bottom: -77%;
+}
+.arribaAnimacion .upgrade{
+    margin-top: -125%;
+}
+.arribaAnimacion .low{
+    margin-top: -90%;
+}
 @keyframes moveLeftToRight {
     0% {
         margin-left: 25%;
@@ -267,6 +298,14 @@
         transform: scale(0);
     }
 }
+@media (max-width: 1000px){
+    .arribaAnimacion .upgrade{
+        margin-top: -105%;
+    }
+    .arribaAnimacion .low{
+        margin-top: -70%;
+    }
+}
 @media (max-width: 800px){
     .seccion{
         font-size: medium;
@@ -287,6 +326,12 @@
     #infoPokemon p{
         font-size: 10.5px;
     }
+    .abajoAnimacion .upgrade{
+        margin-bottom: -62%;
+    }
+    .abajoAnimacion .low{
+        margin-bottom: -92%;
+    }
 }
 @media (max-width: 585px){
     .movimiento{
@@ -300,6 +345,12 @@
     #infoPokemon p{
         font-size: 9px;
     }
+    .arribaAnimacion .upgrade{
+        margin-top: -90%;
+    }
+    .arribaAnimacion .low{
+        margin-top: -55%;
+    }
 }
 @media (max-width: 490px) {
     #infoPokemon p{
@@ -307,6 +358,12 @@
     }
     #mensaje{
         font-size: small;
+    }
+    .abajoAnimacion .upgrade{
+        margin-bottom: -70%;
+    }
+    .abajoAnimacion .low{
+        margin-bottom: -100%;
     }
 }
 @media (max-width: 460px){

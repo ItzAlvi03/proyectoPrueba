@@ -37,6 +37,9 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
   animacionUsuario: boolean = false;
   animacionCPU: boolean = false;
   background: any;
+  ataque: boolean = false;
+  upgrade: boolean = false;
+  low: boolean = false;
   
   constructor(private comunication: ComunicationServiceService, private pokedex: PokedexService, private logica: LogicaService, private render: Renderer2 ){}
 
@@ -527,12 +530,39 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
           resultado = await this.modificarStats(num,movimiento, "bajar");
         }
       }
-      await delay(1200);
+      await delay(350);
       if(resultado){
-        if(movimiento.target === 'user')
-          this.mensaje = (this.pokemon[pokemon].name + " ha subido su " + movimiento.mod_stat)
-        else
-          this.mensaje = (this.pokemon[num].name + " ha bajado su " + movimiento.mod_stat)
+        this.ataque = false;
+        if(movimiento.target === 'user'){
+          this.upgrade = true;
+          setTimeout(async () => {
+            if(pokemon == 0)
+              this.animacionUsuario = true;
+            else
+              this.animacionCPU = true;
+  
+            await delay(1100);
+            this.animacionCPU = false;
+            this.animacionUsuario = false;
+            this.mensaje = (this.pokemon[pokemon].name + " ha subido su " + movimiento.mod_stat)
+            this.upgrade = false;
+          },30);
+        }
+        else{
+          this.low = true;
+          setTimeout(async () => {
+            if(num == 0)
+              this.animacionUsuario = true;
+            else
+              this.animacionCPU = true;
+  
+            await delay(1100);
+            this.animacionCPU = false;
+            this.animacionUsuario = false;
+            this.mensaje = (this.pokemon[num].name + " ha bajado su " + movimiento.mod_stat);
+            this.low = false;
+          },30);
+        }
       } else{
         if(movimiento.target === 'user')
           this.mensaje = (this.pokemon[pokemon].name + "no puede subir más su " + movimiento.mod_stat)
@@ -574,6 +604,7 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       this.background.classList.remove('no-oscuro');
       this.background.classList.add('oscuro');
       this.gifAtaque = movimiento;
+      this.ataque = true;
       var img: any;
       
       // Si es 0 significa que el ataque va desde el pokemon usuario hasta el CPU
