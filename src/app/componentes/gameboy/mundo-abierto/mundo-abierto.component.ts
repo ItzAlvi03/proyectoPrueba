@@ -1,17 +1,38 @@
-import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
+import { AfterViewInit, Component } from '@angular/core';
 import { Subject, takeUntil } from 'rxjs';
+import { ArrayJsonService } from 'src/app/Services/Gameboy/MundoAbierto/array-json.service';
 import { ComunicationServiceService } from 'src/app/Services/Gameboy/comunication-service.service';
 
 class Sprite {
   position = { x: 0, y: 0 };
+  context!: CanvasRenderingContext2D;
   image;
-  constructor( position: any, velocity: any, image: any) {
+  constructor( position: any, velocity: any, image: any, context: CanvasRenderingContext2D) {
     this.position = position;
     this.image = image;
+    this.context = context;
   }
 
   draw(context: CanvasRenderingContext2D) {
     context.drawImage(this.image, this.position.x, this.position.y);
+  }
+}
+
+class Boundary {
+  position = { x: 0, y: 0 };
+  static width = 48;
+  static height = 48;
+  context!: CanvasRenderingContext2D;
+
+  constructor(position: any, context: CanvasRenderingContext2D) {
+    this.position = position;
+    Boundary.width = 48;
+    Boundary.height = 48;
+    this.context = context;
+  }
+  draw(context: CanvasRenderingContext2D) {
+    context.fillStyle = 'red';
+    context.fillRect(this.position.x, this.position.y, Boundary.width, Boundary.height);
   }
 }
 
@@ -26,6 +47,7 @@ export class MundoAbiertoComponent implements AfterViewInit{
   context: any;
   private image: any;
   private player: any;
+  private collisions: any;
   private lastKey = "";
   private keys = {
     ArrowUp: {
@@ -42,8 +64,9 @@ export class MundoAbiertoComponent implements AfterViewInit{
     }
   };
   private background!: Sprite;
+  private boundaries!: any;
 
-  constructor(private comunicationService: ComunicationServiceService){}
+  constructor(private comunicationService: ComunicationServiceService, private mundoAbierto: ArrayJsonService){}
 
   ngOnDestroy(): void {
     document.removeEventListener('keydown', this.keydownListener);
@@ -55,9 +78,22 @@ export class MundoAbiertoComponent implements AfterViewInit{
   ngAfterViewInit(): void {
     this.canvas = document.querySelector('canvas');
     this.context = this.canvas.getContext('2d');
-    
-    this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
+    this.collisions = this.mundoAbierto.getCollisions();
+
+    const collisionsMap = [];
+    for (let i = 0; i < this.collisions.length; i+=70){
+      collisionsMap.push(this.collisions.slice(i, 70 + i));
+    }
+    const offset = {
+      x: -7 * (this.canvas.width / 100),
+      y: -60 * (this.canvas.height / 100)
+    };
+    const position = {
+      x: offset.x,
+      y: offset.y
+    };
+    
     this.image = new Image();
     this.image.src = '../../../../assets/images/pruebaMapa.png';
     this.player = new Image();
@@ -70,11 +106,8 @@ export class MundoAbiertoComponent implements AfterViewInit{
     ).subscribe((event: string) => {
       this.accionTecla(event);
     });
-    const position = {
-      x: -20,
-      y: -70
-    };
-    this.background = new Sprite (position,0,this.image);
+    this.background = new Sprite (position,0,this.image, this.context);
+    
     this.animate()
   }
 
@@ -149,9 +182,9 @@ export class MundoAbiertoComponent implements AfterViewInit{
       this.player.height
     );
   
-    if (this.keys.ArrowUp.pressed && this.lastKey === 'ArrowUp') this.background.position.y += 1;
-    if (this.keys.ArrowDown.pressed && this.lastKey === 'ArrowDown') this.background.position.y -= 1;
-    if (this.keys.ArrowLeft.pressed && this.lastKey === 'ArrowLeft') this.background.position.x += 1;
-    if (this.keys.ArrowRight.pressed && this.lastKey === 'ArrowRight') this.background.position.x -= 1;
+    if (this.keys.ArrowUp.pressed && this.lastKey === 'ArrowUp') this.background.position.y += 3;
+    if (this.keys.ArrowDown.pressed && this.lastKey === 'ArrowDown') this.background.position.y -= 3;
+    if (this.keys.ArrowLeft.pressed && this.lastKey === 'ArrowLeft') this.background.position.x += 3;
+    if (this.keys.ArrowRight.pressed && this.lastKey === 'ArrowRight') this.background.position.x -= 3;
   }
 }
