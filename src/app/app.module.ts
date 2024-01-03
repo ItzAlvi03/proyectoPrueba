@@ -23,6 +23,7 @@ import { CombateCPUComponent } from './componentes/gameboy/combate-cpu/combate-c
 import { AnimacionEncenderComponent } from './componentes/gameboy/animaciones/animacion-encender/animacion-encender.component';
 import { CombatePokemonDirective } from './truncate/combate-pokemon.directive';
 import { CombateSpinnerComponent } from './componentes/spinner/combate-spinner/combate-spinner.component';
+import { MundoAbiertoComponent } from './componentes/gameboy/mundo-abierto/mundo-abierto.component';
 
 @NgModule({
   declarations: [
@@ -43,6 +44,7 @@ import { CombateSpinnerComponent } from './componentes/spinner/combate-spinner/c
     AnimacionEncenderComponent,
     CombatePokemonDirective,
     CombateSpinnerComponent,
+    MundoAbiertoComponent,
   ],
   imports: [
     FormsModule,

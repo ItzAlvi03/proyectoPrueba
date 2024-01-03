@@ -14,6 +14,9 @@
     <div class="no-seleccionado" id="seccion5">
         <label><strong>5.</strong> Usuario</label>
     </div>
+    <div class="no-seleccionado" id="seccion6">
+        <label><strong>6.</strong> Mundo Pokemon</label>
+    </div>
 </div>
 <div *ngIf="!dentroSeccion" id="nombreUsuario" class="w-100 d-flex flex-column justify-content-end align-items-end">
         <label *ngIf="nombreUsuario"><strong>Usuario: {{nombreUsuario}}</strong></label>
@@ -23,3 +26,4 @@
 <app-combate-cpu *ngIf="combateCPU"></app-combate-cpu>
 <app-info-uso id="infoUso" *ngIf="infoUso"></app-info-uso>
 <app-usuario id="usuario" *ngIf="usuario"></app-usuario>
+<app-mundo-abierto *ngIf="mundoAbierto"></app-mundo-abierto>

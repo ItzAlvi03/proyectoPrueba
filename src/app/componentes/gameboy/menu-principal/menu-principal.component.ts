@@ -16,12 +16,13 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy{
   pantallaCompleta: boolean = false;
   infoUso: boolean = false;
   usuario: boolean = false;
-  MAX_OPCIONES: number = 5;
+  MAX_OPCIONES: number = 6;
   opcion: number = 1;
   dentroSeccion: boolean = false;
   secciones: any;
   nombreUsuario: any;
   volver: boolean = true;
+  mundoAbierto: boolean = false;
 
   constructor(private comunicationService: ComunicationServiceService) {}
   ngOnDestroy(): void {
@@ -43,6 +44,7 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy{
         this.usuario = false;
         this.dentroSeccion = false;
         this.encendido = false;
+        this.mundoAbierto = false;
       }
     })
     this.comunicationService.volverMenu.pipe(
@@ -92,6 +94,7 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy{
       this.combateCPU = false;
       this.infoUso = false;
       this.usuario = false;
+      this.mundoAbierto = false;
     }else{
       setTimeout(() => {
         if(this.comunicationService.encendido.value){
@@ -119,9 +122,9 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy{
         this.deshabilitarMenu();
       if(this.opcion == 1){
         this.pokedex = true;
-      }else if(this.opcion == 2){
+      } else if(this.opcion == 2){
         this.combateCPU = true
-      }else if(this.opcion == 3){
+      } else if(this.opcion == 3){
         if(this.pantallaCompleta){
           this.pantallaCompleta = false;
           this.comunicationService.pantallaCompleta.next(false);
@@ -129,10 +132,12 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy{
           this.pantallaCompleta = true;
           this.comunicationService.pantallaCompleta.next(true);
         }
-      }else if(this.opcion == 4){
+      } else if(this.opcion == 4){
         this.infoUso = true;
-      }else if(this.opcion == 5){
+      } else if(this.opcion == 5){
         this.usuario = true;
+      } else if(this.opcion == 6){
+        this.mundoAbierto = true;
       }
     }
   }
@@ -141,6 +146,7 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy{
     this.combateCPU = false;
     this.infoUso = false;
     this.usuario = false;
+    this.mundoAbierto = false;
     this.dentroSeccion = false;
     this.secciones.style.visibility = 'visible';
     this.restablecerOpciones();
@@ -164,7 +170,7 @@ export class MenuPrincipalComponent implements OnInit, OnDestroy{
       }
     }
   }
-  elegirOpcion() {
+  elegirOpcion() {  
     // Buscamos y quitamos la antigua opcion seleccionada como seleccionado
     const antiguaOpcion = document.querySelector('.seleccionado') as HTMLElement;
     antiguaOpcion.classList.remove('seleccionado');
