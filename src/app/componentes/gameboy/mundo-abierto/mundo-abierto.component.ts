@@ -42,6 +42,8 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
   private array: any;
   private usarMundoAbierto: boolean = false;
   encuentro: boolean = false;
+  private playerFrame: number = 0;
+  private elapsedPlayer: number = 0;
 
   constructor(private service: ArrayJsonService, private comunication: ComunicationServiceService, private logica: LogicaService) {}
 
@@ -54,6 +56,10 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
   ngOnDestroy(): void {
     this.usarMundoAbierto = false;
     document.removeEventListener('keydown', this.keydownListener);
+    document.removeEventListener('keyup', this.keyupListener);
+    this.comunication.volverMenu.next(true);
+    this.comunication.finCombate.next(false);
+    this.comunication.mundoAbierto.next(false);
     this.destroyed$.next();
     this.destroyed$.complete();
   }
@@ -70,7 +76,7 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
     this.mapa = new Image();
     this.mapa.src = '../../../../assets/images/PokemonStyleGameMap.png';
     this.player = new Image();
-    this.player.src = '../../../../assets/images/character.png';
+    this.player.src = '../../../../assets/images/character/front/character-front.png';
 
     // Metodos para empezar a iniciar el mundo abierto
     this.collisions = this.getCollisions();
@@ -80,6 +86,7 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
 
     // Acciones del teclado y de la cruzeta de la Gameboy
     document.addEventListener('keydown', this.keydownListener);
+    document.addEventListener('keyup', this.keyupListener);
     this.comunication.finCombate.pipe(
       takeUntil(this.destroyed$)
     ).subscribe((event: boolean) => {
@@ -104,6 +111,12 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
   private keydownListener = (event: KeyboardEvent) => {
     event.preventDefault();
     this.handleInput(event.key);
+  };
+
+  private keyupListener = (event: KeyboardEvent) => {
+    this.elapsedPlayer = 0;
+    this.playerFrame = 0;
+    this.nuevoFrame();
   };
 
   getCollisions() {
@@ -141,11 +154,31 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
     //for(let i = 0; i < this.pokemonAreas.length; i++){
     //  this.ctx.fillRect(this.pokemonAreas[i].x, this.pokemonAreas[i].y, this.pokemonAreas[i].width, this.pokemonAreas[i].height);
     //}
+    //for(let i = 0; i < this.collisions.length; i++){
+    //  this.ctx.fillRect(this.collisions[i].x, this.collisions[i].y, this.collisions[i].width, this.collisions[i].height);
+    //}
   }
 
   drawPlayer(): void {
     // Dibuja el jugador
-    this.ctx.drawImage(this.player, this.playerX, this.playerY);
+    this.ctx.drawImage(
+      this.player,
+      this.playerFrame * (this.player.width / 4),
+      0,
+      this.player.width / 4,
+      this.player.height,
+      this.playerX,
+      this.playerY,
+      this.player.width / 4,
+      this.player.height);
+      
+      this.elapsedPlayer += 2;
+
+      if(this.elapsedPlayer % 8 === 0){
+        this.elapsedPlayer = 0;
+        if (this.playerFrame < 3) this.playerFrame++;
+        else this.playerFrame = 0;
+      }
   }
 
   handleInput(event: any): void {
@@ -205,7 +238,7 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
     for (let i = 0; i < this.collisions.length; i++) {
       if (
         this.playerX < this.collisions[i].x + this.collisions[i].width &&
-        this.playerX + this.player.width > this.collisions[i].x &&
+        this.playerX + (this.player.width / 4) > this.collisions[i].x &&
         this.playerY < this.collisions[i].y + this.collisions[i].height &&
         this.playerY + this.player.height > this.collisions[i].y
       ) {
@@ -216,18 +249,16 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
     for (let i = 0; i < this.pokemonAreas.length; i++) {
       if (
         this.playerX < this.pokemonAreas[i].x + this.pokemonAreas[i].width - 10 &&
-        this.playerX + this.player.width - 10 > this.pokemonAreas[i].x &&
+        this.playerX + (this.player.width / 4) - 10 > this.pokemonAreas[i].x &&
         this.playerY < this.pokemonAreas[i].y + this.pokemonAreas[i].height - 6 &&
         this.playerY + this.player.height - 6 > this.pokemonAreas[i].y
       ) {
         // Dentro del area detectado
         var encuentro = this.logica.encontrarPokemon();
-        console.log('dentro del area')
         if(encuentro){
           this.usarMundoAbierto = false;
           setTimeout(() => {
             this.encuentro = true;
-            console.log('Pokemon salvaje encontrado!!')
           }, 50);
           // Logica de animaciones y demás cosas
         }
