@@ -13,13 +13,13 @@
                 <app-animacion-apagar id="opacidad" *ngIf="apagar"></app-animacion-apagar>
             </div>
         </div>
-        <div (click)="activarAnimacion('ClickArrowUp')" id="arriba">
+        <div (touchstart)="touchStartListener('ClickArrowUp', $event)" (touchend)="desactivarAnimacion()" (click)="activarAnimacion('ClickArrowUp')" id="arriba">
         </div>
-        <div (click)="activarAnimacion('ClickArrowDown')" id="abajo">
+        <div (touchstart)="touchStartListener('ClickArrowDown', $event)" (touchend)="desactivarAnimacion()" (click)="activarAnimacion('ClickArrowDown')" id="abajo">
         </div>
-        <div (click)="activarAnimacion('ClickArrowLeft')" id="izquierda">
+        <div (touchstart)="touchStartListener('ClickArrowLeft', $event)" (touchend)="desactivarAnimacion()" (click)="activarAnimacion('ClickArrowLeft')" id="izquierda">
         </div>
-        <div (click)="activarAnimacion('ClickArrowRight')" id="derecha">
+        <div (touchstart)="touchStartListener('ClickArrowRight', $event)" (touchend)="desactivarAnimacion()" (click)="activarAnimacion('ClickArrowRight')" id="derecha">
         </div>
         <div (click)="activarAnimacion('ClickEnter')" id="adelante">
         </div>

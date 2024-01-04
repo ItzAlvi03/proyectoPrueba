@@ -25,5 +25,11 @@ export class ComunicationServiceService {
   // Cuando se sale de la app que nada pueda usarse porque salían errores
   public fueraDeGameboy = new BehaviorSubject<boolean>(false);
 
+  // Para que si esta en el mundo abierto no vuelva al menu al terminar el combate
+  public mundoAbierto = new BehaviorSubject<boolean>(false);
+
+  // Para que al terminar el combate se vuelva a poder usar el mundo abierto
+  public finCombate = new BehaviorSubject<boolean>(false);
+
   constructor() {}
 }

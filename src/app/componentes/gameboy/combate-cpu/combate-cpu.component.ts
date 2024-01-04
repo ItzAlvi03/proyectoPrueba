@@ -239,9 +239,9 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       setTimeout(async () => {
         if(this.comunication.encendido.value){
             if(event === 'Backspace'){
-              if(!this.cargado)
+              if(!this.cargado && !this.comunication.mundoAbierto.value){
                 this.ngOnDestroy();
-              else{
+              } else{
                 if(this.dentroSeccion){
                   setTimeout(() => {
                     this.dentroSeccion = false;
@@ -389,8 +389,12 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
       } else if(this.numSeccion == 3){
         this.seccionBolsa = true;
       } else if(this.numSeccion == 4){
-        this.comunication.volverMenu.next(true);
-        this.comunication.accion.next('Backspace');
+        if(!this.comunication.mundoAbierto.value){
+          this.comunication.volverMenu.next(true);
+          this.comunication.accion.next('Backspace');
+        } else {
+          this.comunication.finCombate.next(true);
+        }
         this.ngOnDestroy();
       }
     }
@@ -664,12 +668,16 @@ export class CombateCPUComponent implements OnInit, OnDestroy{
             this.mensaje = ("El pokemon " + this.pokemon[0].name + " ha ganado la pelea.");
           }
           await delay(1500);
-          for(var seg = 5; seg >= 0; seg--){
-            this.mensaje = "Volviendo al menú de la Gameboy en " + seg + " segundos...";
-            await delay(1000);
+          if(this.comunication.mundoAbierto.value) {
+            this.comunication.finCombate.next(true);
+          } else {
+            for(var seg = 5; seg >= 0; seg--){
+              this.mensaje = "Volviendo al menú de la Gameboy en " + seg + " segundos...";
+              await delay(1000);
+            }
+            this.comunication.volverMenu.next(true);
+            this.comunication.accion.next('Backspace');
           }
-          this.comunication.volverMenu.next(true);
-          this.comunication.accion.next('Backspace');
           this.ngOnDestroy();
         }
       } else if(num == -1 && pokemon == 1){

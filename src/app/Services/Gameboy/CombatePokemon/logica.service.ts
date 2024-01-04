@@ -200,4 +200,17 @@ export class LogicaService {
   elegirAilment(num: number): any{
     return this.ailments[num];
   }
+
+  encontrarPokemon(): boolean {
+    var encuentro = false;
+    // Generar un número aleatorio entre 20 y 30 (probabilidad de encuentro)
+    // y el resultado aleatorio para ver si se realiza o no un encuentro
+    const probabilidadEncuentro = Math.floor(Math.random() * (3 - 10 + 1) + 10);
+    const resultadoAleatorio = Math.floor(Math.random() * 121);
+
+
+    if (resultadoAleatorio <= probabilidadEncuentro) encuentro = true;
+
+    return encuentro;
+  }
 }

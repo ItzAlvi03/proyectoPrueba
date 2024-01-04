@@ -27,6 +27,7 @@ export class GameboyComponent implements OnInit, OnDestroy{
   menuPrincipal: boolean = false;
   encender: boolean = false;
   apagar: boolean = false;
+  private touchInterval: any;
 
   constructor(private comunicationService: ComunicationServiceService) {}
 
@@ -57,6 +58,22 @@ export class GameboyComponent implements OnInit, OnDestroy{
   private keydownListener = (event: KeyboardEvent) => {
     this.accionTecla(event);
   };
+
+  touchStartListener = (direction: string, event: TouchEvent) => {
+    event.preventDefault()
+    this.touchInterval = setInterval(() => {
+      this.activarAnimacion(direction);
+      event.preventDefault();
+    }, 40);
+  };
+
+  desactivarAnimacion() {
+    if (this.touchInterval) {
+      clearInterval(this.touchInterval);
+      this.touchInterval = null;
+    }
+  }  
+
   reposicionarPantalla(event: boolean) {
     if(this.pantalla) {
       if(event){
@@ -86,7 +103,7 @@ export class GameboyComponent implements OnInit, OnDestroy{
   accionTecla(event: KeyboardEvent) {
     //Sirve para evitar el comportamiento normal de las flechas arriba y abajo
     //para que no se mueva la pantalla
-    if (['ArrowUp', 'ArrowDown'].includes(event.key)) {
+    if (['ArrowUp', 'ArrowDown', 'ArrowRight', 'ArrowLeft'].includes(event.key)) {
       event.preventDefault();
     }
     if (event.key === 'ArrowUp' || event.key === 'ArrowDown' || event.key === 'ArrowRight' || event.key === 'ArrowLeft' || event.key === 'Enter' || event.key === 'Backspace') {
