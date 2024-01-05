@@ -44,6 +44,12 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
   encuentro: boolean = false;
   private playerFrame: number = 0;
   private elapsedPlayer: number = 0;
+  private frontSprite: any;
+  private backSprite: any;
+  private leftSprite: any;
+  private rightSprite: any;
+  private lastFrame : string = "ArrowDown";
+  private moving = false;
 
   constructor(private service: ArrayJsonService, private comunication: ComunicationServiceService, private logica: LogicaService) {}
 
@@ -51,6 +57,10 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
     this.comunication.mundoAbierto.next(true);
     this.comunication.volverMenu.next(false);
     this.comunication.finCombate.next(false);
+    this.frontSprite = "../../../../assets/images/character/character-front.png"
+    this.backSprite = "../../../../assets/images/character/character-back.png"
+    this.leftSprite = "../../../../assets/images/character/character-left.png"
+    this.rightSprite = "../../../../assets/images/character/character-right.png"
   }
 
   ngOnDestroy(): void {
@@ -76,7 +86,7 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
     this.mapa = new Image();
     this.mapa.src = '../../../../assets/images/PokemonStyleGameMap.png';
     this.player = new Image();
-    this.player.src = '../../../../assets/images/character/front/character-front.png';
+    this.player.src = this.frontSprite;
 
     // Metodos para empezar a iniciar el mundo abierto
     this.collisions = this.getCollisions();
@@ -117,7 +127,7 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
   private keyupListener = () => {
     this.elapsedPlayer = 0;
     this.playerFrame = 0;
-    this.nuevoFrame();
+    this.moving = true;
   };
 
   getCollisions() {
@@ -162,6 +172,11 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
 
   drawPlayer(): void {
     // Dibuja el jugador
+    if(this.lastFrame === 'ArrowUp') this.player.src = this.backSprite;
+    else if(this.lastFrame === 'ArrowDown') this.player.src = this.frontSprite;
+    else if(this.lastFrame === 'ArrowLeft') this.player.src = this.leftSprite;
+    else if(this.lastFrame === 'ArrowRight') this.player.src = this.rightSprite;
+
     this.ctx.drawImage(
       this.player,
       this.playerFrame * (this.player.width / 4),
@@ -173,9 +188,9 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
       this.player.width / 4,
       this.player.height);
       
-      this.elapsedPlayer += 2;
-
-      if(this.elapsedPlayer % 8 === 0){
+      if(this.moving) this.elapsedPlayer ++;
+      this.moving = false;
+      if(this.elapsedPlayer % 14 === 0){
         this.elapsedPlayer = 0;
         if (this.playerFrame < 3) this.playerFrame++;
         else this.playerFrame = 0;
@@ -185,6 +200,8 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
   handleInput(event: any): void {
     // Maneja la entrada del teclado para mover al jugador
     if(this.comunication.encendido.value && this.usarMundoAbierto){
+      this.lastFrame = event;
+      this.moving = true;
       switch (event) {
         case 'ArrowLeft':
           this.movePlayer(-6, 0);
@@ -228,8 +245,6 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
         this.pokemonAreas[i].y += dy;
       }
     }
-
-    this.nuevoFrame();
   }
   
 
@@ -272,6 +287,7 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
    nuevoFrame(): void{
     // Metodos para mostrar un nuevo Frame o Imagen
     // del estado actual del jugador
+    requestAnimationFrame(() => this.nuevoFrame());
     this.clearCanvas();
     this.drawMap();
     this.drawPlayer();
