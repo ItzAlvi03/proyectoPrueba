@@ -60,10 +60,9 @@ export class GameboyComponent implements OnInit, OnDestroy{
   };
 
   touchStartListener = (direction: string, event: TouchEvent) => {
-    event.preventDefault()
     this.touchInterval = setInterval(() => {
-      this.activarAnimacion(direction);
       event.preventDefault();
+      this.activarAnimacion(direction);
     }, 40);
   };
 
@@ -72,6 +71,7 @@ export class GameboyComponent implements OnInit, OnDestroy{
       clearInterval(this.touchInterval);
       this.touchInterval = null;
     }
+    this.comunicationService.accion.next('keyup')
   }  
 
   reposicionarPantalla(event: boolean) {

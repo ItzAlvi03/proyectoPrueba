@@ -98,7 +98,8 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
     this.comunication.accion.pipe(
       takeUntil(this.destroyed$)
       ).subscribe((event: string) => {
-        this.handleInput(event);
+        if(event === 'keyup') this.keyupListener();
+        else this.handleInput(event);
       });
 
     // Iniciar el primer frame y permitir al usuario moverse
@@ -113,7 +114,7 @@ export class MundoAbiertoComponent implements AfterViewInit, OnInit {
     this.handleInput(event.key);
   };
 
-  private keyupListener = (event: KeyboardEvent) => {
+  private keyupListener = () => {
     this.elapsedPlayer = 0;
     this.playerFrame = 0;
     this.nuevoFrame();
