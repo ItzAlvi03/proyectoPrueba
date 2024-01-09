@@ -30,27 +30,6 @@ export class PrincipalComponent{
     this.imagen = objectURL
   }
   
-  generarArea() {
-    if(!this.usando){
-      if(this.height != null && this.width != null){
-        const tamanio = {
-          width: this.width,
-          height: this.height
-        };
-          this.service.getArea(tamanio).subscribe(
-            response => {
-              this.area = response['Area'];
-              this.mensajeConfirmacion("Se ha generado el area correctamente.");
-            },
-            error => {
-              this.mensajeError("Error al calcular el area.");
-            }
-          );
-      }else{
-          this.mensajeError("Los valores de width y height no pueden ser nulos.");
-      }
-    }
-  }
   mensajeError(mensaje: string) {
     this.usando = true;
     this.mensaje = mensaje;

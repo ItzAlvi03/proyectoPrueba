@@ -5,15 +5,13 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class APIServiceService {
+  private URL = 'https://itzalvi03.pythonanywhere.com/'
   constructor(private http: HttpClient) {}
 
-  getVersion(): Observable<any>{
-    return this.http.get('http://127.0.0.1:5555/apiVersion');
+  predict(img: any): Observable<any>{
+    return this.http.post(this.URL + '/predict', img);
   }
-  getAPILocalTime(): Observable<any>{
-    return this.http.get('http://127.0.0.1:5555/localTime');
-  }
-  getArea(tamanio: any): Observable<any>{
-    return this.http.post('http://127.0.0.1:5555/calcularArea', tamanio);
+  contorno(img: any): Observable<any>{
+    return this.http.post(this.URL + '/contorno', img);
   }
 }

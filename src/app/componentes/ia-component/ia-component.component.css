@@ -1,0 +1,18 @@
+form{
+    position: absolute;
+    top: 80px;
+    width: 100%;
+    height: calc(100vh - 80px);
+    display: flex;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    overflow-y: scroll;
+}
+img{
+    max-width: 80%;
+    margin: 0% 10%;
+    margin-top: 10%;
+    height: auto;
+}

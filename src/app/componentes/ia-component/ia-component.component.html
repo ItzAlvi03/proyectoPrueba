@@ -1,0 +1,6 @@
+<form method="post" enctype="multipart/form-data">
+    <input type="file" name="imagen" accept=".jpg">
+    <input (click)="predecirImg(1)" type="submit" value="Ver Prediccion">
+    <input (click)="predecirImg(2)" type="submit" value="Ver Contorno">
+    <img *ngIf="src" src="{{src}}" alt="">
+</form>
