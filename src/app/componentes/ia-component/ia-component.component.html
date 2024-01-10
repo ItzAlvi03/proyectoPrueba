@@ -1,6 +1,10 @@
-<form method="post" enctype="multipart/form-data">
-    <input type="file" name="imagen" accept=".jpg">
-    <input (click)="predecirImg(1)" type="submit" value="Ver Prediccion">
-    <input (click)="predecirImg(2)" type="submit" value="Ver Contorno">
-    <img *ngIf="src" src="{{src}}" alt="">
-</form>
+<div id="content">
+    <form class="w-100 h-100 d-flex flex-column justify-content-center align-items-center" method="post" enctype="multipart/form-data">
+        <input class="btn" (change)="cambiarImg()" type="file" name="imagen" accept=".jpg">
+        <input class="btn btn-primary" (click)="predecirImg(1)" type="submit" value="Ver Prediccion">
+        <input class="btn btn-primary" (click)="predecirImg(2)" type="submit" value="Ver Contorno">
+    </form>
+    <div id="img">
+        <img class="w-100 h-100" *ngIf="src" src="{{src}}" alt="">
+    </div>
+</div>

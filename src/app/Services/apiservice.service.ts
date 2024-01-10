@@ -5,13 +5,14 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class APIServiceService {
-  private URL = 'https://itzalvi03.pythonanywhere.com/'
+  //private URL = 'https://itzalvi03.pythonanywhere.com/'
+  private URL = 'http://127.0.0.1:5000/'
   constructor(private http: HttpClient) {}
 
   predict(img: any): Observable<any>{
     return this.http.post(this.URL + '/predict', img);
   }
-  contorno(img: any): Observable<any>{
-    return this.http.post(this.URL + '/contorno', img);
+  contorno(data: any): Observable<any>{
+    return this.http.post(this.URL + '/contorno', data);
   }
 }

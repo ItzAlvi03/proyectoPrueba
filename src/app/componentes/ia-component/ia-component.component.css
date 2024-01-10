@@ -1,18 +1,17 @@
-form{
+#content{
+    top: 0;
     position: absolute;
-    top: 80px;
+    margin-top: 80px;
     width: 100%;
-    height: calc(100vh - 80px);
-    display: flex;
-    flex-direction: column;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
-    overflow-y: scroll;
+    height: calc(100% - 80px);
 }
-img{
+#img{
     max-width: 80%;
+    width: auto;
     margin: 0% 10%;
     margin-top: 10%;
     height: auto;
+}
+#img img{
+    object-fit: contain;
 }
