@@ -15,3 +15,6 @@
 #img img{
     object-fit: contain;
 }
+input[type="file"] {
+    display: none;
+}

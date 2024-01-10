@@ -12,7 +12,7 @@ export class IAComponentComponent implements AfterViewInit{
   src: any;
   result: any;
   img: any;
-  private archivo: any;
+  archivo: any;
 
   constructor(private api: APIServiceService){}
 
@@ -46,7 +46,6 @@ export class IAComponentComponent implements AfterViewInit{
       if(num == 1){
         this.api.predict(this.img).subscribe(
           (res: any) => {
-            console.log(res)
             this.result = res['result'];
             this.src = 'data:image/png;base64, ' + res['annotated_img'];
           },
@@ -55,14 +54,12 @@ export class IAComponentComponent implements AfterViewInit{
           }
         );
       } else if (num == 2 && this.result) {
-          const data = {
-            img: this.src,
-            result: this.result
-          };
-          console.log(data)
-          this.api.contorno(data).subscribe(
+          const formData = new FormData();
+          formData.append('img', this.archivo);
+          formData.append('result', this.result);
+
+          this.api.contorno(formData).subscribe(
             (res: any) => {
-              console.log(res)
               const src = res['annotated_img'];
               this.src = 'data:image/png;base64, ' + src;
             },

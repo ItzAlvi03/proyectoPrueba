@@ -1,10 +1,11 @@
 <div id="content">
     <form class="w-100 h-100 d-flex flex-column justify-content-center align-items-center" method="post" enctype="multipart/form-data">
-        <input class="btn" (change)="cambiarImg()" type="file" name="imagen" accept=".jpg">
-        <input class="btn btn-primary" (click)="predecirImg(1)" type="submit" value="Ver Prediccion">
-        <input class="btn btn-primary" (click)="predecirImg(2)" type="submit" value="Ver Contorno">
+        <label class="btn btn-primary mt-2 mb-2">Seleccionar Archivo<input class="btn" (change)="cambiarImg()" type="file" name="imagen" accept=".jpg"></label>
+        <input class="btn btn-primary mb-2" (click)="predecirImg(1)" type="submit" value="Ver Prediccion">
+        <input class="btn btn-primary mb-2" (click)="predecirImg(2)" type="submit" value="Ver Contorno">
     </form>
-    <div id="img">
-        <img class="w-100 h-100" *ngIf="src" src="{{src}}" alt="">
+    <div *ngIf="src" class="text-center" id="img">
+        <img class="w-100 h-100 mb-2" src="{{src}}" alt="">
+        <strong><label>{{archivo.name}}</label></strong>
     </div>
 </div>
