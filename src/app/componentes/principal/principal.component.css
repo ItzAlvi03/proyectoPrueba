@@ -1,11 +1,26 @@
-#banner{
+*, html{
+    font-family: sans-serif;
+    background-color: #11293c;
+    color: #f7fafc;
+}
+header{
     height: 80px;
-    background-color: lightgrey;
+    background-color: transparent;
+}
+header a{
+    margin: 0% 2%;
+    text-wrap: nowrap;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+}
+header a:hover{
+    border-bottom: 3px solid #4299E1;
+    border-radius: 3px;
 }
 #contenido{
     width: 100%;
-    height: 100%;
-    margin-bottom: 80px;
+    height: calc(100vh - 80px);
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -23,6 +38,9 @@
 img{
     max-height: 350px;
 
+}
+.hidden, .hidden a{
+    display: none;
 }
 @media (max-width:1200px){
     #card{

@@ -1,9 +1,11 @@
-html{
+*, html{
+    font-family: sans-serif;
+    background-color: #11293c;
+    color: #f7fafc;
     overflow-y: hidden;
 }
 #banner{
     height: 80px;
-    background-color: rgb(237, 62, 62);
 }
 #pantalla{
     position: absolute;
@@ -41,7 +43,7 @@ html{
     opacity: 1;
 }
 #contentPantalla{
-    margin-top: 1%;
+    padding-top: 1%;
 }
 #arriba{
     margin: 102.5% 14.8%;
