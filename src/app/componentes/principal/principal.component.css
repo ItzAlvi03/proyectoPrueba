@@ -2,10 +2,16 @@
     font-family: sans-serif;
     background-color: #11293c;
     color: #f7fafc;
+    scroll-behavior: smooth;
 }
 header{
     height: 80px;
-    background-color: transparent;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 4;
 }
 header a{
     margin: 0% 2%;
@@ -19,45 +25,157 @@ header a:hover{
     border-radius: 3px;
 }
 #contenido{
+    position: absolute;
     width: 100%;
-    height: calc(100vh - 80px);
+    top: 0;
+    bottom: 0;
+    margin-top: 80px;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
+    z-index: 3;
+}
+#contentCard{
+    display: flex;
+    flex-direction: row;    
+    width: 100%;
+    height: auto;
+    padding-bottom: 7%;
+    position: relative;
 }
 #card{
-    width: 25%;
-    padding: 0% 5%;
+    width: 20%;
     border-radius: 7px;
-    margin-left: 2.5%;
+    margin-left: 20%;
     margin-right: 2.5%;
-    box-shadow: 0px 0px 4px 2px;
-    transition: box-shadow 0.3s ease-in-out;
+    transition: 0.25s padding ease-in-out;
+    cursor: pointer;
 }
-img{
-    max-height: 350px;
+#card img, #card a{
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+}
+#card:hover,#textCard i:hover{
+    padding: 0.6%;
+}
+#textCard{
+    width: 47.5%;
+    height: 100%;
+    align-items: flex-start;
+}
+#textCard div{
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
+#textCard i{
+    font-size: 190%;
+    cursor: pointer;
+    transition: 0.25s padding ease-in-out, 0.3s transform ease-in-out, 0.3s margin-left ease-in-out, 0.3s margin-top ease-in-out;
+}
+.rotated {
+    transform: rotate(45deg);
+    margin-left: 80%;
+}
+h3{
+    color: #4299E1;
+    font-weight: 600;
+}
+.info-container {
+    position: relative;
+    overflow: hidden;
+}
 
+.info-text {
+    position: absolute;
+    left: -100%;
+    max-width: 75%;
+    max-height: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden;
+    transition: 0.3s left ease-in-out;
+    padding: 10px;
+}
+.info-container.active .info-text {
+    left: 0;
 }
 .hidden, .hidden a{
     display: none;
 }
-@media (max-width:1200px){
+@media (max-width: 970px) {
     #card{
-        width: 40%;
+        width: 25%;
+    }
+    #textCard{
+        width: 42.5%;
     }
 }
-@media (max-width:700px){
-    #card{
-        width: 60%;
-        margin: 5% 20%;
-        padding: 0%;
+@media (max-width: 665px) {
+    #contentCard{
+        flex-direction: column;
+        width: 100%;
     }
-    img{
-        width: 55%;
+    #card, #textCard{
+        width: 60%;
+        margin: 0% 20%;
+    }
+    #textCard{
+        margin-top: 5%;
+    }
+    #textCard, #textCard div{
+        align-items: center;
+        justify-content: center;
         height: auto;
     }
-    p{
-        padding: 0% 5%;
+    .info-text {
+        left: 13%;
+        top: -300%;
+        width: 100%;
+        height: 70%;
+        padding-bottom: 20%;
+        padding-top: 10%;
+        transition: 0.3s top ease-in-out;
+    }
+    .info-container.active .info-text {
+        left: 13%;
+        top: 0;
+    }
+    #textCard i.rotated {
+        margin-left: 0;
+        margin-top: 45%;
+        background-color: #11293c00;
+    }
+}
+@media (max-width: 560px) {
+    #textCard i.rotated {
+        margin-top: 55%;
+    }
+}
+@media (max-width: 475px) {
+    #textCard i.rotated {
+        margin-top: 70%;
+    }
+}
+@media (max-width: 425px) {
+    #textCard i.rotated {
+        margin-top: 100%;
+    }
+}
+@media (max-width: 375px) {
+    #textCard i.rotated {
+        margin-top: 120%;
+    }
+}
+@media (max-width: 345px) {
+    #textCard i.rotated {
+        margin-top: 150%;
+    }
+}
+@media (max-width: 310px) {
+    #textCard i.rotated {
+        margin-top: 175%;
     }
 }

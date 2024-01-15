@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, HostListener, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, HostListener, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { APIServiceService } from 'src/app/Services/apiservice.service';
 
@@ -22,7 +22,7 @@ export class PrincipalComponent implements OnInit, AfterViewInit{
   menu: boolean = false;
   isMobile = true;
   constructor(private service: APIServiceService,
-    private router: Router){}
+    private router: Router, private el: ElementRef, private renderer: Renderer2){}
   
   @HostListener('window:resize', ['$event'])
   onResize(event: any) {
@@ -82,9 +82,30 @@ export class PrincipalComponent implements OnInit, AfterViewInit{
       this.usando = false;
     }, 3000);
   }
+
   entrarAnimacion(route: string, num: number) {
-    const img = document.querySelector('.' + num);
-    this.router.navigate([route])
+    const img = document.querySelector('.img-' + num);
+    this.router.navigate([route]);
+  }
+
+  mostrarInfo(num: number) {
+    const icon = document.querySelectorAll('.icono');
+    const infoContainer = document.querySelectorAll('.info-container');
+    if (num >= 0 && num < icon.length) {
+        const i = icon[num];
+        const iconAbierto = document.querySelector('.rotated');
+        const text = document.querySelector('.active');
+
+        if(iconAbierto === i){
+          i.classList.remove('rotated');
+          text?.classList.toggle('active');
+        } else{
+          if (iconAbierto) iconAbierto.classList.toggle('rotated');
+          if(text) text.classList.toggle('active');
+
+          i.classList.toggle('rotated');
+          infoContainer[num].classList.toggle('active');
+        }
+    }
   }
 }
-

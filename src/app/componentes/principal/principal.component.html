@@ -11,28 +11,47 @@
     </div>
 </header>
 <div id="contenido">
-    <div class="w-100 d-flex flex-wrap flex-row justify-content-center align-items-center m-4">
-        <div class="d-flex flex-column justify-content-center align-items-center pt-4 pb-4 mt-4" id="card">
-            <img class="mb-2 img-1" src="../../../assets/images/principalRickYMorty.png" alt="Imagen App Rick Y Morty">
-            <strong><label class="mb-2"></label>Rick y Morty API info</strong>
-            <div class="d-flex flex-column justify-content-center align-items-center">
-                <strong class="mt-2 mb-2 text-center">Descripción</strong>
-                <p>App en la que se consultan personajes reales de la serie de Rick Y Morty y se puede clickear
-                     en estas cartas para tener más información del personaje seleccionado.
-                </p>
+    <div class="w-100 h-100 d-flex flex-column align-items-center mt-4 pt-4 pb-4">
+        <div id="contentCard" class="justify-content-start align-items-center">
+            <div class="d-flex justify-content-center align-items-center" id="card">
+                <a (click)="entrarAnimacion('/gameboy', 1)"><img class="img-1" src="../../../assets/images/principalGameboy.png" alt=""></a>
             </div>
-            <button class="btn btn-primary" (click)="entrarAnimacion('/rickMorty/1', 1)"><strong>Probar</strong></button>
+            <div id="textCard" class="d-flex flex-column justify-content-between">
+                <h3 class="w-75 text-center">Gameboy Proyect</h3>
+                <div class="w-100 h-100 text-center info-container">
+                    <div class="info-text">
+                        <p class="text-start">Es una Gameboy con botones funcionales.</p>
+                        <p class="text-start">Tiene muchas funciones interactuables como poder jugar un combate pokemon, iniciar sesión, etc.</p>
+                    </div>
+                    <i (click)="mostrarInfo(0)" class="icono bi bi-plus-circle-dotted"></i>
+                </div>
+            </div>
         </div>
-        <div class="d-flex flex-column justify-content-center align-items-center pt-4 pb-4 mt-4" id="card">
-            <img class="mb-2 img-2" src="../../../assets/images/principalGameboy.png" alt="Imagen Gameboy Real">
-            <strong><label class="mb-2"></label>GameBoy Proyect</strong>
-            <div class="d-flex flex-column justify-content-center align-items-center">
-                <strong class="mt-2 mb-2 text-center">Descripción</strong>
-                <p>Utiliza una GameBoy totalmente funcional en la que puedes navegar por el menu
-                     y además puedes consultar los distintos pokemon mediante su pokedex integrada (recomendable en móvil).
-                </p>
+        <div id="contentCard" class="justify-content-start align-items-center">
+            <div class="d-flex flex-column justify-content-center align-items-center" id="card">
+                <a (click)="entrarAnimacion('/IA', 2)"><img class="img-2" src="../../../assets/images/principalIA.png" alt=""></a>
             </div>
-            <button (click)="entrarAnimacion('/gameboy', 2)" class="btn btn-primary"><strong>Probar</strong></button>
+            <div id="textCard" class="d-flex flex-column justify-content-between">
+                <h3 class="w-75 text-center">IA Deteccion Personas</h3>
+                <div class="w-100 h-100 text-center info-container">
+                    <div class="info-text">
+                        <p>Una App con inteligencia artificial que puedes seleccionar o hacer una foto y reconoce si hay o no personas.</p>
+                    </div>
+                    <i (click)="mostrarInfo(1)" class="icono bi bi-plus-circle-dotted"></i>
+                </div>
+            </div>
+        </div>
+        <div id="contentCard" class="justify-content-start align-items-center">
+            <div class="d-flex flex-column justify-content-center align-items-center" id="card">
+                <a (click)="entrarAnimacion('/rickMorty/1', 3)"><img class="img-3" src="../../../assets/images/principalRickYMorty.png" alt=""></a>
+            </div>
+            <div id="textCard" class="d-flex flex-column justify-content-between">
+                <h3 class="w-75 text-center">Rick Y Morty API</h3>
+                <div class="w-100 h-100 text-center info-container">
+                    <div class="info-text">Una App de información de los personajes de la serie Rick Y Morty</div>
+                    <i (click)="mostrarInfo(2)" class="icono bi bi-plus-circle-dotted"></i>
+                </div>
+            </div>
         </div>
     </div>
 </div>
