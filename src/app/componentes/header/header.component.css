@@ -1,0 +1,29 @@
+*, html{
+    font-family: sans-serif;
+    background-color: #11293c;
+    color: #f7fafc;
+    scroll-behavior: smooth;
+}
+header{
+    height: 80px;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.2);
+    z-index: 4;
+}
+header a{
+    margin: 0% 2%;
+    text-wrap: nowrap;
+    text-decoration: none;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+}
+header a:hover{
+    border-bottom: 3px solid #4299E1;
+    border-radius: 3px;
+}
+.hidden, .hidden a{
+    display: none;
+}

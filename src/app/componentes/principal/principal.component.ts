@@ -7,7 +7,7 @@ import { APIServiceService } from 'src/app/Services/apiservice.service';
   templateUrl: './principal.component.html',
   styleUrls: ['./principal.component.css']
 })
-export class PrincipalComponent implements OnInit, AfterViewInit{
+export class PrincipalComponent implements AfterViewInit{
   usando: boolean = false;
   divMensaje: any;
   mensaje: any;
@@ -18,25 +18,10 @@ export class PrincipalComponent implements OnInit, AfterViewInit{
   area: any;
   version: any;
   localTime: any;
-  title: string = '<portfolio/>';
   menu: boolean = false;
-  isMobile = true;
 
-  constructor(private service: APIServiceService,
-    private router: Router, private el: ElementRef, private renderer: Renderer2){}
+  constructor(private service: APIServiceService, private router: Router){}
   
-  @HostListener('window:resize', ['$event'])
-  onResize(event: any) {
-    this.checkWindowSize();
-  }
-  
-  ngOnInit() {
-    this.checkWindowSize();
-  }
-  
-  checkWindowSize() {
-    this.isMobile = window.innerWidth <= 900;
-  }
   ngAfterViewInit() {
     this.divMensaje = document.getElementById('mensaje');
   }
@@ -87,7 +72,7 @@ export class PrincipalComponent implements OnInit, AfterViewInit{
   entrarAnimacion(route: string, num: number) {
     const img = document.querySelector('.img-' + num);
     const card = document.querySelector('.card-' + num) as any;
-    card.style.zIndex = '5';
+    card.style.zIndex = '3';
     card?.classList.add('open-card');
     setTimeout(() => {
       img?.classList.add('open');

@@ -1,8 +1,3 @@
-<div class="w-100" id="banner">
-    <div class="d-flex justify-content-center align-items-center">
-        <h2 class="mt-4">Rick And Morty</h2>
-    </div>
-</div>
 <div id="content" class="w-100 h-100">
     <div routerLink="/rickMortyCard/{{character.id}}/{{page}}" class="d-flex flex-column justify-content-center align-items-center p-4 mt-4" id="card" *ngFor="let character of characters">
         <img class="mb-2" src="{{character.image}}" alt="{{character.name}}">

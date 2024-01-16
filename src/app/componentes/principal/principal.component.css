@@ -4,26 +4,6 @@
     color: #f7fafc;
     scroll-behavior: smooth;
 }
-header{
-    height: 80px;
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: rgba(0, 0, 0, 0.2);
-    z-index: 4;
-}
-header a{
-    margin: 0% 2%;
-    text-wrap: nowrap;
-    text-decoration: none;
-    font-weight: 600;
-    border-bottom: 3px solid transparent;
-}
-header a:hover{
-    border-bottom: 3px solid #4299E1;
-    border-radius: 3px;
-}
 #contenido{
     position: absolute;
     width: 100%;
@@ -36,7 +16,7 @@ header a:hover{
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    z-index: 3;
+    z-index: 2;
 }
 #contentCard{
     display: flex;
@@ -47,7 +27,7 @@ header a:hover{
     position: relative;
 }
 #card{
-    z-index: 4;
+    z-index: 2;
     width: 20%;
     border-radius: 7px;
     margin-left: 20%;
@@ -66,7 +46,7 @@ header a:hover{
 }
 #card:hover,#textCard i:hover{
     padding: 0.6%;
-    z-index: 5;
+    z-index: 3;
 }
 #textCard{
     width: 47.5%;
@@ -93,7 +73,7 @@ h3{
 }
 .info-container {
     position: relative;
-    z-index: 3;
+    z-index: 2;
     overflow: hidden;
 }
 
@@ -110,9 +90,6 @@ h3{
 }
 .info-container.active .info-text {
     left: 0;
-}
-.hidden, .hidden a{
-    display: none;
 }
 .open{
     transform: scale(3.5);
