@@ -93,8 +93,8 @@ export class PrincipalComponent implements OnInit, AfterViewInit{
       img?.classList.add('open');
       setTimeout(() => {
         this.router.navigate([route]);
-      }, 400)
-    }, 400);
+      }, 300)
+    }, 300);
   }
 
   mostrarInfo(num: number) {

@@ -62,7 +62,7 @@ header a:hover{
 }
 #card img{
     display: block;
-    transition: 0.4s transform ease-in-out, 0.4s width ease-in-out, 0.4s height ease-in-out;
+    transition: 0.3s transform ease-in-out, 0.3s width ease-in-out, 0.3s height ease-in-out;
 }
 #card:hover,#textCard i:hover{
     padding: 0.6%;
