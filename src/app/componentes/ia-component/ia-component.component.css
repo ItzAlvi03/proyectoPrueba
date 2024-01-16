@@ -5,22 +5,63 @@
     scroll-behavior: smooth;
 }
 #content{
-    top: 0;
     position: absolute;
+    top: 0;
     margin-top: 80px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 100%;
-    height: calc(100% - 80px);
+    height: calc(100vh - 80px);
+}
+#flex{
+    height: calc(90% - 80px);
+    position: static;
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin: 80px 8%;
+    padding: 5%;
+    box-shadow: 0px 0px 4px 2px white;
 }
 #img{
-    max-width: 80%;
+    position: relative;
+    width: 40%;
+    height: 100%;
+    padding-left: 10%;
+    max-width: 50%;
+    max-height: 100%;
+    margin-left: 10%;
     width: auto;
-    margin: 0% 10%;
-    margin-top: 10%;
-    height: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    border-left: 2px solid white;
 }
-#img img{
-    object-fit: contain;
+#img img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: cover;
+    border-radius: 7px;
+}
+form label{
+    padding: 1%;
+}
+form label, input{
+    background-color: #1785df;
+    border: 1px solid #f7fafc;
+    border-radius: 7px;
+    text-align: center;
+    cursor: pointer;
+    font-weight: 700;
+    width: 100%;
 }
 input[type="file"] {
     display: none;
+}
+form{
+    padding: 0 5%;
 }

@@ -9,7 +9,7 @@ import { APIServiceService } from 'src/app/Services/apiservice.service';
 })
 export class IAComponentComponent implements AfterViewInit{
   input:any;
-  src: any;
+  src: any = "../../../assets/images/no_image.jpg";
   result: any;
   img: any;
   archivo: any;
