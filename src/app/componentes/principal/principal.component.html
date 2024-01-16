@@ -13,14 +13,14 @@
 <div id="contenido">
     <div class="w-100 h-100 d-flex flex-column align-items-center mt-4 pt-4 pb-4">
         <div id="contentCard" class="justify-content-start align-items-center">
-            <div class="d-flex justify-content-center align-items-center" id="card">
+            <div class="d-flex justify-content-center align-items-center card-1" id="card">
                 <a (click)="entrarAnimacion('/gameboy', 1)"><img class="img-1" src="../../../assets/images/principalGameboy.png" alt=""></a>
             </div>
             <div id="textCard" class="d-flex flex-column justify-content-between">
-                <h3 class="w-75 text-center">Gameboy Proyect</h3>
+                <h3 class="w-75">Gameboy Proyect</h3>
                 <div class="w-100 h-100 text-center info-container">
                     <div class="info-text">
-                        <p class="text-start">Es una Gameboy con botones funcionales.</p>
+                        <p class="text-start">Es una Gameboy con botones funcionales y se puede utilizar con teclado o con los propios botones.</p>
                         <p class="text-start">Tiene muchas funciones interactuables como poder jugar un combate pokemon, iniciar sesión, etc.</p>
                     </div>
                     <i (click)="mostrarInfo(0)" class="icono bi bi-plus-circle-dotted"></i>
@@ -28,27 +28,31 @@
             </div>
         </div>
         <div id="contentCard" class="justify-content-start align-items-center">
-            <div class="d-flex flex-column justify-content-center align-items-center" id="card">
+            <div class="d-flex flex-column justify-content-center align-items-center card-2" id="card">
                 <a (click)="entrarAnimacion('/IA', 2)"><img class="img-2" src="../../../assets/images/principalIA.png" alt=""></a>
             </div>
             <div id="textCard" class="d-flex flex-column justify-content-between">
-                <h3 class="w-75 text-center">IA Deteccion Personas</h3>
+                <h3 class="w-75">IA Deteccion Personas</h3>
                 <div class="w-100 h-100 text-center info-container">
                     <div class="info-text">
                         <p>Una App con inteligencia artificial que puedes seleccionar o hacer una foto y reconoce si hay o no personas.</p>
+                        <p>Puedes elegir varios modos de ver la prediccion como ver solo el contorno, el rectangulo o todo</p>
                     </div>
                     <i (click)="mostrarInfo(1)" class="icono bi bi-plus-circle-dotted"></i>
                 </div>
             </div>
         </div>
         <div id="contentCard" class="justify-content-start align-items-center">
-            <div class="d-flex flex-column justify-content-center align-items-center" id="card">
+            <div class="d-flex flex-column justify-content-center align-items-center card-3" id="card">
                 <a (click)="entrarAnimacion('/rickMorty/1', 3)"><img class="img-3" src="../../../assets/images/principalRickYMorty.png" alt=""></a>
             </div>
             <div id="textCard" class="d-flex flex-column justify-content-between">
-                <h3 class="w-75 text-center">Rick Y Morty API</h3>
+                <h3 class="w-75">Rick Y Morty API</h3>
                 <div class="w-100 h-100 text-center info-container">
-                    <div class="info-text">Una App de información de los personajes de la serie Rick Y Morty</div>
+                    <div class="info-text">
+                        <p>Una App de información de los personajes de la serie Rick Y Morty.</p>
+                        <p>Es una app sencilla utilizando una API opensource de Rick Y Morty.</p>
+                    </div>
                     <i (click)="mostrarInfo(2)" class="icono bi bi-plus-circle-dotted"></i>
                 </div>
             </div>

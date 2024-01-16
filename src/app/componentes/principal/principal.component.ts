@@ -21,6 +21,7 @@ export class PrincipalComponent implements OnInit, AfterViewInit{
   title: string = '<portfolio/>';
   menu: boolean = false;
   isMobile = true;
+
   constructor(private service: APIServiceService,
     private router: Router, private el: ElementRef, private renderer: Renderer2){}
   
@@ -85,7 +86,15 @@ export class PrincipalComponent implements OnInit, AfterViewInit{
 
   entrarAnimacion(route: string, num: number) {
     const img = document.querySelector('.img-' + num);
-    this.router.navigate([route]);
+    const card = document.querySelector('.card-' + num) as any;
+    card.style.zIndex = '5';
+    card?.classList.add('open-card');
+    setTimeout(() => {
+      img?.classList.add('open');
+      setTimeout(() => {
+        this.router.navigate([route]);
+      }, 400)
+    }, 400);
   }
 
   mostrarInfo(num: number) {

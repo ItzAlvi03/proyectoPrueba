@@ -27,6 +27,7 @@ header a:hover{
 #contenido{
     position: absolute;
     width: 100%;
+    height: 100%;
     top: 0;
     bottom: 0;
     margin-top: 80px;
@@ -46,11 +47,12 @@ header a:hover{
     position: relative;
 }
 #card{
+    z-index: 4;
     width: 20%;
     border-radius: 7px;
     margin-left: 20%;
     margin-right: 2.5%;
-    transition: 0.25s padding ease-in-out;
+    transition: 0.25s padding ease-in-out,0.3s transform ease-in-out, 0.3s width ease-in-out, 0.3s height ease-in-out;
     cursor: pointer;
 }
 #card img, #card a{
@@ -58,8 +60,13 @@ header a:hover{
     height: 100%;
     border-radius: 10px;
 }
+#card img{
+    display: block;
+    transition: 0.4s transform ease-in-out, 0.4s width ease-in-out, 0.4s height ease-in-out;
+}
 #card:hover,#textCard i:hover{
     padding: 0.6%;
+    z-index: 5;
 }
 #textCard{
     width: 47.5%;
@@ -86,6 +93,7 @@ h3{
 }
 .info-container {
     position: relative;
+    z-index: 3;
     overflow: hidden;
 }
 
@@ -96,7 +104,7 @@ h3{
     max-height: 100%;
     display: flex;
     flex-direction: column;
-    overflow-y: hidden;
+    overflow-y: auto;
     transition: 0.3s left ease-in-out;
     padding: 10px;
 }
@@ -105,6 +113,14 @@ h3{
 }
 .hidden, .hidden a{
     display: none;
+}
+.open{
+    transform: scale(3.5);
+    width: 100vw;
+    height: 100vh;
+}
+.open-card{
+    transform: translate(19vw, 25vh);
 }
 @media (max-width: 970px) {
     #card{
@@ -115,11 +131,14 @@ h3{
     }
 }
 @media (max-width: 665px) {
+    #contenido{
+        position: static;
+        height: max-content;
+    }
     #contentCard{
         flex-direction: column;
         width: 100%;
-        padding-bottom: 10%;
-        padding-top: 5%;
+        padding-bottom: 5%;
     }
     #card, #textCard{
         width: 60%;
@@ -128,32 +147,44 @@ h3{
     #textCard{
         margin-top: 5%;
     }
+    h3{
+        text-align: center;
+    }
     #textCard, #textCard div{
         align-items: center;
         justify-content: center;
         height: auto;
     }
     .info-container{
+        position: relative;
         flex-direction: column;
         min-height: 80%;
     }
     .info-text {
-        position: relative;
-        margin-top: -120%;
+        position: none;
+        margin-top: -80%;
+        bottom: 0;
+        display: none;
         transition: 0.3s margin-top ease-in-out;
     }
     #textCard i{
-        position: absolute;
-        width: 100%;
+        position: static;
         top: 0;
     }
     #textCard i.rotated {
         position: relative;
         margin-left: 0;
-        margin-top: 4%;
+        margin-top: 2%;
         background-color: #11293c00;
     }
     .info-container.active .info-text {
-        margin-top: 5%;
+        margin-top: 0;
+        position: static;
+    }
+    .open{
+        transform: scale(2.5);
+    }
+    .open-card{
+        transform: translate(0, 25vh);
     }
 }
