@@ -65,3 +65,19 @@ input[type="file"] {
 form{
     padding: 0 5%;
 }
+@media (max-width: 750px) {
+    #flex{
+        flex-direction: column;
+        justify-content: space-around;
+    }
+    #img{
+        height: 50%;
+        max-height: 60%;
+        width: 100%;
+        padding: 0;
+        padding-top: 10%;
+        margin-left: 0;
+        border-left: 0;
+        border-top: 2px solid white;
+    }
+}
