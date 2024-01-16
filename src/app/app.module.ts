@@ -25,6 +25,7 @@ import { CombatePokemonDirective } from './truncate/combate-pokemon.directive';
 import { CombateSpinnerComponent } from './componentes/spinner/combate-spinner/combate-spinner.component';
 import { MundoAbiertoComponent } from './componentes/gameboy/mundo-abierto/mundo-abierto.component';
 import { IAComponentComponent } from './componentes/ia-component/ia-component.component';
+import { HeaderComponent } from './componentes/header/header.component';
 
 @NgModule({
   declarations: [
@@ -47,6 +48,7 @@ import { IAComponentComponent } from './componentes/ia-component/ia-component.co
     CombateSpinnerComponent,
     MundoAbiertoComponent,
     IAComponentComponent,
+    HeaderComponent,
   ],
   imports: [
     FormsModule,
