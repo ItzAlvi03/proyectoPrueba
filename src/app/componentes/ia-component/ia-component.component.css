@@ -118,7 +118,10 @@ input[type="file"] {
 
 @media (max-width: 750px) {   
     #content{
-        max-height: 100vh;
+        position: static;
+        min-height: calc(100vh - 80px);
+        height: auto;
+        max-height: max-content;
     }
     #flex{
         position: relative;
@@ -128,7 +131,7 @@ input[type="file"] {
         width: 100%;
         padding-bottom: 5%;
         height: auto;
-        max-height: 100%;
+        max-height: max-content;
     }
     #datos{
         padding-bottom: 10%;
