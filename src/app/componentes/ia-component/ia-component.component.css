@@ -6,8 +6,12 @@
 }
 #content{
     position: absolute;
+    width: 100%;
     top: 0;
+    bottom: 0;
     margin-top: 80px;
+    padding-bottom: 80px;
+    padding: 5% 0%;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -15,11 +19,11 @@
     height: calc(100vh - 80px);
 }
 #flex{
-    height: calc(90% - 80px);
+    height: 100%;
     position: static;
     display: flex;
     flex-direction: row;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
     width: 100%;
     margin: 80px 8%;
@@ -47,10 +51,10 @@
     object-fit: cover;
     border-radius: 7px;
 }
-form label{
+#datos label{
     padding: 1%;
 }
-form label, input{
+#datos label:first-child, #input, button{
     background-color: #1785df;
     border: 1px solid #f7fafc;
     border-radius: 7px;
@@ -62,17 +66,76 @@ form label, input{
 input[type="file"] {
     display: none;
 }
-form{
-    padding: 0 5%;
+#datos{
+    width: 40%;
+    max-width: 50%;
 }
-@media (max-width: 750px) {
+#predictions{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 100%;
+    background-color: white;
+    color: black;
+    font-weight: 700;
+    border-radius: 7px;
+}
+#predict{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    width: auto;
+    height: 50%;
+    background-color: white;
+    color: black;
+    border: 1px solid white;
+}
+#predict:first-child{
+    border-top-right-radius: 7px;
+    border-top-left-radius: 7px;
+    border-bottom: 2px solid #11293c;
+}
+#predict:nth-child(2){
+    border-bottom-right-radius: 7px;
+    border-bottom-left-radius: 7px;
+}
+#predict i{
+    border-right: 1.5px solid #11293c;
+    padding-right: 5%;
+    width: 20%;
+    margin-left: 5%;
+    width: auto;
+}
+#predict i,#predict label{
+    color: black;
+    background-color: white;
+    height: 100%;
+}
+#ampliar{
+    background-color: rgb(0, 0, 0, 0.2);
+}
+
+@media (max-width: 750px) {   
+    #content{
+        max-height: 100vh;
+    }
     #flex{
+        position: relative;
+        top: 0;
+        bottom: 0;
         flex-direction: column;
-        justify-content: space-around;
+        width: 100%;
+        padding-bottom: 5%;
+        height: auto;
+        max-height: 100%;
+    }
+    #datos{
+        padding-bottom: 10%;
     }
     #img{
-        height: 50%;
-        max-height: 60%;
+        position: relative;
+        height: auto;
         width: 100%;
         padding: 0;
         padding-top: 10%;

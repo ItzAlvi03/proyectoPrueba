@@ -26,6 +26,8 @@ import { CombateSpinnerComponent } from './componentes/spinner/combate-spinner/c
 import { MundoAbiertoComponent } from './componentes/gameboy/mundo-abierto/mundo-abierto.component';
 import { IAComponentComponent } from './componentes/ia-component/ia-component.component';
 import { HeaderComponent } from './componentes/header/header.component';
+import { IATruncateDirective } from './truncate/ia-truncate.directive';
+import { IaSpinnerComponent } from './componentes/spinner/ia-spinner/ia-spinner.component';
 
 @NgModule({
   declarations: [
@@ -49,6 +51,8 @@ import { HeaderComponent } from './componentes/header/header.component';
     MundoAbiertoComponent,
     IAComponentComponent,
     HeaderComponent,
+    IATruncateDirective,
+    IaSpinnerComponent,
   ],
   imports: [
     FormsModule,
