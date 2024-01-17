@@ -1,11 +1,34 @@
+<app-ia-spinner [mensaje]="mensajeSpinner" *ngIf="cargando"></app-ia-spinner>
 <div id="content">
-    <form class="w-100 h-100 d-flex flex-column justify-content-center align-items-center" method="post" enctype="multipart/form-data">
-        <label class="btn btn-primary mt-2 mb-2">Seleccionar Archivo<input class="btn" (change)="cambiarImg()" type="file" name="imagen" accept=".jpg"></label>
-        <input class="btn btn-primary mb-2" (click)="predecirImg(1)" type="submit" value="Ver Prediccion">
-        <input class="btn btn-primary mb-2" (click)="predecirImg(2)" type="submit" value="Ver Contorno">
-    </form>
-    <div *ngIf="src" class="text-center" id="img">
-        <img class="w-100 h-100 mb-2" src="{{src}}" alt="">
-        <strong><label>{{archivo.name}}</label></strong>
+    <div *ngIf="!cargando" id="flex">
+        <div id="ampliar" *ngIf="ampliar" class="w-100 h-100 p-4 d-flex flex-column justify-content-center align-items-center">
+            <div class="w-100 d-flex justify-content-end mb-4">
+                <i (click)="ampliar = false" class="bi bi-arrows-fullscreen"></i>
+            </div>
+            <img src="{{src}}" alt="">
+        </div>
+        <div id="datos" class="h-100 d-flex flex-column justify-content-center align-items-center">
+            <label class="mt-2 mb-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
+            <button *ngIf="archivo" class="mb-2" (click)="predecirImg(1)">Ver Predicción</button>
+            <button *ngIf="archivo" class="mb-2" (click)="predecirImg(2)">Ver Contorno</button>
+
+            <section *ngIf="data" id="predictions">
+                <div id="predict">
+                    <i class="bi bi-percent text-center"></i>
+                    <label class="w-75 text-center">{{data.porcentaje_promedio}}%</label>
+                </div>
+                <div id="predict">
+                    <i class="bi bi-person-arms-up text-center"></i>
+                    <label class="w-75 text-center">{{data.total_personas}}</label>
+                </div>
+            </section>
+        </div>
+        <div class="text-center" id="img">
+            <img src="{{src}}" alt="" (click)="ampliar = true">
+            <div class="mt-3 mb-3" *ngIf="archivo">
+                <strong>Archivo: </strong>
+                <label [appIATruncate]="archivo.name" [length]="20">{{archivo.name}}</label>
+            </div>
+        </div>
     </div>
 </div>
