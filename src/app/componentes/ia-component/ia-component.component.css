@@ -37,7 +37,6 @@
     padding-left: 10%;
     max-width: 50%;
     max-height: 100%;
-    margin-left: 10%;
     width: auto;
     display: flex;
     flex-direction: column;
@@ -75,6 +74,7 @@ input[type="file"] {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
+    margin-top: 10%;
     background-color: white;
     color: black;
     font-weight: 700;
@@ -100,6 +100,10 @@ input[type="file"] {
     border-bottom-right-radius: 7px;
     border-bottom-left-radius: 7px;
 }
+#predict label{
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
 #predict i{
     border-right: 1.5px solid #11293c;
     padding-right: 5%;
@@ -114,6 +118,23 @@ input[type="file"] {
 }
 #ampliar{
     background-color: rgb(0, 0, 0, 0.2);
+}
+.input-group input{
+    background-color: white;
+}
+#addon-wrapping button:first-child{
+    border-radius: 0;
+    background-color: transparent;
+    border-top-right-radius: 7px;
+}
+#addon-wrapping button{
+    border-radius: 0;
+    border-bottom-right-radius: 7px;
+    background-color: transparent;
+}
+input.form-control{
+    color: black;
+    font-weight: 600;
 }
 
 @media (max-width: 750px) {   
@@ -135,6 +156,8 @@ input[type="file"] {
     }
     #datos{
         padding-bottom: 10%;
+        width: 60%;
+        max-width: 60%;
     }
     #img{
         position: relative;

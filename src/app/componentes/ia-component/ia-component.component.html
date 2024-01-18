@@ -8,10 +8,19 @@
             <img src="{{src}}" alt="">
         </div>
         <div id="datos" class="h-100 d-flex flex-column justify-content-center align-items-center">
-            <label class="mt-2 mb-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
-            <button *ngIf="archivo" class="mb-2" (click)="predecirImg(1)">Ver Predicción</button>
-            <button *ngIf="archivo" class="mb-2" (click)="predecirImg(2)">Ver Contorno</button>
-
+            <label *ngIf="!archivo" class="mt-2 mb-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
+            <div *ngIf="archivo">
+                <button class="mb-2" (click)="predecirImg(1)">Ver Predicción</button>
+                <button class="mb-2" (click)="predecirImg(2)">Ver Contorno</button>
+                <div class="input-group flex-nowrap">
+                    <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
+                    <input (ngModelChange)="comprobarNum()" [(ngModel)]="numPredict" type="number" min="0" max="100" class="form-control" placeholder="0-100" aria-label="number">
+                    <div class="d-flex flex-column" id="addon-wrapping">
+                        <button (click)="sumar()" class="h-50">+</button>
+                        <button (click)="restar()" class="h-50">-</button>
+                    </div>
+                </div>                  
+            </div>
             <section *ngIf="data" id="predictions">
                 <div id="predict">
                     <i class="bi bi-percent text-center"></i>
@@ -26,8 +35,7 @@
         <div class="text-center" id="img">
             <img src="{{src}}" alt="" (click)="ampliar = true">
             <div class="mt-3 mb-3" *ngIf="archivo">
-                <strong>Archivo: </strong>
-                <label [appIATruncate]="archivo.name" [length]="20">{{archivo.name}}</label>
+                <label class="mt-2 mb-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
             </div>
         </div>
     </div>

@@ -17,8 +17,33 @@ export class IAComponentComponent implements AfterViewInit{
   data: any;
   textoInput: string = "Seleccionar Archivos";
   ampliar: boolean = false;
-
+  seleccionado: boolean = false;
+  private barra: any;
+  private selector: any;
+  numPredict!: number;
+  
   constructor(private api: APIServiceService){}
+  
+  restar() {
+    if(this.numPredict > 0) this.numPredict--
+  }
+  sumar() {
+    if(this.numPredict < 100) this.numPredict++
+  }
+  comprobarNum(){
+    setTimeout(() => {
+      const input = document.querySelector('input.form-control') as any;
+      input.value = Math.floor(this.numPredict);
+      if(this.numPredict < 0){
+        this.numPredict = 0
+        input.value = this.numPredict
+      }
+      else if(this.numPredict > 100){
+        this.numPredict = 100
+        input.value = this.numPredict
+      }
+    },10);
+  }
 
   ngAfterViewInit(): void {
     this.input = document.getElementById('input');
@@ -50,7 +75,8 @@ export class IAComponentComponent implements AfterViewInit{
 
   async predecirImg(num: number){
     if(this.img) {
-      if(num == 1){
+      if(num == 1 && (this.numPredict <= 100 && this.numPredict >= 0)){
+        this.img.append('predict', this.numPredict/100.0);
         this.mensajeSpinner = "Prediciendo resultados...";
         this.cargando = true;
         const res = await this.api.predict(this.img).toPromise()
