@@ -76,10 +76,12 @@ export class IAComponentComponent implements AfterViewInit{
   async predecirImg(num: number){
     if(this.img) {
       if(num == 1 && (this.numPredict <= 100 && this.numPredict >= 0)){
-        this.img.append('predict', this.numPredict/100.0);
+        const form = new FormData();
+        form.append('img', this.archivo);
+        form.append('predict', String(this.numPredict/100.0));
         this.mensajeSpinner = "Prediciendo resultados...";
         this.cargando = true;
-        const res = await this.api.predict(this.img).toPromise()
+        const res = await this.api.predict(form).toPromise()
         if(res){
           this.cargando = false;
           this.result = res['result'];
