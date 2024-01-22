@@ -15,4 +15,7 @@ export class APIServiceService {
   contorno(data: any): Observable<any>{
     return this.http.post(this.URL + '/contorno', data);
   }
+  boxes(data: any): Observable<any>{
+    return this.http.post(this.URL + '/boxes', data);
+  }
 }

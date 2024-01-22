@@ -5,18 +5,20 @@
     scroll-behavior: smooth;
 }
 #content{
-    position: absolute;
+    position: static;
+    min-height: calc(100vh - 80px);
+    height: auto;
+    max-height: max-content;
     width: 100%;
     top: 0;
     bottom: 0;
-    margin-top: 80px;
     padding-bottom: 80px;
+    margin-top: 80px;
     padding: 5% 0%;
     display: flex;
     justify-content: center;
     align-items: center;
     width: 100%;
-    height: calc(100vh - 80px);
 }
 #flex{
     height: 100%;
@@ -27,17 +29,16 @@
     align-items: center;
     width: 100%;
     margin: 80px 8%;
-    padding: 5%;
+    padding: 1% 5%;
     box-shadow: 0px 0px 4px 2px white;
 }
 #img{
     position: relative;
-    width: 40%;
+    width: 50%;
     height: 100%;
     padding-left: 10%;
     max-width: 50%;
     max-height: 100%;
-    margin-left: 10%;
     width: auto;
     display: flex;
     flex-direction: column;
@@ -47,7 +48,9 @@
 }
 #img img {
     max-width: 100%;
-    max-height: 100%;
+    max-height: 80%;
+    height: auto;
+    width: auto;
     object-fit: cover;
     border-radius: 7px;
 }
@@ -67,7 +70,7 @@ input[type="file"] {
     display: none;
 }
 #datos{
-    width: 40%;
+    width: 50%;
     max-width: 50%;
 }
 #predictions{
@@ -75,6 +78,7 @@ input[type="file"] {
     flex-direction: column;
     justify-content: space-between;
     width: 100%;
+    margin-top: 10%;
     background-color: white;
     color: black;
     font-weight: 700;
@@ -100,6 +104,10 @@ input[type="file"] {
     border-bottom-right-radius: 7px;
     border-bottom-left-radius: 7px;
 }
+#predict label{
+    border-top-right-radius: 7px;
+    border-bottom-right-radius: 7px;
+}
 #predict i{
     border-right: 1.5px solid #11293c;
     padding-right: 5%;
@@ -115,14 +123,34 @@ input[type="file"] {
 #ampliar{
     background-color: rgb(0, 0, 0, 0.2);
 }
+.input-group input{
+    background-color: white;
+}
+#addon-wrapping button:first-child{
+    border-radius: 0;
+    background-color: transparent;
+    border-top-right-radius: 7px;
+}
+#addon-wrapping button{
+    border-radius: 0;
+    border-bottom-right-radius: 7px;
+    background-color: transparent;
+}
+input.form-control{
+    color: black;
+    font-weight: 600;
+}
+#img label{
+    transition: 0.1s border-bottom linear;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+}
+#img label:hover{
+    border-bottom: 3px solid #4299E1;
+    border-radius: 3px;
+}
 
-@media (max-width: 750px) {   
-    #content{
-        position: static;
-        min-height: calc(100vh - 80px);
-        height: auto;
-        max-height: max-content;
-    }
+@media (max-width: 750px) {
     #flex{
         position: relative;
         top: 0;
@@ -135,6 +163,8 @@ input[type="file"] {
     }
     #datos{
         padding-bottom: 10%;
+        width: 60%;
+        max-width: 60%;
     }
     #img{
         position: relative;

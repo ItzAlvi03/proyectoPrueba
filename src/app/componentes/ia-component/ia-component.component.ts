@@ -17,8 +17,33 @@ export class IAComponentComponent implements AfterViewInit{
   data: any;
   textoInput: string = "Seleccionar Archivos";
   ampliar: boolean = false;
-
+  seleccionado: boolean = false;
+  private barra: any;
+  private selector: any;
+  numPredict!: number;
+  
   constructor(private api: APIServiceService){}
+  
+  restar() {
+    if(this.numPredict > 0) this.numPredict--
+  }
+  sumar() {
+    if(this.numPredict < 100) this.numPredict++
+  }
+  comprobarNum(){
+    setTimeout(() => {
+      const input = document.querySelector('input.form-control') as any;
+      input.value = Math.floor(this.numPredict);
+      if(this.numPredict < 0){
+        this.numPredict = 0
+        input.value = this.numPredict
+      }
+      else if(this.numPredict > 100){
+        this.numPredict = 100
+        input.value = this.numPredict
+      }
+    },10);
+  }
 
   ngAfterViewInit(): void {
     this.input = document.getElementById('input');
@@ -50,10 +75,13 @@ export class IAComponentComponent implements AfterViewInit{
 
   async predecirImg(num: number){
     if(this.img) {
-      if(num == 1){
+      if(num == 1 && (this.numPredict <= 100 && this.numPredict >= 0)){
+        const form = new FormData();
+        form.append('img', this.archivo);
+        form.append('predict', String(this.numPredict/100.0));
         this.mensajeSpinner = "Prediciendo resultados...";
         this.cargando = true;
-        const res = await this.api.predict(this.img).toPromise()
+        const res = await this.api.predict(form).toPromise()
         if(res){
           this.cargando = false;
           this.result = res['result'];
@@ -71,6 +99,22 @@ export class IAComponentComponent implements AfterViewInit{
           formData.append('result', this.result);
 
           const res = await this.api.contorno(formData).toPromise();
+          if(res){
+            this.cargando = false;
+            const src = res['annotated_img'];
+            this.src = 'data:image/png;base64, ' + src;
+          }
+        } else if(num == 3){
+          if(!this.result){
+            await this.predecirImg(1);
+          }
+          this.mensajeSpinner = "Dibujando el cuadrado...";
+          this.cargando = true;
+          const formData = new FormData();
+          formData.append('img', this.archivo);
+          formData.append('result', this.result);
+
+          const res = await this.api.boxes(formData).toPromise();
           if(res){
             this.cargando = false;
             const src = res['annotated_img'];
