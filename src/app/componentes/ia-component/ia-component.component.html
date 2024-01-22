@@ -10,8 +10,9 @@
         <div id="datos" class="h-100 d-flex flex-column justify-content-center align-items-center">
             <label *ngIf="!archivo" class="mt-2 mb-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
             <div *ngIf="archivo">
-                <button class="mb-2" (click)="predecirImg(1)">Ver Predicción</button>
+                <button *ngIf="!result" class="mb-2" (click)="predecirImg(1)">Ver Predicción</button>
                 <button class="mb-2" (click)="predecirImg(2)">Ver Contorno</button>
+                <button class="mb-2" (click)="predecirImg(3)">Ver Recuadro</button>
                 <div class="input-group flex-nowrap">
                     <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
                     <input (ngModelChange)="comprobarNum()" [(ngModel)]="numPredict" type="number" min="0" max="100" class="form-control" placeholder="0-100" aria-label="number">

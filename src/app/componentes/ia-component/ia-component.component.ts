@@ -102,6 +102,22 @@ export class IAComponentComponent implements AfterViewInit{
             const src = res['annotated_img'];
             this.src = 'data:image/png;base64, ' + src;
           }
+        } else if(num == 3){
+          if(!this.result){
+            await this.predecirImg(1);
+          }
+          this.mensajeSpinner = "Dibujando el cuadrado...";
+          this.cargando = true;
+          const formData = new FormData();
+          formData.append('img', this.archivo);
+          formData.append('result', this.result);
+
+          const res = await this.api.boxes(formData).toPromise();
+          if(res){
+            this.cargando = false;
+            const src = res['annotated_img'];
+            this.src = 'data:image/png;base64, ' + src;
+          }
         }
         this.input = document.getElementById('input');
     }
