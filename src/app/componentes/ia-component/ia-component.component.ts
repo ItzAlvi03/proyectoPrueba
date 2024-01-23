@@ -83,10 +83,8 @@ export class IAComponentComponent implements AfterViewInit{
         this.cargando = true;
         const res = await this.api.predict(form).toPromise()
         if(res){
-          this.cargando = false;
           this.result = res['result'];
-          this.data = res['data'];
-          this.src = 'data:image/png;base64, ' + res['annotated_img'];
+          this.data = res['result'];
         }
       } else if (num == 2) {
         if(!this.result){
@@ -94,34 +92,86 @@ export class IAComponentComponent implements AfterViewInit{
         }
         this.mensajeSpinner = "Dibujando Contorno...";
         this.cargando = true;
-          const formData = new FormData();
-          formData.append('img', this.archivo);
-          formData.append('result', this.result);
+        await this.dibujarContorno();
 
-          const res = await this.api.contorno(formData).toPromise();
-          if(res){
-            this.cargando = false;
-            const src = res['annotated_img'];
-            this.src = 'data:image/png;base64, ' + src;
-          }
         } else if(num == 3){
           if(!this.result){
             await this.predecirImg(1);
           }
           this.mensajeSpinner = "Dibujando el cuadrado...";
           this.cargando = true;
-          const formData = new FormData();
-          formData.append('img', this.archivo);
-          formData.append('result', this.result);
-
-          const res = await this.api.boxes(formData).toPromise();
-          if(res){
-            this.cargando = false;
-            const src = res['annotated_img'];
-            this.src = 'data:image/png;base64, ' + src;
-          }
+          await this.dibujarBox();
         }
+        this.cargando = false;
         this.input = document.getElementById('input');
     }
   }
+  
+  async dibujarContorno() {
+    const segments = this.result.segments;
+    console.log(segments)
+
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d') as any;
+    
+    const image = new Image();
+    image.src = this.src;
+
+    image.onload = () => {
+      canvas.width = image.width;
+      canvas.height = image.height;
+
+      // Dibuja la imagen original en el canvas
+      ctx.drawImage(image, 0, 0);
+
+      // Dibuja el contorno en el canvas
+      ctx.lineWidth = 2;
+      ctx.strokeStyle = 'red';
+      ctx.fillStyle = 'rgba(0, 0, 255, 0.2)';
+
+      segments.forEach((segment: any | any[]) => {
+        ctx.beginPath();
+        for (let i = 0; i < segment.length-1; i++) {
+          ctx.moveTo(segment[i][0], segment[i][1]);
+          ctx.lineTo(segment[i+1][0], segment[i+1][1]);
+        }
+        ctx.moveTo(segment[segment.length-1][0], segment[segment.length-1][1]);
+        ctx.lineTo(segment[0][0], segment[0][1]);
+
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
+      });
+
+      this.src = canvas.toDataURL('image/png');
+    };
+  }
+
+  async dibujarBox() {
+    const boxes = this.result.boxes;
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d') as any;
+
+    const image = new Image();
+    image.src = this.src;
+
+    image.onload = () => {
+      canvas.width = image.width;
+      canvas.height = image.height;
+
+      ctx.drawImage(image, 0, 0);
+      // Dibuja el rectangulo en canvas
+      ctx.beginPath();
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = 'red';
+      boxes.forEach((box: [any, any, any, any]) => {
+        const [x1, y1, x2, y2] = box;
+        ctx.rect(x1, y1, x2 - x1, y2 - y1);
+      });
+      ctx.stroke();
+
+      this.src = canvas.toDataURL('image/png');
+    };
+  }
+
 }
