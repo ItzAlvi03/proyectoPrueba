@@ -12,10 +12,10 @@ export class APIServiceService {
   predict(img: any): Observable<any>{
     return this.http.post(this.URL + '/predict', img);
   }
-  contorno(data: any): Observable<any>{
-    return this.http.post(this.URL + '/contorno', data);
-  }
-  boxes(data: any): Observable<any>{
-    return this.http.post(this.URL + '/boxes', data);
-  }
+  //contorno(data: any): Observable<any>{
+  //  return this.http.post(this.URL + '/contorno', data);
+  //}
+  //boxes(data: any): Observable<any>{
+  //  return this.http.post(this.URL + '/boxes', data);
+  //}
 }
