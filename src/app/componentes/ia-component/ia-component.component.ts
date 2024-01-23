@@ -21,6 +21,8 @@ export class IAComponentComponent implements AfterViewInit{
   private barra: any;
   private selector: any;
   numPredict!: number;
+  contorno: boolean = false;
+  box: boolean = false;
   
   constructor(private api: APIServiceService){}
   
@@ -92,7 +94,7 @@ export class IAComponentComponent implements AfterViewInit{
         }
         this.mensajeSpinner = "Dibujando Contorno...";
         this.cargando = true;
-        await this.dibujarContorno();
+        await this.repintarCanvas(0);
 
         } else if(num == 3){
           if(!this.result){
@@ -100,78 +102,68 @@ export class IAComponentComponent implements AfterViewInit{
           }
           this.mensajeSpinner = "Dibujando el cuadrado...";
           this.cargando = true;
-          await this.dibujarBox();
+          await this.repintarCanvas(1);
         }
         this.cargando = false;
         this.input = document.getElementById('input');
     }
   }
-  
-  async dibujarContorno() {
-    const segments = this.result.segments;
-    console.log(segments)
 
+  async repintarCanvas(option: number) {
+    this.cargando = true;
+    if(option === 0) this.contorno = !this.contorno
+    else this.box = !this.box
+
+    const archivoURL = URL. createObjectURL(this.archivo);
+    this.src = archivoURL;
     const canvas = document.createElement('canvas');
     const ctx = canvas.getContext('2d') as any;
     
-    const image = new Image();
+    var image = new Image();
     image.src = this.src;
-
-    image.onload = () => {
+    image.onload = async () => {
       canvas.width = image.width;
-      canvas.height = image.height;
-
+      canvas.height = image.height; 
       // Dibuja la imagen original en el canvas
-      ctx.drawImage(image, 0, 0);
-
-      // Dibuja el contorno en el canvas
-      ctx.lineWidth = 2;
-      ctx.strokeStyle = 'red';
-      ctx.fillStyle = 'rgba(0, 0, 255, 0.2)';
-
-      segments.forEach((segment: any | any[]) => {
-        ctx.beginPath();
-        for (let i = 0; i < segment.length-1; i++) {
-          ctx.moveTo(segment[i][0], segment[i][1]);
-          ctx.lineTo(segment[i+1][0], segment[i+1][1]);
-        }
-        ctx.moveTo(segment[segment.length-1][0], segment[segment.length-1][1]);
-        ctx.lineTo(segment[0][0], segment[0][1]);
-
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
-      });
-
-      this.src = canvas.toDataURL('image/png');
+      ctx.drawImage(image, 0, 0); 
+      ctx.beginPath();
+      if(this.contorno)  await this.dibujarContorno(canvas,ctx,image)
+      if(this.box) await this.dibujarBox(canvas,ctx,image);
     };
+    this.cargando = false;
+  }
+  
+  async dibujarContorno(canvas: any,ctx: any,image: any) {
+    const segments = this.result.segments;
+    
+    // Dibuja el contorno en el canvas
+    ctx.lineWidth = 2;
+    ctx.strokeStyle = 'red';
+    ctx.fillStyle = 'rgba(0, 0, 255, 0.2)'; 
+    segments.forEach((segment: any | any[]) => {
+      for (let i = 0; i < segment.length-1; i++) {
+        ctx.moveTo(segment[i].x, segment[i].y);
+        ctx.lineTo(segment[i+1].x, segment[i+1].y);
+      }
+      ctx.moveTo(segment[segment.length-1].x, segment[segment.length-1].y);
+      ctx.lineTo(segment[0].x, segment[0].y);
+      ctx.stroke();
+      ctx.fill();
+    }); 
+    this.src = canvas.toDataURL('image/png');
   }
 
-  async dibujarBox() {
+  async dibujarBox(canvas: any,ctx: any,image: any) {
     const boxes = this.result.boxes;
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d') as any;
-
-    const image = new Image();
-    image.src = this.src;
-
-    image.onload = () => {
-      canvas.width = image.width;
-      canvas.height = image.height;
-
-      ctx.drawImage(image, 0, 0);
-      // Dibuja el rectangulo en canvas
-      ctx.beginPath();
-      ctx.lineWidth = 3;
-      ctx.strokeStyle = 'red';
-      boxes.forEach((box: [any, any, any, any]) => {
-        const [x1, y1, x2, y2] = box;
-        ctx.rect(x1, y1, x2 - x1, y2 - y1);
-      });
-      ctx.stroke();
-
-      this.src = canvas.toDataURL('image/png');
-    };
+    // Dibuja el rectangulo en canvas
+    ctx.lineWidth = 3;
+    ctx.strokeStyle = 'red';
+    boxes.forEach((box: [any, any, any, any]) => {
+      const [x1, y1, x2, y2] = box;
+      ctx.rect(x1, y1, x2 - x1, y2 - y1);
+    });
+    ctx.stroke();
+    this.src = canvas.toDataURL('image/png');
   }
 
 }
