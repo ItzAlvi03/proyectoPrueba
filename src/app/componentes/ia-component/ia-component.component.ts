@@ -37,12 +37,12 @@ export class IAComponentComponent implements AfterViewInit{
       const input = document.querySelector('input.form-control') as any;
       input.value = Math.floor(this.numPredict);
       if(this.numPredict < 0){
-        this.numPredict = 0
-        input.value = this.numPredict
+        this.numPredict = 0;
+        input.value = this.numPredict;
       }
       else if(this.numPredict > 100){
-        this.numPredict = 100
-        input.value = this.numPredict
+        this.numPredict = 100;
+        input.value = this.numPredict;
       }
     },10);
   }
@@ -92,17 +92,21 @@ export class IAComponentComponent implements AfterViewInit{
         if(!this.result){
           await this.predecirImg(1);
         }
-        this.mensajeSpinner = "Dibujando Contorno...";
-        this.cargando = true;
-        await this.repintarCanvas(0);
+        if(this.result){
+          this.mensajeSpinner = "Dibujando Contorno...";
+          this.cargando = true;
+          await this.repintarCanvas(2);
+        }
 
         } else if(num == 3){
           if(!this.result){
             await this.predecirImg(1);
           }
-          this.mensajeSpinner = "Dibujando el cuadrado...";
-          this.cargando = true;
-          await this.repintarCanvas(1);
+          if(this.result) {
+            this.mensajeSpinner = "Dibujando el cuadrado...";
+            this.cargando = true;
+            await this.repintarCanvas(3);
+          }
         }
         this.cargando = false;
         this.input = document.getElementById('input');
@@ -111,8 +115,8 @@ export class IAComponentComponent implements AfterViewInit{
 
   async repintarCanvas(option: number) {
     this.cargando = true;
-    if(option === 0) this.contorno = !this.contorno
-    else this.box = !this.box
+    if(option === 2) this.contorno = !this.contorno
+    else if(option === 3) this.box = !this.box
 
     const archivoURL = URL. createObjectURL(this.archivo);
     this.src = archivoURL;
@@ -137,9 +141,9 @@ export class IAComponentComponent implements AfterViewInit{
     const segments = this.result.segments;
     
     // Dibuja el contorno en el canvas
-    ctx.lineWidth = 2;
+    ctx.lineWidth = 3;
     ctx.strokeStyle = 'red';
-    ctx.fillStyle = 'rgba(0, 0, 255, 0.2)'; 
+    ctx.fillStyle = 'rgba(0, 0, 255, 0.6)'; 
     segments.forEach((segment: any | any[]) => {
       for (let i = 0; i < segment.length-1; i++) {
         ctx.moveTo(segment[i].x, segment[i].y);
