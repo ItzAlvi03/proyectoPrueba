@@ -9,11 +9,11 @@
         </div>
         <div id="datos" class="h-100 d-flex flex-column justify-content-center align-items-center">
             <label *ngIf="!archivo" class="mt-2 mb-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
-            <div *ngIf="archivo">
+            <div class="w-75 mt-3" *ngIf="archivo">
                 <button *ngIf="!result" class="mb-2" (click)="predecirImg(1)">Ver Predicción</button>
-                <button class="mb-2" (click)="repintarCanvas(0)">Ver Contorno</button>
+                <button class="mb-2" (click)="predecirImg(2)">Ver Contorno</button>
                 <button class="mb-2" (click)="predecirImg(3)">Ver Recuadro</button>
-                <div *ngIf="!result" class="input-group flex-nowrap">
+                <div *ngIf="!result" class="w-100 input-group flex-nowrap">
                     <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
                     <input (ngModelChange)="comprobarNum()" [(ngModel)]="numPredict" type="number" min="0" max="100" class="form-control" placeholder="0-100" aria-label="number">
                     <div class="d-flex flex-column" id="addon-wrapping">
@@ -35,8 +35,8 @@
         </div>
         <div class="text-center" id="img">
             <img src="{{src}}" alt="">
-            <div class="mt-3 mb-3" *ngIf="archivo">
-                <label class="mt-2 mb-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
+            <div class="mt-3 mb-1" *ngIf="archivo">
+                <label class="mt-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
             </div>
         </div>
     </div>
