@@ -38,7 +38,7 @@ export class IAComponentComponent implements AfterViewInit{
   seleccionado: boolean = false;
   private barra: any;
   private selector: any;
-  numPredict!: number;
+  numPredict: number = 50;
   personas!: Person []
   
   constructor(private api: APIServiceService){}
