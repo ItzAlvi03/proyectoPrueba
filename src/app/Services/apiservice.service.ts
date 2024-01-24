@@ -5,8 +5,8 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class APIServiceService {
-  private URL = 'https://itzalvi03.pythonanywhere.com'
-  //private URL = 'http://127.0.0.1:5000/'
+  //private URL = 'https://itzalvi03.pythonanywhere.com'
+  private URL = 'http://127.0.0.1:5000/'
   constructor(private http: HttpClient) {}
 
   predict(img: any): Observable<any>{

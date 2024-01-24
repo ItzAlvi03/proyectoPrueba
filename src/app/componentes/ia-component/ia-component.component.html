@@ -11,8 +11,6 @@
             <label *ngIf="!archivo" class="mt-2 mb-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
             <div class="w-75 mt-3" *ngIf="archivo">
                 <button *ngIf="!result" class="mb-2" (click)="predecirImg(1)">Ver Predicción</button>
-                <button class="mb-2" (click)="predecirImg(2)">Ver Contorno</button>
-                <button class="mb-2" (click)="predecirImg(3)">Ver Recuadro</button>
                 <div *ngIf="!result" class="w-100 input-group flex-nowrap">
                     <span class="input-group-text" id="addon-wrapping"><i class="bi bi-search"></i></span>
                     <input (ngModelChange)="comprobarNum()" [(ngModel)]="numPredict" type="number" min="0" max="100" class="form-control" placeholder="0-100" aria-label="number">
@@ -23,14 +21,27 @@
                 </div>                  
             </div>
             <section *ngIf="data" id="predictions">
-                <div id="predict">
-                    <i class="bi bi-percent text-center"></i>
-                    <label class="w-75 text-center">{{data.porcentaje_promedio}}%</label>
+                <h4>Personas Detectadas</h4>
+                <div class="pb-2 pt-2" *ngFor="let person of personas; index as i">
+                    <div id="predict">
+                        <h6>Persona Nº{{i+1}}</h6>
+                    </div>
+                    <div id="predict">
+                        <i class="bi bi-percent text-center"></i>
+                        <label [appIATruncateConf]="person.conf.toString()" class="text-center">{{person.conf}}%</label>
+                    </div>
+                    <div id="predict">
+                        <i class="bi bi-person-arms-up text-center"></i>
+                        <label id="{{i}}" class="d-flex flex-row align-items-center text-center">
+                            <button class="mb-2" (click)="repintarCanvas(2, i)">Contorno</button>
+                            <button class="mb-2" (click)="repintarCanvas(3, i)">Recuadro</button>
+                        </label>
+                    </div>
                 </div>
-                <div id="predict">
-                    <i class="bi bi-person-arms-up text-center"></i>
-                    <label class="w-75 text-center">{{data.total_personas}}</label>
-                </div>
+            </section>
+            <section id="noResult" *ngIf="data === 'nada'">
+                <img src="../../../assets/images/noencontrado.png" alt="">
+                <h4>No se obtuvo resultados</h4>
             </section>
         </div>
         <div class="text-center" id="img">

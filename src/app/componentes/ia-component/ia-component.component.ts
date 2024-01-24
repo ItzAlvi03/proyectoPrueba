@@ -1,11 +1,29 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { APIServiceService } from 'src/app/Services/apiservice.service';
+import { IATruncateDirective } from 'src/app/truncate/ia-truncate.directive';
+
+class Person {
+  boxes!: any;
+  conf!: number;
+  segments!: any;
+  pintarContorno!: boolean;
+  pintarBox!: boolean;
+  
+  constructor(segments: any, boxes: any, conf: number) {
+    this.boxes = boxes;
+    this.conf = conf;
+    this.segments =segments;
+    this.pintarBox = false;
+    this.pintarContorno = false;
+  }
+}
 
 @Component({
   selector: 'app-ia-component',
   templateUrl: './ia-component.component.html',
   styleUrls: ['./ia-component.component.css']
 })
+
 export class IAComponentComponent implements AfterViewInit{
   input:any;
   src: any = "../../../assets/images/no_image.jpg";
@@ -21,8 +39,7 @@ export class IAComponentComponent implements AfterViewInit{
   private barra: any;
   private selector: any;
   numPredict!: number;
-  contorno: boolean = false;
-  box: boolean = false;
+  personas!: Person []
   
   constructor(private api: APIServiceService){}
   
@@ -86,37 +103,26 @@ export class IAComponentComponent implements AfterViewInit{
         const res = await this.api.predict(form).toPromise()
         if(res){
           this.result = res['result'];
-          this.data = res['result'];
-        }
-      } else if (num == 2) {
-        if(!this.result){
-          await this.predecirImg(1);
-        }
-        if(this.result){
-          this.mensajeSpinner = "Dibujando Contorno...";
-          this.cargando = true;
-          await this.repintarCanvas(2);
-        }
-
-        } else if(num == 3){
-          if(!this.result){
-            await this.predecirImg(1);
-          }
-          if(this.result) {
-            this.mensajeSpinner = "Dibujando el cuadrado...";
-            this.cargando = true;
-            await this.repintarCanvas(3);
+          if(this.result.total_personas === 0) {
+            this.data = "nada";
+          } else {
+            this.data = res['result'];
+            this.personas = [];
+            for(var i = 0; i < this.data.total_personas; i++) {
+              this.personas[i] = new Person(this.data.person[i].segments, this.data['person'][i].boxes, this.data['person'][i].conf)
+            }
           }
         }
+      }
         this.cargando = false;
         this.input = document.getElementById('input');
     }
   }
 
-  async repintarCanvas(option: number) {
+  async repintarCanvas(option: number, id: number) {
     this.cargando = true;
-    if(option === 2) this.contorno = !this.contorno
-    else if(option === 3) this.box = !this.box
+    if(option === 2) this.personas[id].pintarContorno = !this.personas[id].pintarContorno
+    else if(option === 3) this.personas[id].pintarBox = !this.personas[id].pintarBox
 
     const archivoURL = URL. createObjectURL(this.archivo);
     this.src = archivoURL;
@@ -130,42 +136,41 @@ export class IAComponentComponent implements AfterViewInit{
       canvas.height = image.height; 
       // Dibuja la imagen original en el canvas
       ctx.drawImage(image, 0, 0); 
-      ctx.beginPath();
-      if(this.contorno)  await this.dibujarContorno(canvas,ctx,image)
-      if(this.box) await this.dibujarBox(canvas,ctx,image);
+      for(var i = 0; i < this.personas.length; i++) {
+        if(this.personas[i].pintarContorno)  await this.dibujarContorno(canvas, ctx, image, this.personas[i])
+        if(this.personas[i].pintarBox) await this.dibujarBox(canvas, ctx, image, this.personas[i]);
+      }
     };
     this.cargando = false;
   }
   
-  async dibujarContorno(canvas: any,ctx: any,image: any) {
-    const segments = this.result.segments;
+  async dibujarContorno(canvas: any, ctx: any, image: any, person: Person) {
+    const segment = person.segments;
     
     // Dibuja el contorno en el canvas
+    ctx.beginPath();
     ctx.lineWidth = 3;
     ctx.strokeStyle = 'red';
-    ctx.fillStyle = 'rgba(0, 0, 255, 0.6)'; 
-    segments.forEach((segment: any | any[]) => {
-      for (let i = 0; i < segment.length-1; i++) {
-        ctx.moveTo(segment[i].x, segment[i].y);
-        ctx.lineTo(segment[i+1].x, segment[i+1].y);
-      }
-      ctx.moveTo(segment[segment.length-1].x, segment[segment.length-1].y);
-      ctx.lineTo(segment[0].x, segment[0].y);
-      ctx.stroke();
-      ctx.fill();
-    }); 
+    for (let i = 0; i < segment.length-1; i++) {
+      ctx.moveTo(segment[i].x, segment[i].y);
+      ctx.lineTo(segment[i+1].x, segment[i+1].y);
+    }
+    ctx.moveTo(segment[segment.length-1].x, segment[segment.length-1].y);
+    ctx.lineTo(segment[0].x, segment[0].y);
+    ctx.stroke();
     this.src = canvas.toDataURL('image/png');
   }
 
-  async dibujarBox(canvas: any,ctx: any,image: any) {
-    const boxes = this.result.boxes;
+  async dibujarBox(canvas: any, ctx: any, image: any, person: Person) {
+    const box = person.boxes;
     // Dibuja el rectangulo en canvas
+    ctx.beginPath();
     ctx.lineWidth = 3;
     ctx.strokeStyle = 'red';
-    boxes.forEach((box: [any, any, any, any]) => {
-      const [x1, y1, x2, y2] = box;
-      ctx.rect(x1, y1, x2 - x1, y2 - y1);
-    });
+    ctx.fillStyle = "rgba(255, 0, 0, 0.15)";
+    const [x1, y1, x2, y2] = box;
+    ctx.rect(x1, y1, x2 - x1, y2 - y1);
+    ctx.fill();
     ctx.stroke();
     this.src = canvas.toDataURL('image/png');
   }

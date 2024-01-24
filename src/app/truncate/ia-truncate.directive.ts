@@ -1,11 +1,11 @@
 import { Directive, ElementRef, Input, Renderer2, SimpleChanges } from '@angular/core';
 
 @Directive({
-  selector: '[appIATruncate]'
+  selector: '[appIATruncateConf]'
 })
 export class IATruncateDirective {
-  @Input() set appIATruncate(value: string) {
-    this.truncateText(value);
+  @Input() set appIATruncateConf(value: string) {
+    this.truncateConf(value);
   }
 
   @Input() maxLength: number = 20;
@@ -29,6 +29,16 @@ export class IATruncateDirective {
 
     const truncatedText = text.length > this.maxLength
       ? text.substring(0, this.maxLength - extension.length) + extension
+      : text;
+
+    this.renderer.setProperty(this.el.nativeElement, 'textContent', truncatedText);
+  }
+}
+private truncateConf(text: string): void {
+  if (text && this.maxLength) {
+
+    const truncatedText = text.length > 4
+      ? text.substring(0, 4) + "%"
       : text;
 
     this.renderer.setProperty(this.el.nativeElement, 'textContent', truncatedText);

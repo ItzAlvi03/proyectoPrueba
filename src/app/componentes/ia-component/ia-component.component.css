@@ -28,16 +28,16 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    margin: 80px 8%;
+    margin: 80px 5%;
     padding: 1% 5%;
     box-shadow: 0px 0px 4px 2px white;
 }
 #img{
     position: relative;
-    width: 50%;
+    width: 45%;
     height: 100%;
     padding-left: 10%;
-    max-width: 50%;
+    max-width: 45%;
     max-height: 100%;
     width: auto;
     display: flex;
@@ -70,8 +70,8 @@ input[type="file"] {
     display: none;
 }
 #datos{
-    width: 50%;
-    max-width: 50%;
+    width: 55%;
+    max-width: 55%;
     padding-right: 10%;
 }
 #predictions{
@@ -79,11 +79,55 @@ input[type="file"] {
     flex-direction: column;
     justify-content: space-between;
     width: 75%;
+    max-height: 45vh;
     margin-top: 8%;
+    padding-right: 5%;
+    color: black;
+    font-weight: 700;
+    border-radius: 7px;
+    overflow-y: auto;
+}
+#predictions::-webkit-scrollbar, #predict label.d-flex::-webkit-scrollbar {
+    border-radius: 8px;
+    color: #ffffff;
+    width: 13px;
+}
+
+#predictions::-webkit-scrollbar-thumb, #predict label.d-flex::-webkit-scrollbar-thumb {
+  background-color: #11293c;
+  border-radius: 8px;
+  border: 2px solid white;
+}
+
+#predictions::-webkit-scrollbar-track, #predict label.d-flex::-webkit-scrollbar-track {
+  background-color: white;
+  border-radius: 8px;
+}
+#noResult{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 75%;
+    height: 100%;
+    margin-bottom: 8%;
     background-color: white;
     color: black;
     font-weight: 700;
     border-radius: 7px;
+    padding: 1%;
+}
+#noResult h4, #noResult img{
+    margin-bottom: 0;
+    background-color: rgba(255, 255, 255, 0.7);
+    color: black;
+    max-width: 80%;
+    text-align: center;
+}
+#predictions h4{
+    margin-bottom: 0;
+    padding-bottom: 4%;
+    text-align: center;
 }
 #predict{
     display: flex;
@@ -102,24 +146,44 @@ input[type="file"] {
     border-bottom: 2px solid #11293c;
 }
 #predict:nth-child(2){
+    border-bottom: 2px solid #11293c;
+}
+#predict:nth-child(3){
     border-bottom-right-radius: 7px;
     border-bottom-left-radius: 7px;
+}
+#predict h6{
+    text-align: center;
+    background-color: transparent;
+    color: #11293c;
+    width: 100%;
 }
 #predict label{
     border-top-right-radius: 7px;
     border-bottom-right-radius: 7px;
+    width: 100%;
+    border-left: 1.5px solid #11293c;
 }
 #predict i{
-    border-right: 1.5px solid #11293c;
     padding-right: 5%;
     width: 20%;
     margin-left: 5%;
-    width: auto;
 }
 #predict i,#predict label{
     color: black;
     background-color: white;
     height: 100%;
+}
+#predict label.d-flex{
+    overflow-x: auto;
+    max-width: 100%;
+
+}
+#predict button{
+    background-color: #11293c;
+    color: white;
+    margin: 0 3%;
+    height: 80%;
 }
 #ampliar{
     background-color: rgb(0, 0, 0, 0.2);
@@ -181,5 +245,13 @@ input[type=number]::-webkit-outer-spin-button {
         margin-left: 0;
         border-left: 0;
         border-top: 2px solid white;
+    }
+}
+@media (max-width: 445px) {
+    #datos{
+        padding-bottom: 10%;
+        width: 75%;
+        max-width: 75%;
+        padding-right: 0;
     }
 }
