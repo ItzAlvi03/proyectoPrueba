@@ -22,7 +22,7 @@
             </div>
             <section *ngIf="data" id="predictions">
                 <h4>Personas Detectadas</h4>
-                <div class="pb-2 pt-2" *ngFor="let person of personas; index as i">
+                <div class="pb-2 pt-2" *ngFor="let person of this.resultModel.person; index as i">
                     <div id="predict">
                         <h6>Persona Nº{{i+1}}</h6>
                     </div>

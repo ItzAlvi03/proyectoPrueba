@@ -1,22 +1,24 @@
 import { AfterViewInit, Component } from '@angular/core';
 import { APIServiceService } from 'src/app/Services/apiservice.service';
 import { IATruncateDirective } from 'src/app/truncate/ia-truncate.directive';
+import { iaResultModel } from 'src/app/interfaces/iaResultModel';
+import { personResult } from 'src/app/interfaces/personResult';
 
-class Person {
-  boxes!: any;
-  conf!: number;
-  segments!: any;
-  pintarContorno!: boolean;
-  pintarBox!: boolean;
+// class Person {
+//   boxes!: any;
+//   conf!: number;
+//   segments!: any;
+//   pintarContorno!: boolean;
+//   pintarBox!: boolean;
   
-  constructor(segments: any, boxes: any, conf: number) {
-    this.boxes = boxes;
-    this.conf = conf;
-    this.segments =segments;
-    this.pintarBox = false;
-    this.pintarContorno = false;
-  }
-}
+//   constructor(person: personResult) {
+//     this.boxes = person.boxes;
+//     this.conf = person.conf;
+//     this.segments = person.segments;
+//     this.pintarBox = false;
+//     this.pintarContorno = false;
+//   }
+// }
 
 @Component({
   selector: 'app-ia-component',
@@ -39,7 +41,8 @@ export class IAComponentComponent implements AfterViewInit{
   private barra: any;
   private selector: any;
   numPredict: number = 50;
-  personas!: Person []
+  resultModel!: iaResultModel;
+  personas!: any;
   
   constructor(private api: APIServiceService){}
   
@@ -107,9 +110,10 @@ export class IAComponentComponent implements AfterViewInit{
             this.data = "nada";
           } else {
             this.data = res['result'];
-            this.personas = [];
-            for(var i = 0; i < this.data.total_personas; i++) {
-              this.personas[i] = new Person(this.data.person[i].segments, this.data['person'][i].boxes, this.data['person'][i].conf)
+            this.resultModel = res['result'];
+            for(var i = 0; i < this.resultModel.total_detections; i++) {
+              this.resultModel.person[i].pintarBox = false;
+              this.resultModel.person[i].pintarContorno = false;
             }
           }
         }
@@ -121,8 +125,8 @@ export class IAComponentComponent implements AfterViewInit{
 
   async repintarCanvas(option: number, id: number) {
     this.cargando = true;
-    if(option === 2) this.personas[id].pintarContorno = !this.personas[id].pintarContorno
-    else if(option === 3) this.personas[id].pintarBox = !this.personas[id].pintarBox
+    if(option === 2) this.resultModel.person[id].pintarContorno = !this.resultModel.person[id].pintarContorno
+    else if(option === 3) this.resultModel.person[id].pintarBox = !this.resultModel.person[id].pintarBox
 
     const archivoURL = URL. createObjectURL(this.archivo);
     this.src = archivoURL;
@@ -136,15 +140,15 @@ export class IAComponentComponent implements AfterViewInit{
       canvas.height = image.height; 
       // Dibuja la imagen original en el canvas
       ctx.drawImage(image, 0, 0); 
-      for(var i = 0; i < this.personas.length; i++) {
-        if(this.personas[i].pintarContorno)  await this.dibujarContorno(canvas, ctx, image, this.personas[i])
-        if(this.personas[i].pintarBox) await this.dibujarBox(canvas, ctx, image, this.personas[i]);
+      for(var i = 0; i < this.resultModel.total_detections; i++) {
+        if(this.resultModel.person[i].pintarContorno)  await this.dibujarContorno(canvas, ctx, image, this.resultModel.person[i])
+        if(this.resultModel.person[i].pintarBox) await this.dibujarBox(canvas, ctx, image, this.resultModel.person[i]);
       }
     };
     this.cargando = false;
   }
   
-  async dibujarContorno(canvas: any, ctx: any, image: any, person: Person) {
+  async dibujarContorno(canvas: any, ctx: any, image: any, person: personResult) {
     const segment = person.segments;
     
     // Dibuja el contorno en el canvas
@@ -161,7 +165,7 @@ export class IAComponentComponent implements AfterViewInit{
     this.src = canvas.toDataURL('image/png');
   }
 
-  async dibujarBox(canvas: any, ctx: any, image: any, person: Person) {
+  async dibujarBox(canvas: any, ctx: any, image: any, person: personResult) {
     const box = person.boxes;
     // Dibuja el rectangulo en canvas
     ctx.beginPath();
