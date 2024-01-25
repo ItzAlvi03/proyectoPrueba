@@ -45,9 +45,12 @@
             </section>
         </div>
         <div class="text-center" id="img">
-            <img src="{{src}}" alt="">
+            <div id="icono">
+                <i *ngIf="agrandado" (click)="agrandar(false)" class="bi bi-x-lg"></i>
+            </div>
+            <img id="agrandar" (click)="agrandar(true)" src="{{src}}" alt="">
             <div class="mt-3 mb-1" *ngIf="archivo">
-                <label class="mt-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
+                <label *ngIf="!agrandado" class="mt-2">{{textoInput}}<input id="input" (change)="cambiarImg($event)" type="file" name="imagen" value="" accept=".jpg"></label>
             </div>
         </div>
     </div>

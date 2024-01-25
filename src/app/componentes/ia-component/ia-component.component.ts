@@ -43,6 +43,7 @@ export class IAComponentComponent implements AfterViewInit{
   numPredict: number = 50;
   resultModel!: iaResultModel;
   personas!: any;
+  agrandado: boolean = false;
   
   constructor(private api: APIServiceService){}
   
@@ -179,4 +180,20 @@ export class IAComponentComponent implements AfterViewInit{
     this.src = canvas.toDataURL('image/png');
   }
 
+  agrandar(agrandar: boolean) {
+    const img = document.getElementById('agrandar');
+    const content = document.getElementById('img');
+    if (img && content) {
+      if(agrandar && !this.agrandado) {
+        this.agrandado = true;
+        img.classList.add('ampliada');
+        content.classList.add('ampliada');
+      } else if(!agrandar && this.agrandado) {
+        this.agrandado = false;
+        img.classList.remove('ampliada');
+        content.classList.remove('ampliada');
+      }
+    }
+  }
+  
 }
