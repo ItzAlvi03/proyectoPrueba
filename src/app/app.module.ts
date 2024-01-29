@@ -28,6 +28,7 @@ import { IAComponentComponent } from './componentes/ia-component/ia-component.co
 import { HeaderComponent } from './componentes/header/header.component';
 import { IATruncateDirective } from './truncate/ia-truncate.directive';
 import { IaSpinnerComponent } from './componentes/spinner/ia-spinner/ia-spinner.component';
+import { IphoneComponent } from './componentes/iphone/iphone.component';
 
 @NgModule({
   declarations: [
@@ -53,6 +54,7 @@ import { IaSpinnerComponent } from './componentes/spinner/ia-spinner/ia-spinner.
     HeaderComponent,
     IATruncateDirective,
     IaSpinnerComponent,
+    IphoneComponent,
   ],
   imports: [
     FormsModule,
