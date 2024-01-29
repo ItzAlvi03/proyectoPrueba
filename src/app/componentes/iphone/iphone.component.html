@@ -1,1 +1,31 @@
-<p>iphone works!</p>
+<div id="content">
+    <div id="iphone">
+        <div id="buttons">
+            <div id="left">
+                <div id="button"></div>
+                <div id="button"></div>
+                <div id="button"></div>
+            </div>
+            <div id="right">
+                <div (click)="encender()" id="button"></div>
+            </div>
+        </div>
+        <div *ngIf="encendido" id="notch-container">
+            <div id="notch">
+                <div id="camera">
+                    <div></div>
+                </div>
+                <div id="notch-content">
+                    <h1>{{horaLocal}}</h1>
+                </div>
+            </div>
+        </div>
+        <div id="pantalla">
+            <img src="../../../assets/images/fondoPantallaIphone.jpg" alt="">
+            <div id="oscuro"></div>
+            <div id="container">
+
+            </div>
+        </div>
+    </div>
+</div>

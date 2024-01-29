@@ -29,6 +29,7 @@ import { HeaderComponent } from './componentes/header/header.component';
 import { IATruncateDirective } from './truncate/ia-truncate.directive';
 import { IaSpinnerComponent } from './componentes/spinner/ia-spinner/ia-spinner.component';
 import { IphoneComponent } from './componentes/iphone/iphone.component';
+import { CommonModule, DatePipe } from '@angular/common';
 
 @NgModule({
   declarations: [
@@ -61,9 +62,13 @@ import { IphoneComponent } from './componentes/iphone/iphone.component';
     BrowserModule,
     AppRoutingModule,
     NgbModule,
-    HttpClientModule
+    HttpClientModule,
+    CommonModule
   ],
-  providers: [APIServiceService],
+  providers: [
+    APIServiceService,
+    DatePipe
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

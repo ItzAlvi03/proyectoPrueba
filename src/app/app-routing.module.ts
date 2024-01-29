@@ -5,6 +5,7 @@ import { RickMortyComponent } from './componentes/rick-morty/rick-morty.componen
 import { RickMortyCardComponent } from './componentes/rick-morty-card/rick-morty-card.component';
 import { GameboyComponent } from './componentes/gameboy/gameboy.component';
 import { IAComponentComponent } from './componentes/ia-component/ia-component.component';
+import { IphoneComponent } from './componentes/iphone/iphone.component';
 
 const routes: Routes = [
   { path: '', pathMatch: 'prefix', redirectTo: 'pruebaApi'},
@@ -12,7 +13,8 @@ const routes: Routes = [
   { path: 'rickMorty/:page', component: RickMortyComponent},
   { path: 'rickMortyCard/:id/:page', component: RickMortyCardComponent},
   { path: 'gameboy', component: GameboyComponent},
-  { path: 'IA', component: IAComponentComponent}
+  { path: 'IA', component: IAComponentComponent},
+  { path: 'iphone', component: IphoneComponent}
 ];
 
 @NgModule({

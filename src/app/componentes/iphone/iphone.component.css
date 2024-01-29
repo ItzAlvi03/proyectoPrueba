@@ -1,0 +1,194 @@
+*, html{
+    font-family: sans-serif;
+    background-color: #11293c;
+    color: #f7fafc;
+    scroll-behavior: smooth;
+}
+:host {
+    --size: max(5px, 1vmin);
+    --height: 80em;
+    --pad: 1.25em;
+    --difference: calc(80px - 10em);
+    --border-radius: 6em;
+    --notch-radius: calc((var(--border-radius) - calc(var(--pad) * 2)));
+    --button-width: 0.333em;
+    --border-width: 0.4em;
+  }
+  :host ::ng-deep #content {
+    min-height: 100vh;
+    padding: 5% 0;
+    margin-top: 80px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--size);
+  }
+  
+  :host ::ng-deep #iphone {
+    position: relative;
+    background-color: black;
+    z-index: 1;
+    aspect-ratio: 7.16 / 14.76;
+    height: calc(var(--difference) + var(--height));
+    border-radius: var(--border-radius);
+    box-shadow: 0 0 0.1em 0.25em hsl(285, 10%, 25%), 0 0 0 0.4em hsl(286, 10%, 85%);
+  }
+  #buttons #left, #buttons #right{
+    position: absolute;
+    width: var(--button-width);
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 1.5em;
+  }
+  #buttons #left{
+    right: 100.8%;
+    top: calc(var(--border-radius) * 2);
+  }
+  #buttons #left #button:nth-child(1){
+    height: 3em;
+    margin-bottom: 0.5em;
+  }
+  #buttons #right{
+    left: 100.8%;
+    transform: scale3d(-1, 1, 1);
+    top: calc(var(--border-radius) * 2);
+  }
+  #buttons #right #button{
+    height: 9.5em;
+  }
+  #buttons #button{
+    background: hsl(284, 20%, 95%);
+    height: 6em;
+    cursor: pointer;
+    box-shadow: inset -0.15em 0 0.1em black, inset 0 0 0.1em hsl(284, 30%, 90%), inset 0 0.2em 0.1em hsl(284, 30%, 90%), inset -0.1em -0.333em 0.1em rgba(0, 0, 0, 0.5);
+  }
+  :host ::ng-deep #notch-container {
+    --bar-opacity: 0;
+    position: absolute;
+    z-index: 2;
+    top: var(--pad);
+    left: var(--pad);
+    right: var(--pad);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    max-height: calc(var(--notch-radius) * 2);
+    background-color: transparent;
+    outline: none;
+    transition: 0.15s ease-in-out;
+    transition-property: max-height, max-width, filter, transform;
+    will-change: max-height, max-width, filter, transform;
+  }
+  #notch-container:hover #notch, #notch-container:focus-within #notch{
+    max-width: 100%;
+    max-height: 100%;
+    transform: scale3d(1, 1, 1);
+  }
+  #notch-container:focus-within{
+    max-height: calc(var(--notch-radius) * 3);
+    --bar-height: 1em;
+    --bar-opacity: 1;
+  }
+  #notch-container:hover #notch-content, #notch-container:focus-within #notch-content{
+    display: flex;
+  }
+  :host ::ng-deep #notch{
+    --content-padding: 1.75em;
+    position: relative;
+    background-color: black;
+    border-radius: var(--notch-radius);
+    display: flex;
+    flex-direction: row;
+    justify-content: start;
+    align-items: center;
+    cursor: pointer;
+    width: 100%;
+    transition: inherit;
+    transition-property: inherit;
+    will-change: inherit;
+    filter: drop-shadow(0 1em 2em hsla(0 0% 0%/var(--shadow-opacity, 0)));
+    transform: scale3d(0.375, 0.375, 1);
+    padding: var(--content-padding);
+  }
+  #notch:hover {
+    transform: scale3d(1, 1.3, 1);
+  }
+  #camera{
+    height: 100%;
+    width: 10%;
+    max-height: calc(100% - var(--bar-height));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+  }
+  #camera div{
+    background: #1a1ab3;
+    height: 100%;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 50%;
+    position: relative;
+  }
+ :host ::ng-deep #notch-content{
+    --content-padding: 1.75em;
+    --content-gap: 0.5em;
+    background-color: transparent;
+    width: 90%;
+    display: none;
+    flex-direction: column;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    gap: var(--content-gap);
+    align-items: stretch;
+    padding: var(--content-padding);
+    font-size: 125%;
+    height: 100%;
+    max-height: calc(100% - var(--bar-height));
+    border-radius: var(--notch-radius);
+ }
+ #notch-content h1{
+    background-color: transparent;
+    margin: 0;
+ }
+ #pantalla{
+    position: absolute;
+    z-index: 1;
+    aspect-ratio: 7.088 / 14.76;
+    height: calc(var(--difference) + var(--height) - 1%);
+    margin-left: 1%;
+    margin-top: 1%;
+    border-radius: var(--border-radius);
+    transition: 0.25s ease-in-out;
+    transition-property: opacity;
+ }
+ #pantalla img{
+    position: absolute;
+    z-index: 1;
+    opacity: 0;
+    aspect-ratio: 7.088 / 14.76;
+    height: calc(var(--difference) + var(--height) - 1%);
+    transition: opacity 0.18s ease-in-out;
+    border-radius: var(--border-radius);
+ }
+ #oscuro{
+    position: absolute;
+    background-color: black;
+    opacity: 1;
+    z-index: 1;
+    aspect-ratio: 7.088 / 14.76;
+    height: calc(var(--difference) + var(--height) - 1%);
+    border-radius: var(--border-radius);
+    transition: opacity 0.14s ease-out;
+ }
+ #pantalla.encendida img{
+    opacity: 1;
+  }
+  #pantalla.encendida #oscuro{
+    opacity: 0;
+  }
