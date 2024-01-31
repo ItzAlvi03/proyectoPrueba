@@ -42,8 +42,10 @@ export class IphoneComponent implements AfterViewInit{
   }
 
   agrandar(index: number): void {
-    this.selectedAppIndex = index;
-    const app = document.getElementById(this.selectedAppIndex.toString());
-    app?.classList.add('selected')
+    //this.selectedAppIndex = index;
+    //const app = document.getElementById(this.selectedAppIndex.toString());
+    //app?.classList.add('selected')
+    //const pantalla_apps = document.getElementById('apps');
+    //pantalla_apps?.classList.add('selected')
   }
 }
