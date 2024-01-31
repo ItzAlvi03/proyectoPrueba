@@ -182,14 +182,15 @@
     border-radius: var(--border-radius);
  }
  #oscuro{
-    position: absolute;
-    background-color: black;
-    opacity: 1;
-    z-index: 1;
-    aspect-ratio: 7.088 / 14.76;
-    height: calc(var(--difference) + var(--height) - 1%);
-    border-radius: var(--border-radius);
-    transition: opacity 0.14s ease-out;
+  position: absolute;
+  z-index: 1;
+  opacity: 1;
+  background-color: black;
+  aspect-ratio: 7.088 / 14.76;
+  height: calc(var(--difference) + var(--height) - 1%);
+  transition: opacity 0.18s ease-in-out;
+  border-radius: var(--border-radius);
+  transition: opacity 0.14s ease-out;
  }
  #pantalla.encendida img{
     opacity: 1;
@@ -198,17 +199,27 @@
     opacity: 0;
   }
   #apps{
-    display: grid;
+    display: none;
     grid-template-columns: repeat(4, 1fr);
     grid-template-rows: repeat(6, 1fr);
     gap: 10px;
-    z-index: 3;
+    z-index: 2;
     margin-top: calc(var(--notch-radius) * 2);
   }
-  #apps #appBox{
-    display: block;
-    width: 100%;
-    height: 100%;
-    background-color: red;
+  #apps.encendida{
+    display: grid;
+  }
+  #appBox{
+    display: flex;
+    align-items: center;
+    justify-content: center;
     border-radius: 10%;
+    overflow: hidden;
+  }
+  #appBox img{
+    max-width: 100%; /* Limita el ancho de la imagen al 100% del contenedor */
+    max-height: 100%; /* Limita la altura de la imagen al 100% del contenedor */
+    object-fit: contain; /* Ajusta la imagen dentro del contenedor sin recortar */
+    border-radius: 10%;
+    background-color: transparent;
   }

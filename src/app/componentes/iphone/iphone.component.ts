@@ -10,12 +10,14 @@ export class IphoneComponent implements AfterViewInit{
   horaLocal: string = '00:00';
   encendido: boolean = false;
   private pantalla: any;
+  private apps: any;
 
   constructor(private datePipe: DatePipe) {
     this.obtenerHoraLocal();
   }
   ngAfterViewInit(): void {
     this.pantalla = document.getElementById('pantalla');
+    this.apps = document.getElementById('apps');
   }
 
   obtenerHoraLocal() {
@@ -25,8 +27,13 @@ export class IphoneComponent implements AfterViewInit{
   encender() {
     this.pantalla.classList.toggle('encendida');
     if(this.encendido){
+      this.apps.classList.toggle('encendida');
       this.pantalla.style.backgroundImage = 'none';
       this.pantalla.style.backgroundColor = 'black';
+    } else{
+      setTimeout(() =>{
+        this.apps.classList.toggle('encendida');
+      }, 140);
     }
     this.encendido = !this.encendido;
   }
