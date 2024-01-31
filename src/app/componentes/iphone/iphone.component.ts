@@ -11,10 +11,12 @@ export class IphoneComponent implements AfterViewInit{
   encendido: boolean = false;
   private pantalla: any;
   private apps: any;
+  selectedAppIndex: number = 0;
 
   constructor(private datePipe: DatePipe) {
     this.obtenerHoraLocal();
   }
+
   ngAfterViewInit(): void {
     this.pantalla = document.getElementById('pantalla');
     this.apps = document.getElementById('apps');
@@ -24,6 +26,7 @@ export class IphoneComponent implements AfterViewInit{
     const fechaActual = new Date();
     this.horaLocal = this.datePipe.transform(fechaActual, 'HH:mm') as string;
   }
+
   encender() {
     this.pantalla.classList.toggle('encendida');
     if(this.encendido){
@@ -36,5 +39,11 @@ export class IphoneComponent implements AfterViewInit{
       }, 140);
     }
     this.encendido = !this.encendido;
+  }
+
+  agrandar(index: number): void {
+    this.selectedAppIndex = index;
+    const app = document.getElementById(this.selectedAppIndex.toString());
+    app?.classList.add('selected')
   }
 }
