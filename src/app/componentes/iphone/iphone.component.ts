@@ -12,6 +12,9 @@ export class IphoneComponent implements AfterViewInit{
   private pantalla: any;
   private apps: any;
   selectedAppIndex: number = 0;
+  dentroApp: boolean = false;
+  appData: any;
+  pantallaData: any;
 
   constructor(private datePipe: DatePipe) {
     this.obtenerHoraLocal();
@@ -41,9 +44,33 @@ export class IphoneComponent implements AfterViewInit{
     this.encendido = !this.encendido;
   }
 
-  agrandar(index: number): void {
-    //this.selectedAppIndex = index;
-    //const app = document.getElementById(this.selectedAppIndex.toString());
+  abrirApp(index: number): void {
+    this.selectedAppIndex = index;
+
+    if (this.selectedAppIndex !== null && this.selectedAppIndex !== undefined) {
+      const string = "#app" + this.selectedAppIndex.toString() + " img"
+      const app = document.querySelector(string) as HTMLImageElement;
+      const pantalla = document.querySelector('#fondoPantalla') as any;
+      if (app && pantalla) {
+        const rect = app.getBoundingClientRect();
+        this.appData = {
+          'width': app.width,
+          'height': app.height,
+          'left': rect.left,
+          'top': rect.top,
+          'src': app.src
+        }
+        const rect2 = pantalla.getBoundingClientRect();
+        this.pantallaData = {
+          'width': pantalla.width,
+          'height': pantalla.height,
+          'left': rect2.left,
+          'top': rect2.top,
+        }
+        this.dentroApp = true;
+      }
+    }
+
     //app?.classList.add('selected')
     //const pantalla_apps = document.getElementById('apps');
     //pantalla_apps?.classList.add('selected')

@@ -23,24 +23,24 @@
         <div id="pantalla">
             <img id="fondoPantalla" src="../../../assets/images/fondoPantallaIphone.jpg" alt="">
             <div id="apps">
-                <div (click)="agrandar(1)" class="appBox" id="1">
+                <div (click)="abrirApp(1)" class="appBox" id="app1">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
-                <div class="appBox" id="2">
+                <div class="appBox" id="app2">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
-                <div class="appBox" id="3">
+                <div class="appBox" id="app3">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
-                <div class="appBox" id="4">
+                <div class="appBox" id="app4">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
-                <div class="appBox" id="5">
+                <div (click)="abrirApp(5)" class="appBox" id="app5">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
-                <div class="appBox" id="6"></div>
-                <div class="appBox" id="7"></div>
-                <div class="appBox" id="8"></div>
+                <div class="appBox" id="app6"></div>
+                <div class="appBox" id="app7"></div>
+                <div class="appBox" id="app8"></div>
             </div>
             <div id="dock">
 
@@ -48,4 +48,5 @@
             <div id="oscuro"></div>
         </div>
     </div>
+    <app-app-container *ngIf="dentroApp" [appData]="appData" [pantallaData]="pantallaData"></app-app-container>
 </div>

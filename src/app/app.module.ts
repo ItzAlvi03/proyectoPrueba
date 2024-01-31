@@ -30,6 +30,7 @@ import { IATruncateDirective } from './truncate/ia-truncate.directive';
 import { IaSpinnerComponent } from './componentes/spinner/ia-spinner/ia-spinner.component';
 import { IphoneComponent } from './componentes/iphone/iphone.component';
 import { CommonModule, DatePipe } from '@angular/common';
+import { AppContainerComponent } from './componentes/iphone/app/app-container/app-container.component';
 
 @NgModule({
   declarations: [
@@ -56,6 +57,7 @@ import { CommonModule, DatePipe } from '@angular/common';
     IATruncateDirective,
     IaSpinnerComponent,
     IphoneComponent,
+    AppContainerComponent,
   ],
   imports: [
     FormsModule,
