@@ -204,13 +204,13 @@
     margin-top: calc(var(--notch-radius) * 3);
     margin-bottom: calc(var(--notch-radius) * 3);
     height: 100%;
-    padding: 0 3%;
-    max-height: calc(100% - calc(var(--notch-radius) * 6));
+    padding: 0 24px;
+    max-height: calc(100% - calc(var(--notch-radius) * 6.75));
 }
 
 #apps.encendida {
   display: grid;
-  gap: 10px;
+  gap: 24px;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: repeat(6, 1fr);
 }
