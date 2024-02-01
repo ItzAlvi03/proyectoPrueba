@@ -31,6 +31,7 @@ import { IaSpinnerComponent } from './componentes/spinner/ia-spinner/ia-spinner.
 import { IphoneComponent } from './componentes/iphone/iphone.component';
 import { CommonModule, DatePipe } from '@angular/common';
 import { AppContainerComponent } from './componentes/iphone/app/app-container/app-container.component';
+import { AnimacionAppComponent } from './componentes/iphone/app/animacion-app/animacion-app.component';
 
 @NgModule({
   declarations: [
@@ -58,6 +59,7 @@ import { AppContainerComponent } from './componentes/iphone/app/app-container/ap
     IaSpinnerComponent,
     IphoneComponent,
     AppContainerComponent,
+    AnimacionAppComponent,
   ],
   imports: [
     FormsModule,
