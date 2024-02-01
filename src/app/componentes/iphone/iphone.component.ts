@@ -44,20 +44,18 @@ export class IphoneComponent implements AfterViewInit{
     this.encendido = !this.encendido;
   }
 
-  abrirApp(index: number): void {
+  abrirApp(top: number, left: number, index: number): void {
     this.selectedAppIndex = index;
-
     if (this.selectedAppIndex !== null && this.selectedAppIndex !== undefined) {
       const string = "#app" + this.selectedAppIndex.toString() + " img"
       const app = document.querySelector(string) as HTMLImageElement;
       const pantalla = document.querySelector('#fondoPantalla') as any;
       if (app && pantalla) {
-        const rect = app.getBoundingClientRect();
         this.appData = {
           'width': app.width,
           'height': app.height,
-          'left': rect.left,
-          'top': rect.top,
+          'left': left,
+          'top': top,
           'src': app.src
         }
         const rect2 = pantalla.getBoundingClientRect();

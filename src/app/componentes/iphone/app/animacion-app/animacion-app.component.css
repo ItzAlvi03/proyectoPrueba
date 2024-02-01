@@ -9,7 +9,10 @@
     --border-width: 0.4em;
   }
   :host ::ng-deep #content-app {
+    position: absolute;
+    top: 0;
     min-height: 100vh;
+    width: 100%;
     padding: 5% 0;
     margin-top: 80px;
     display: flex;
@@ -17,6 +20,7 @@
     align-items: center;
     justify-content: center;
     font-size: var(--size);
+    z-index: 1;
   }
   :host ::ng-deep #content-iphone {
     position: relative;
@@ -26,13 +30,17 @@
     border-radius: var(--border-radius);
   }
 .appBox {
-    position: absolute;
+    position: relative;
+    top: 0;
+    left: 0;
     z-index: 1;
+    margin-top: calc(var(--notch-radius) * 3);
+    margin-bottom: calc(var(--notch-radius) * 3);
+    height: 100%;
+    padding: 0 20px;
     background-color: transparent;
     transition: 0.22s ease-in-out;
     border-radius: 6em;
-    top: calc(var(--notch-radius) * 3);
-    left: 3%;
 }
 
 .appBox img {
@@ -40,9 +48,15 @@
     height: 100%;
     border-radius: 10%;
     background-color: transparent;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    transition: 0.22s ease-in-out;
 }
 .appBox.ampliar img{
     animation: opacity 0.1s forwards;
+    z-index: 1;
 }
 @keyframes opacity {
     0%{

@@ -23,7 +23,7 @@
         <div id="pantalla">
             <img id="fondoPantalla" src="../../../assets/images/fondoPantallaIphone.jpg" alt="">
             <div id="apps">
-                <div (click)="abrirApp(1)" class="appBox" id="app1">
+                <div (click)="abrirApp(1,1,1)" class="appBox" id="app1">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
                 <div class="appBox" id="app2">
@@ -35,7 +35,7 @@
                 <div class="appBox" id="app4">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
-                <div (click)="abrirApp(5)" class="appBox" id="app5">
+                <div (click)="abrirApp(2,1,5)" class="appBox" id="app5">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
                 <div class="appBox" id="app6"></div>
@@ -53,16 +53,16 @@
                 <div class="appBox" id="app6"></div>
                 <div class="appBox" id="app7"></div>
                 <div class="appBox" id="app8"></div>
-                <div (click)="abrirApp(21)" class="appBox" id="app21">
+                <div (click)="abrirApp(6,1,21)" class="appBox" id="app21">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
-                <div (click)="abrirApp(22)" class="appBox" id="app22">
+                <div (click)="abrirApp(6,2,22)" class="appBox" id="app22">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
-                <div (click)="abrirApp(23)" class="appBox" id="app23">
+                <div (click)="abrirApp(6,3,23)" class="appBox" id="app23">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
-                <div (click)="abrirApp(24)" class="appBox" id="app24">
+                <div (click)="abrirApp(6,4,24)" class="appBox" id="app24">
                     <img src="../../../assets/images/iphone_apps/notas.png" alt="">
                 </div>
             </div>
@@ -72,5 +72,5 @@
             <div id="oscuro"></div>
         </div>
     </div>
-    <app-animacion-app *ngIf="dentroApp" [appData]="appData" [pantallaData]="pantallaData"></app-animacion-app>
 </div>
+<app-animacion-app *ngIf="dentroApp" [appData]="appData" [pantallaData]="pantallaData"></app-animacion-app>

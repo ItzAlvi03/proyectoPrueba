@@ -14,15 +14,21 @@ export class AnimacionAppComponent implements AfterViewInit{
     const img = document.querySelector('#appContainer img') as any;
     const div = document.querySelector('#appContainer') as any;
     img.src = this.appData.src;
-    div.style.width = this.appData.width + "px";
-    div.style.height = this.appData.height + "px";
-    div.style.top =  this.appData.top + "px"
-    div.style.left = this.appData.left + "px"
-    const distanceFromTop = div.offsetTop;
-    console.log(distanceFromTop)
+    img.style.width = this.appData.width + "px";
+    img.style.height = this.appData.height + "px";
+    if(this.appData.top != 1){
+      img.style.top = (this.appData.height + 22) * (this.appData.top - 1) + "px";
+    }
+    if(this.appData.left != 1){
+      img.style.left = (this.appData.width + 28) * (this.appData.left - 1) + "px";
+    }
     setTimeout(() => {
-      div.style.width = this.pantallaData.width + "px";
-      div.style.height = this.pantallaData.height + "px";
+      img.style.width = "100%";
+      img.style.height = "100%";
+      div.style.margin = "0";
+      div.style.padding = "0";
+      img.style.top =  "0"
+      img.style.left = "0"
       div.style.backgroundColor = "black";
       setTimeout(() => {
         div.classList.add('ampliar')
