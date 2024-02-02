@@ -49,7 +49,7 @@ export class IphoneComponent implements AfterViewInit{
     if (this.selectedAppIndex !== null && this.selectedAppIndex !== undefined) {
       const string = "#app" + this.selectedAppIndex.toString() + " img"
       const app = document.querySelector(string) as HTMLImageElement;
-      const pantalla = document.querySelector('#fondoPantalla') as any;
+      const pantalla = document.querySelector('#apps') as any;
       if (app && pantalla) {
         this.appData = {
           'width': app.width,
@@ -59,11 +59,13 @@ export class IphoneComponent implements AfterViewInit{
           'src': app.src
         }
         const rect2 = pantalla.getBoundingClientRect();
+        const porcentaje = ((rect2.height - (app.height * 6))/6);
+        const margin_top = porcentaje
         this.pantallaData = {
-          'width': pantalla.width,
-          'height': pantalla.height,
+          'width': rect2.width,
+          'height': rect2.height,
           'left': rect2.left,
-          'top': rect2.top,
+          'top': margin_top
         }
         this.dentroApp = true;
       }

@@ -23,7 +23,6 @@
     z-index: 1;
   }
   :host ::ng-deep #content-iphone {
-    position: relative;
     z-index: 1;
     aspect-ratio: 7.16 / 14.76;
     height: calc(var(--difference) + var(--height));
@@ -31,13 +30,10 @@
   }
 .appBox {
     position: relative;
-    top: 0;
-    left: 0;
-    z-index: 1;
-    margin-top: calc(var(--notch-radius) * 3);
-    margin-bottom: calc(var(--notch-radius) * 3);
+    margin: calc((var(--notch-radius) * 3) + 2%) 22px;
     height: 100%;
-    padding: 0 20px;
+    max-height:  calc(var(--difference) + var(--height));
+    z-index: 1;
     background-color: transparent;
     transition: 0.22s ease-in-out;
     border-radius: 6em;
