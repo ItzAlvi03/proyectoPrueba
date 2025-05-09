@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
 })
 export class GameboyAPIService {
   // private apiUrl = 'https://itzalvi03.pythonanywhere.com/';
-  private apiUrl = 'https://alviapi.ddns.net/api';
+  private apiUrl = 'https://alviweb.com/api';
 
   constructor(private http: HttpClient) { }
 

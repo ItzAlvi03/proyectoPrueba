@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 })
 export class APIServiceService {
   // private URL = 'https://itzalvi03.pythonanywhere.com'
-  private URL = 'https://alviapi.ddns.net/api'
+  private URL = 'https://alviweb.com/api'
   //private URL = 'http://127.0.0.1:5000/'
   constructor(private http: HttpClient) {}
 
